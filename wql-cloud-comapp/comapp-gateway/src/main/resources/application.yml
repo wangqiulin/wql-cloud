@@ -1,0 +1,20 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:5000/eureka/
+      
+server:
+  port: 5001
+  
+spring:
+  application:
+    name: comapp-gateway
+    
+zuul:
+  routes:
+    api-user:
+      path: /api-user/**
+      serviceId: service-user
+    api-order:
+      path: /api-order/**
+      serviceId: service-order

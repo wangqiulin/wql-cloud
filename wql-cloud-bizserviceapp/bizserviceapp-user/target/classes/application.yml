@@ -1,0 +1,17 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:5000/eureka/
+      
+server:
+  port: 6001
+  
+spring:
+  application:
+    name: service-user
+    
+feign:
+  hystrix:
+    enabled: true
+    
+        
