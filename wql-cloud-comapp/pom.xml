@@ -19,23 +19,11 @@
   </properties>
   
   <dependencies>
-      <!--eureka server -->
-      <dependency>
-          <groupId>org.springframework.cloud</groupId>
-          <artifactId>spring-cloud-starter-eureka-server</artifactId>
-      </dependency>
-
       <!-- spring boot test-->
       <dependency>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-test</artifactId>
           <scope>test</scope>
-      </dependency>
-      
-      <!-- 网关 -->
-      <dependency>
-          <groupId>org.springframework.cloud</groupId>
-          <artifactId>spring-cloud-starter-zuul</artifactId>
       </dependency>
       
   </dependencies>
@@ -64,5 +52,6 @@
   <modules>
   	<module>comapp-eureka</module>
   	<module>comapp-gateway</module>
+  	<module>comapp-config</module>
   </modules>
 </project>
