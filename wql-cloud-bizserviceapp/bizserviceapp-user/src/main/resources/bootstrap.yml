@@ -1,0 +1,14 @@
+spring:
+  cloud:
+    config:
+      label: master
+      profile: dev   #dev开发环境配置文件, test测试环境, pro正式环境
+      uri: http://localhost:5002/   #配置服务中心的网址
+      discovery: #config-server高可用
+        enabled: true
+        serviceId: comapp-config
+        
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:5000/eureka/
