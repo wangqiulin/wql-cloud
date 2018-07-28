@@ -1,8 +1,8 @@
-package com.wql.cloud.wqlcloud.service.impl;
+package com.wql.cloud.wqlcloud.order.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.wql.cloud.wqlcloud.service.OrderService;
+import com.wql.cloud.wqlcloud.order.service.OrderService;
 
 /**
  *

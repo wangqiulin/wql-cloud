@@ -1,8 +1,8 @@
-package com.wql.cloud.wqlcloud.service.impl;
+package com.wql.cloud.wqlcloud.user.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.wql.cloud.wqlcloud.service.UserService;
+import com.wql.cloud.wqlcloud.user.service.UserService;
 
 /**
  *
@@ -12,4 +12,6 @@ import com.wql.cloud.wqlcloud.service.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 
+	
+	
 }

@@ -1,4 +1,4 @@
-package com.wql.cloud.wqlcloud.service;
+package com.wql.cloud.wqlcloud.order.service;
 /**
  *
  * @author wangqiulin

@@ -11,24 +11,30 @@ import java.util.concurrent.TimeUnit;
  * @date 2018年5月16日
  */
 @Component
-public class RedisLocker  implements DistributedLocker{
+public class RedisLocker implements DistributedLocker {
 
     private final static String LOCKER_PREFIX = "lock:";
 
+    //@Autowired
+    //private RedissonConnector redissonConnector;
+    
     @Autowired
-    RedissonConnector redissonConnector;
+    private RedissonClient redisson;
     
     @Override
-    public <T> T lock(String resourceName, AquiredLockWorker<T> worker) throws InterruptedException, UnableToAquireLockException, Exception {
-        return lock(resourceName, worker, 100);
+    public <T> T lock(String resourceName, AquiredLockWorker<T> worker) 
+    		throws InterruptedException, UnableToAquireLockException, Exception {
+        return lock(resourceName, worker, 3);
     }
 
+    
     @Override
-    public <T> T lock(String resourceName, AquiredLockWorker<T> worker, int lockTime) throws UnableToAquireLockException, Exception {
-        RedissonClient redisson= redissonConnector.getClient();
+    public <T> T lock(String resourceName, AquiredLockWorker<T> worker, int lockTime) 
+    		throws UnableToAquireLockException, Exception {
+        //RedissonClient redisson= redissonConnector.getClient();
         RLock lock = redisson.getLock(LOCKER_PREFIX + resourceName);
-      // Wait for 100 seconds seconds and automatically unlock it after lockTime seconds
-        boolean success = lock.tryLock(100, lockTime, TimeUnit.SECONDS);
+        // Wait for 3 seconds and automatically unlock it after lockTime seconds
+        boolean success = lock.tryLock(3, lockTime, TimeUnit.SECONDS);
         if (success) {
             try {
                 return worker.invokeAfterLockAquire();

@@ -5,12 +5,22 @@ spring:
   application:
     name: comapp-eureka
     
-eureka:
+eureka: 
+  environment: dev   # 指定环境
+  datacenter: roncoo  #指定数据中心
+  server: 
+    enable-self-preservation: false   # 关闭自我保护模式
+    eviction-interval-timer-in-ms: 5000  #设置清理无效节点的时间间隔，默认60000，即是60s
   instance:
-    hostname: localhost
-  client:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}:@project.version@
+    lease-renewal-interval-in-seconds: 30  #这里是为了测试，生产应该保持默认值：30s 
+  client: 
     registerWithEureka: false
     fetchRegistry: false
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://${spring.cloud.client.ipAddress}:${server.port}/eureka/
       
+      
+      
+ 

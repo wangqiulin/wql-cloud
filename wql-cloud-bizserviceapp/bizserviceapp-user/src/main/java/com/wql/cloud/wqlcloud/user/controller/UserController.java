@@ -1,18 +1,17 @@
-package com.wql.cloud.wqlcloud.controller;
+package com.wql.cloud.wqlcloud.user.controller;
 
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wql.cloud.wqlcloud.client.order.OrderClient;
 import com.wql.cloud.wqlcloud.redis.lock.AquiredLockWorker;
 import com.wql.cloud.wqlcloud.redis.lock.RedisLocker;
+import com.wql.cloud.wqlcloud.user.client.OrderClient;
 
 /**
  *
@@ -23,8 +22,10 @@ import com.wql.cloud.wqlcloud.redis.lock.RedisLocker;
 public class UserController {
 
 	@Autowired
-	private OrderClient orderClient;
+    private RedisLocker distributedLocker;
 	
+	@Autowired
+	private OrderClient orderClient;
 	
 	/**
 	 * 调用order模块的接口
@@ -35,28 +36,6 @@ public class UserController {
     public String queryOrderByName(@RequestParam String name){
         return orderClient.queryOrderByName(name);
     }
-	
-	
-	@RequestMapping(value = "/hi",method = RequestMethod.GET)
-    public String sayHi(@RequestParam String name){
-        return "user===> hi, " + name;
-    }
-	
-	
-	/**
-	 * POST方式刷新配置值: http://localhost:8881/bus/refresh
-	 */
-	@Value("${name}")
-	String configName;
-	
-	@RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public String sayHello(){
-        return configName;
-    }
-	
-	
-	@Autowired
-    RedisLocker distributedLocker;
 	
     @RequestMapping(value = "/redlock", method = RequestMethod.GET)
     public String testRedlock() throws Exception{
@@ -83,14 +62,12 @@ public class UserController {
         public void run() {
             try {
                 startSignal.await();
-                distributedLocker.lock("test",new AquiredLockWorker<Object>() {
-
+                distributedLocker.lock("test", new AquiredLockWorker<Object>() {
                     @Override
                     public Object invokeAfterLockAquire() {
                         doTask();
                         return null;
                     }
-
                 });
             }catch (Exception e){
 
@@ -111,7 +88,6 @@ public class UserController {
             doneSignal.countDown();
         }
     }
-	
 	
 	
 }

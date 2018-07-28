@@ -1,4 +1,4 @@
-package com.wql.cloud.wqlcloud;
+package com.wql.cloud.wqlcloud.order;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

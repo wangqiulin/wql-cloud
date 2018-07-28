@@ -1,4 +1,4 @@
-package com.wql.cloud.wqlcloud.client.order;
+package com.wql.cloud.wqlcloud.user.client;
 
 import org.springframework.stereotype.Component;
 
