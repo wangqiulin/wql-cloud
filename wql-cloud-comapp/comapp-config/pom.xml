@@ -6,6 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>comapp-config</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
   <description>配置服务中心</description>
   

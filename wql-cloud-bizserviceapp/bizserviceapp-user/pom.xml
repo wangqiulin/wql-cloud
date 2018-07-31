@@ -6,6 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>bizserviceapp-user</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
   
   <dependencies>
