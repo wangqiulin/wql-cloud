@@ -13,10 +13,10 @@ spring:
 eureka: 
   client: 
     serviceUrl: 
-      defaultZone: http://${wql.user.username}:${wql.user.password}@127.0.0.1:5000/eureka/
+      defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@127.0.0.1:5000/eureka/
 
 wql: 
-  user: 
+  eureka: 
     username: admin
     password: admin
     
