@@ -22,6 +22,14 @@ spring:
     username: guest
     password: guest
 
+
+#fegin连接超时[默认的ReadTimeout时间为5s，ConnectTimeout时间为2s. Fegin进行微服务间调用，底层用的还是Ribbon]
+ribbon:
+  ReadTimeout: 1000
+  ConnectTimeout: 10000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1 
+
 #熔断机制    
 feign:
   hystrix:
