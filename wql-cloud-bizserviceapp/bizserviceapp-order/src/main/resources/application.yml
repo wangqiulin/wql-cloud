@@ -1,3 +1,6 @@
+server:
+  port: 6002
+  
 eureka:
   instance:
     preferIpAddress: true
@@ -9,11 +12,13 @@ eureka:
     fetchRegistry: true
     registryFetchIntervalSeconds: 10   # 服务列表缓存更新时间
     serviceUrl: 
-      defaultZone: http://127.0.0.1:5000/eureka/
-      
-server:
-  port: 6002
-  
+      defaultZone: http://${wql.user.username}:${wql.user.password}@127.0.0.1:5000/eureka/
+
 spring:
   application:
     name: service-order
+      
+wql: 
+  user: 
+    username: admin
+    password: admin

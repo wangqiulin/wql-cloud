@@ -19,7 +19,22 @@ eureka:
     registerWithEureka: false
     fetchRegistry: false
     serviceUrl:
-      defaultZone: http://${spring.cloud.client.ipAddress}:${server.port}/eureka/
+      defaultZone: http://${security.user.name}:${security.user.password}@${spring.cloud.client.ipAddress}:${server.port}/eureka/
+
+management:
+   port: 9980
+   context-path: /manage
+   security:
+      enabled: false
+      roles: SUPERUSER
+#这里开启安全认证以后默认所有组件都需要安全认证，包括客户端和eureka服务的之间的心跳，建议只有管理端口开启安全认证，业务端口不开启
+security: 
+  basic:
+    enabled: true
+    path: /manage
+  user: 
+    name: admin
+    password: admin      
       
       
       

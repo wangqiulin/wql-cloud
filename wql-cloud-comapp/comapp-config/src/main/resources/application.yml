@@ -1,4 +1,7 @@
-eureka:
+server: 
+  port: 5001
+
+eureka: 
   instance:
     preferIpAddress: true
     instance-id: ${spring.cloud.client.ipAddress}:${server.port}:@project.version@
@@ -9,10 +12,12 @@ eureka:
     fetchRegistry: true
     registryFetchIntervalSeconds: 10   # 服务列表缓存更新时间
     serviceUrl: 
-      defaultZone: http://127.0.0.1:5000/eureka/
+      defaultZone: http://${wql.user.username}:${wql.user.password}@127.0.0.1:5000/eureka/
 
-server:
-  port: 5002
+wql: 
+  user: 
+    username: admin
+    password: admin
 
 spring:
   application:

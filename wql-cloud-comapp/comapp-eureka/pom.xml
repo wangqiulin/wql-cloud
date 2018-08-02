@@ -10,10 +10,15 @@
   <packaging>war</packaging>
   
   <dependencies>
-      <!--eureka server -->
+      <!-- eureka server -->
       <dependency>
           <groupId>org.springframework.cloud</groupId>
           <artifactId>spring-cloud-starter-eureka-server</artifactId>
+      </dependency>
+      <!-- 为eureka设置登录账号和密码 -->
+      <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-security</artifactId>
       </dependency>
   </dependencies>
   

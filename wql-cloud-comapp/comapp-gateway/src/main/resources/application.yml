@@ -1,11 +1,24 @@
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:5000/eureka/
-      
 server:
-  port: 5001
-  
+  port: 5002
+
+eureka: 
+  instance:
+    preferIpAddress: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}:@project.version@
+    leaseRenewalIntervalInSeconds: 10  # 心跳间隔
+    lease-expiration-duration-in-seconds: 30  # 30秒未收到服务剔除服务 所有服务都需要加
+  client: 
+    registerWithEureka: true
+    fetchRegistry: true
+    registryFetchIntervalSeconds: 10   # 服务列表缓存更新时间
+    serviceUrl: 
+      defaultZone: http://${wql.user.username}:${wql.user.password}@127.0.0.1:5000/eureka/
+      
+wql: 
+  user: 
+    username: admin
+    password: admin      
+      
 spring:
   application:
     name: comapp-gateway
