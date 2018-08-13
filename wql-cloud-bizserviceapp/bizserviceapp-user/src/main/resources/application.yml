@@ -21,7 +21,26 @@ spring:
     port: 5672
     username: guest
     password: guest
-
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/t_wql_cloud
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+custom:     
+  names: ds1,ds2
+  ds1:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/t_wql_cloud1
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  ds2:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/t_wql_cloud2
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver  
 
 #fegin连接超时[默认的ReadTimeout时间为5s，ConnectTimeout时间为2s. Fegin进行微服务间调用，底层用的还是Ribbon]
 ribbon:
