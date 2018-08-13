@@ -32,6 +32,12 @@
     	 <artifactId>basic-redis</artifactId>
     	 <version>0.0.1-SNAPSHOT</version>
      </dependency>   
+     
+     <dependency>
+     	<groupId>com.wql.cloud.wql-cloud</groupId>
+     	<artifactId>bizserviceapp-client</artifactId>
+     	<version>0.0.1-SNAPSHOT</version>
+     </dependency>
         
   </dependencies>
   

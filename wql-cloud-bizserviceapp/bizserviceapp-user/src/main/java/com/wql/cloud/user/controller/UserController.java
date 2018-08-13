@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wql.cloud.user.client.OrderClient;
-import com.wql.cloud.wqlcloud.redis.lock.AquiredLockWorker;
-import com.wql.cloud.wqlcloud.redis.lock.RedisLocker;
+import com.wql.cloud.basic.redis.lock.AquiredLockWorker;
+import com.wql.cloud.basic.redis.lock.RedisLocker;
+import com.wql.cloud.client.order.OrderClient;
+
 
 /**
  *

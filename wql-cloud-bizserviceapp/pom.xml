@@ -83,5 +83,6 @@
   <modules>
   	<module>bizserviceapp-user</module>
   	<module>bizserviceapp-order</module>
+  	<module>bizserviceapp-client</module>
   </modules>
 </project>

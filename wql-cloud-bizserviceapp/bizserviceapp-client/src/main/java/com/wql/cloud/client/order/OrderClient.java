@@ -1,4 +1,4 @@
-package com.wql.cloud.user.client;
+package com.wql.cloud.client.order;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
