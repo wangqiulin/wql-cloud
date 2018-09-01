@@ -1,32 +1,10 @@
-server:
-  port: 5000
-  
-spring:
-  application:
-    name: comapp-eureka
-    
-eureka: 
-  environment: dev   # 指定环境
-  datacenter: roncoo  #指定数据中心
-  server: 
-    enable-self-preservation: false   # 关闭自我保护模式
-    eviction-interval-timer-in-ms: 5000  #设置清理无效节点的时间间隔，默认60000，即是60s
-  instance:
-    prefer-ip-address: true
-    instance-id: ${spring.cloud.client.ipAddress}:${server.port}:@project.version@
-    lease-renewal-interval-in-seconds: 30  #这里是为了测试，生产应该保持默认值：30s 
-  client: 
-    registerWithEureka: false
-    fetchRegistry: false
-    serviceUrl:
-      defaultZone: http://${security.user.name}:${security.user.password}@${spring.cloud.client.ipAddress}:${server.port}/eureka/
-
-management:
+management: 
    port: 9980
    context-path: /manage
    security:
       enabled: false
       roles: SUPERUSER
+      
 #这里开启安全认证以后默认所有组件都需要安全认证，包括客户端和eureka服务的之间的心跳，建议只有管理端口开启安全认证，业务端口不开启
 security: 
   basic:
@@ -36,6 +14,38 @@ security:
     name: admin
     password: admin      
       
+eureka: 
+  server: 
+    waitTimeInMsWhenSyncEmpty: 0
+    enable-self-preservation: false   # 关闭自我保护模式，不管如何都要剔除心跳检测异常的服务
+    eviction-interval-timer-in-ms: 10000  #设置清理无效节点的时间间隔，默认60000，即是60s
+    peerEurekaNodesUpdateIntervalMs: 10000000
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}:@project.version@
+    lease-renewal-interval-in-seconds: 30   #续约更新时间间隔（默认30秒）
+    lease-expiration-duration-in-seconds: 90  #续约到期时间（默认90秒）
+  client: 
+    registerWithEureka: false  #是否注册到eurekaserver
+    fetchRegistry: false   #是否拉取信息
+
+---
+spring:
+  profiles: dev
+eureka: 
+  client: 
+    serviceUrl: 
+      defaultZone: http://${security.user.name}:${security.user.password}@${spring.cloud.client.ipAddress}:${server.port}/eureka/
+
+---
+spring:
+  profiles: prod
+eureka: 
+  client: 
+    serviceUrl: 
+      defaultZone: http://${security.user.name}:${security.user.password}@${spring.cloud.client.ipAddress}:${server.port}/eureka/
+
+
       
       
  

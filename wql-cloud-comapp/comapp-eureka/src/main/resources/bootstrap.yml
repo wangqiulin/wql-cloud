@@ -1,0 +1,11 @@
+spring: 
+  application:
+    name: comapp-eureka
+  profiles:
+    active: dev  
+
+server:
+  port: 5000
+    
+    
+    

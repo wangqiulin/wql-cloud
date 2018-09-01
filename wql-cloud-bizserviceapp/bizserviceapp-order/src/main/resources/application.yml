@@ -1,5 +1,16 @@
-server:
+spring: 
+  application:
+    name: serviceapp-order
+  profiles:
+    active: dev 
+    
+server: 
   port: 6002
+  
+wql: 
+  eureka: 
+    username: admin
+    password: admin  
   
 eureka:
   instance:
@@ -11,14 +22,21 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     registryFetchIntervalSeconds: 10   # 服务列表缓存更新时间
+
+---
+spring:
+  profiles: dev
+eureka:
+  client: 
     serviceUrl: 
       defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@127.0.0.1:5000/eureka/
-
+  
+---
 spring:
-  application:
-    name: service-order
+  profiles: prod
+eureka:
+  client: 
+    serviceUrl: 
+      defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@127.0.0.1:5000/eureka/      
+            
       
-wql: 
-  eureka: 
-    username: admin
-    password: admin
