@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.redis.lock;
+package com.wql.cloud.basic.redisson;
 /**
  * 异常类
  * 
@@ -7,9 +7,6 @@ package com.wql.cloud.basic.redis.lock;
  */
 public class UnableToAquireLockException extends RuntimeException {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public UnableToAquireLockException() {

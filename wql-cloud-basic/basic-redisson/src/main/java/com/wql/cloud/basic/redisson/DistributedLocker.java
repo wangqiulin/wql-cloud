@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.redis.lock;
+package com.wql.cloud.basic.redisson;
 
 /**
  * 获取锁管理类
@@ -9,7 +9,8 @@ package com.wql.cloud.basic.redis.lock;
 public interface DistributedLocker {
 
 	/**
-     * 获取锁
+     * 获取锁(不等待锁的获取时间)
+     * 
      * @param resourceName  锁的名称
      * @param worker 获取锁后的处理类
      * @param <T>
@@ -17,11 +18,21 @@ public interface DistributedLocker {
      * @throws UnableToAquireLockException
      * @throws Exception
      */
-    <T> T lock(String resourceName, AquiredLockWorker<T> worker) 
-    		throws UnableToAquireLockException, Exception;
-
     <T> T lock(String resourceName, AquiredLockWorker<T> worker, int lockTime) 
     		throws UnableToAquireLockException, Exception;
 
+    /**
+     * 获取锁（可设置等待锁的获取时间）
+     * 
+     * @param resourceName
+     * @param worker
+     * @param waitTime
+     * @param lockTime
+     * @return
+     * @throws UnableToAquireLockException
+     * @throws Exception
+     */
+    <T> T lock(String resourceName, AquiredLockWorker<T> worker, int waitTime, int lockTime) 
+    		throws UnableToAquireLockException, Exception;
 	
 }
