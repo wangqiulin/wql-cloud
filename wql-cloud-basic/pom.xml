@@ -44,6 +44,7 @@
 		<module>basic-redis</module>
 		<module>basic-datasource</module>
 		<module>basic-redisson</module>
+		<module>basic-httpclient</module>
 	</modules>
 
 </project>
