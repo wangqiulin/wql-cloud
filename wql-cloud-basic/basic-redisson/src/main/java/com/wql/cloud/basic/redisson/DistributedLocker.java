@@ -19,7 +19,7 @@ public interface DistributedLocker {
      * @throws Exception
      */
     <T> T lock(String resourceName, AquiredLockWorker<T> worker, int lockTime) 
-    		throws UnableToAquireLockException, Exception;
+    		throws Exception;
 
     /**
      * 获取锁（可设置等待锁的获取时间）
@@ -33,6 +33,6 @@ public interface DistributedLocker {
      * @throws Exception
      */
     <T> T lock(String resourceName, AquiredLockWorker<T> worker, int waitTime, int lockTime) 
-    		throws UnableToAquireLockException, Exception;
+    		throws Exception;
 	
 }

@@ -3,8 +3,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>basic-datasource</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>basic-datasource</name>
-	<description>数据源</description>
 	<parent>
 		<groupId>com.wql.cloud</groupId>
 		<artifactId>wql-cloud-basic</artifactId>
@@ -20,6 +18,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-autoconfigure</artifactId>
 		</dependency>
+		
 		<!-- 数据源 -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -32,8 +31,26 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
-			<version>1.1.10</version>
 		</dependency>
+
+		<!-- mybatis -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>tk.mybatis</groupId>
+			<artifactId>mapper</artifactId>
+		</dependency>
+
 		<!-- aspectj -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -51,6 +68,7 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

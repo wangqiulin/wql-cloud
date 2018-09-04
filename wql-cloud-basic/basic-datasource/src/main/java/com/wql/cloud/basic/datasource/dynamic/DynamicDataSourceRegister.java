@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.datasource;
+package com.wql.cloud.basic.datasource.dynamic;
 
 import java.util.HashMap;
 import java.util.Map;

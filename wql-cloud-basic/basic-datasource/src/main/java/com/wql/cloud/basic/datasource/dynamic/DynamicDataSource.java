@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.datasource;
+package com.wql.cloud.basic.datasource.dynamic;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 

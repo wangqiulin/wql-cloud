@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.datasource;
+package com.wql.cloud.basic.datasource.dynamic;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;

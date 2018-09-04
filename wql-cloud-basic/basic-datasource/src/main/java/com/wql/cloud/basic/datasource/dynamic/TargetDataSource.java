@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.datasource;
+package com.wql.cloud.basic.datasource.dynamic;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
