@@ -1,26 +1,27 @@
 spring:
   application:
     name: comapp-config
-  rabbitmq:
-    host: 192.168.1.93
-    username: guest
-    password: guest  
+  
   profiles:
-    active: dev 
+    active: dev
+    
+  rabbitmq:
+    host: 47.98.209.46
+    username: wql
+    password: wql
+    
+  cloud: 
+    config:
+      server:
+        git:
+          uri: https://github.com/wangqiulin/wql-cloud-config/
+          searchPaths: properties
+          username: 
+          password: 
+      label: master  
 
 server: 
   port: 5001
-
-management: 
-  security:
-    enabled: false  # 使得/refresh不需要验权
-security:  # 访问时需要提供用户和密码
-  ignored: /monitor  # 这个接口不做用户名密码校验, /monitor接收git刷新通知
-  user:  #连接config-server时的账户和密码
-    name: user
-    password: 12345678
-encrypt:
-  key: 12345678  # 加解密用的秘钥
 
 wql: 
   eureka: 
@@ -45,7 +46,7 @@ spring:
 eureka: 
   client: 
     serviceUrl: 
-      defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@127.0.0.1:5000/eureka/   
+      defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@47.98.209.46:5000/eureka/   
 
 ---
 spring:
@@ -53,5 +54,5 @@ spring:
 eureka: 
   client: 
     serviceUrl: 
-      defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@127.0.0.1:5000/eureka/     
+      defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@47.98.209.46:5000/eureka/     
       

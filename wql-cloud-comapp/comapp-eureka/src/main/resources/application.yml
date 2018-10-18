@@ -1,5 +1,5 @@
 management: 
-   port: 9980
+   port: 9981
    context-path: /manage
    security:
       enabled: false
