@@ -13,7 +13,7 @@ import com.wql.cloud.basic.datasource.dynamic.DynamicDataSourceRegister;
 public class UserServiceApplication {
 
 	public static void main(String[] args) {
-		new SpringApplicationBuilder(UserServiceApplication.class).run(args);
+		new SpringApplicationBuilder(UserServiceApplication.class).web(true).run(args);
 	}
 	
 }
