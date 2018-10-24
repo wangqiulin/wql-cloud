@@ -1,5 +1,6 @@
 package com.wql.cloud.basic.datasource.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -15,14 +16,20 @@ import com.alibaba.druid.support.http.WebStatFilter;
  */
 @Configuration
 public class DruidWebConfig {
-
+	
+	@Value("${druid.loginUsername:}")
+	private String loginUsername;
+	
+	@Value("${druid.loginPassword:}")
+	private String loginPassword;
+	
 	@Bean
 	public ServletRegistrationBean druidServlet() {
 		ServletRegistrationBean reg = new ServletRegistrationBean();
 		reg.setServlet(new StatViewServlet());
 		reg.addUrlMappings("/druid/*");
-		reg.addInitParameter("loginUsername", "wql");
-		reg.addInitParameter("loginPassword", "wql");
+		reg.addInitParameter("loginUsername", loginUsername);
+		reg.addInitParameter("loginPassword", loginPassword);
 		return reg;
 	}
 
@@ -37,4 +44,5 @@ public class DruidWebConfig {
 		filterRegistrationBean.addInitParameter("principalSessionName", "USER_SESSION");
 		return filterRegistrationBean;
 	}
+	
 }
