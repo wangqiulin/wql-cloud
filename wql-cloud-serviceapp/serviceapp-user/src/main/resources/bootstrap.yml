@@ -7,22 +7,21 @@ spring:
 server: 
   port: 6001
 
-management:
-  security:
-    enabled: false
-
 eureka: 
   instance:
     preferIpAddress: true
-    instance-id: ${spring.cloud.client.ipAddress}:${server.port}:@project.version@
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
     lease-renewal-interval-in-seconds: 10  #续约更新时间间隔（默认30秒）
     lease-expiration-duration-in-seconds: 90  #续约到期时间（默认90秒）
   client: 
     registerWithEureka: true
     fetchRegistry: true
     registryFetchIntervalSeconds: 10   # 服务列表缓存更新时间
-    healthcheck: 
-      enabled: true  #开启健康检查
+
+wql: 
+  eureka: 
+    username: admin
+    password: admin 
       
 ---
 spring: 
@@ -39,12 +38,8 @@ spring:
 eureka: 
   client: 
     serviceUrl: 
-      defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@47.98.209.46:5000/eureka/
-wql: 
-  eureka: 
-    username: admin
-    password: admin 
-      
+      defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@127.0.0.1:5000/eureka/
+
 ---
 spring: 
   profiles: prod
@@ -61,8 +56,3 @@ eureka:
   client: 
     serviceUrl: 
       defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@47.98.209.46:5000/eureka/  
-wql: 
-  eureka: 
-    username: admin
-    password: admin       
-                
