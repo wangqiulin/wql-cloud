@@ -1,15 +1,8 @@
 spring:
   application:
     name: comapp-config
-  
-  profiles:
+  profiles: 
     active: dev
-    
-  rabbitmq:
-    host: 47.98.209.46
-    username: wql
-    password: wql
-    
   cloud: 
     config:
       server:
@@ -19,15 +12,6 @@ spring:
           username: 
           password: 
       label: master  
-
-management:
-  security:
-    enabled: false  #关闭安全登录
-
-security:
-  user:
-    name: wql
-    password: wql123
 
 server: 
   port: 5001
@@ -48,6 +32,10 @@ eureka:
     lease-renewal-interval-in-seconds: 10  #续约更新时间间隔（默认30秒）
     lease-expiration-duration-in-seconds: 90  #续约到期时间（默认90秒）
 
+management:
+  security:
+    enabled: false #是否开启actuator安全认证
+
 # 不同环境的配置
 ---
 spring:
@@ -55,7 +43,7 @@ spring:
 eureka: 
   client: 
     serviceUrl: 
-      defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@47.98.209.46:5000/eureka/   
+      defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@127.0.0.1:5000/eureka/   
 
 ---
 spring:
