@@ -16,6 +16,8 @@
 		<module>basic-datasource</module>
 		<module>basic-redisson</module>
 		<module>basic-httpclient</module>
+		<module>basic-swagger</module>
+		<module>basic-jwt</module>
 	</modules>
 
 	<build>
