@@ -18,6 +18,14 @@ eureka:
     fetchRegistry: true
     registryFetchIntervalSeconds: 10   # 服务列表缓存更新时间
 
+#信号量模式
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+
 wql: 
   eureka: 
     username: admin

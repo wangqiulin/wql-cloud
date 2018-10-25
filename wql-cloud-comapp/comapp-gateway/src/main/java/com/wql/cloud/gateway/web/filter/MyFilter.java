@@ -18,25 +18,25 @@ import com.netflix.zuul.context.RequestContext;
 public class MyFilter extends ZuulFilter {
 
 	private static Logger logger = LoggerFactory.getLogger(MyFilter.class);
-	
+
 	@Override
 	public Object run() {
 		RequestContext ctx = RequestContext.getCurrentContext();
-        HttpServletRequest request = ctx.getRequest();
-        logger.info(String.format("%s >>> %s", request.getMethod(), request.getRequestURL().toString()));
-        Object accessToken = request.getParameter("token");
-        if(accessToken == null) {
-        	logger.warn("token is empty");
-            ctx.setSendZuulResponse(false);
-            ctx.setResponseStatusCode(401);
-            try {
-                ctx.getResponse().getWriter().write("token is empty");
-            }catch (Exception e){
-            	
-            }
-            return null;
-        }
-        logger.info("ok");
+		HttpServletRequest request = ctx.getRequest();
+		logger.info(String.format("%s >>> %s", request.getMethod(), request.getRequestURL().toString()));
+		Object accessToken = request.getParameter("token");
+		if (accessToken == null) {
+			logger.warn("token is empty");
+			ctx.setSendZuulResponse(false);
+			ctx.setResponseStatusCode(401);
+			try {
+				ctx.getResponse().getWriter().write("token is empty");
+			} catch (Exception e) {
+
+			}
+			return null;
+		}
+		logger.info("ok");
 		return null;
 	}
 
@@ -52,8 +52,10 @@ public class MyFilter extends ZuulFilter {
 
 	@Override
 	public String filterType() {
+		/**
+		 * pre：路由之前 routing：路由之时 post： 路由之后 error：发送错误调用
+		 */
 		return "pre";
 	}
 
-	
 }
