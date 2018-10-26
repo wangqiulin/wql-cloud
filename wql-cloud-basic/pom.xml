@@ -18,6 +18,10 @@
 		<module>basic-httpclient</module>
 		<module>basic-swagger</module>
 		<module>basic-jwt</module>
+		<module>basic-job</module>
+		<module>basic-config</module>
+		<module>basic-elasticsearch</module>
+		<module>basic-kaptcha</module>
 	</modules>
 
 	<dependencies>
@@ -34,7 +38,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-autoconfigure</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -43,7 +47,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 		</dependency>
-		
+
 		<!-- servlet-api依赖 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -79,6 +83,16 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<!-- jdk版本 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
