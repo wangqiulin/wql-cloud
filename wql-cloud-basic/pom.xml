@@ -22,6 +22,7 @@
 		<module>basic-config</module>
 		<module>basic-elasticsearch</module>
 		<module>basic-kaptcha</module>
+		<module>basic-rabbitmq</module>
 	</modules>
 
 	<dependencies>

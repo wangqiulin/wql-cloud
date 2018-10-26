@@ -16,5 +16,5 @@ public class UserController {
 	public Object queryAll() {
 		return userService.queryAll();
 	}
-	
+
 }

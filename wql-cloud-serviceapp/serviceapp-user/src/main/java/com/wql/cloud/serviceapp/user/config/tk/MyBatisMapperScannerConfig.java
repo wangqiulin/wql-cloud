@@ -1,4 +1,4 @@
-package com.wql.cloud.serviceapp.user.config;
+package com.wql.cloud.serviceapp.user.config.tk;
 
 import java.util.Properties;
 

@@ -83,6 +83,11 @@
 			<artifactId>basic-swagger</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.wql.cloud</groupId>
+			<artifactId>basic-rabbitmq</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
