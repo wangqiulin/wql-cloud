@@ -23,6 +23,7 @@
 		<module>basic-elasticsearch</module>
 		<module>basic-kaptcha</module>
 		<module>basic-rabbitmq</module>
+		<module>basic-encrypt</module>
 	</modules>
 
 	<dependencies>
@@ -54,6 +55,11 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
 		</dependency>
 
 		<dependency>
