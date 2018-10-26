@@ -12,19 +12,19 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class HttpClientProperties {
 
-	@Value("${http.connect-timeout:3000}")
+	@Value("${http.connectTimeout:3000}")
 	private int connectTimeout;
 	
-	@Value("${http.socket-timeout:24000}")
+	@Value("${http.socketTimeout:24000}")
 	private int socketTimeout;
 	
-	@Value("${http.max-conn-total-int:10}")
+	@Value("${http.maxConnTotalInt:10}")
 	private int maxConnTotalInt;
 	
-	@Value("${http.max-conn-per-route-int:40}")
+	@Value("${http.maxConnPerRouteInt:40}")
 	private int maxConnPerRouteInt;
 	
-	@Value("${http.connection-request-timeout-int:3000}")
+	@Value("${http.connectionRequestTimeoutInt:3000}")
 	private int connectionRequestTimeoutInt;
 
 	public int getConnectTimeout() {

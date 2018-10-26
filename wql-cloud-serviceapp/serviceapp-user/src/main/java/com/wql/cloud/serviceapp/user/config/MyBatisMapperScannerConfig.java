@@ -33,7 +33,7 @@ public class MyBatisMapperScannerConfig {
         
         //初始化扫描器的相关配置，这里我们要创建一个Mapper的父类
         Properties properties = new Properties();
-        properties.setProperty("mappers", "com.wql.cloud.basic.datasource.mybatis.MyMapper");
+        properties.setProperty("mappers", "com.wql.cloud.basic.datasource.tk.MyMapper");
         properties.setProperty("notEmpty", "false");
         properties.setProperty("IDENTITY", "MYSQL");
         mapperScannerConfigurer.setProperties(properties);
