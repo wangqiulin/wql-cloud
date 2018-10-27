@@ -18,6 +18,10 @@ eureka:
     fetchRegistry: true
     registryFetchIntervalSeconds: 10   # 服务列表缓存更新时间
 
+ribbon: 
+  ReadTimeout: 10000  #请求处理的超时时间
+  ConnectTimeout: 1000  #请求连接的超时时间
+
 #信号量模式
 hystrix:
   command:
