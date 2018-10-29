@@ -22,6 +22,19 @@ zuul:
     api-common:  
       path: /common/**
       serviceId: serviceapp-common   #如果出现中文文件名，上传文件的文件名会出现失败。访问的是指直接在这个/oss，前面加上"/zuul"，ok
+
+#超时时间配置
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 60000
+
       
 eureka: 
   instance:

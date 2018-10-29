@@ -3,9 +3,12 @@ package com.wql.cloud;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.client.RestTemplate;
 
 import com.wql.cloud.basic.datasource.dynamic.DynamicDataSourceRegister;
 
@@ -19,5 +22,11 @@ public class UserServiceApplication {
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(UserServiceApplication.class).web(true).run(args);
 	}
+	
+	@LoadBalanced
+    @Bean
+    public RestTemplate loadBalanced() {
+        return new RestTemplate();
+    }
 	
 }
