@@ -66,9 +66,8 @@ public class SessionFactoryConfig implements TransactionManagementConfigurer {
         
         if(StringUtils.isNotBlank(mybatisProperties.getXmlPackage())) {
         	//添加XML目录
-        	String resource = "classpath:"+mybatisProperties.getXmlPackage()+"/*/**.xml";
             ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-            sqlSessionFactoryBean.setMapperLocations(resolver.getResources(resource));
+            sqlSessionFactoryBean.setMapperLocations(resolver.getResources(mybatisProperties.getXmlPackage()));
         }
         SqlSessionFactory sessionFactory = sqlSessionFactoryBean.getObject();
         logger.info("【SqlSessionFactory】---初始化成功");

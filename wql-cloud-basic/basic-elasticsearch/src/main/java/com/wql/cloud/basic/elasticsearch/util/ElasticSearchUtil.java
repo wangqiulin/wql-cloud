@@ -51,6 +51,7 @@ public class ElasticSearchUtil {
 		long start = System.currentTimeMillis();
 		IndexResponse response = null;
 		if(docId == null){
+			//response = client.prepareIndex(indexName, type).setId(docId).setSource(jsonStr).execute().actionGet();
 			response = client.prepareIndex(indexName, type).setSource(jsonStr, XContentType.JSON).get();
 		}else{
 			response = client.prepareIndex(indexName, type, docId).setSource(jsonStr, XContentType.JSON).get();
