@@ -30,6 +30,11 @@ hystrix:
         isolation:
           strategy: SEMAPHORE
 
+#fegin调用打印日志
+logging:
+  level:
+    com.wql.cloud.client: DEBUG
+
 wql: 
   eureka: 
     username: admin

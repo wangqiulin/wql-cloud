@@ -24,6 +24,7 @@
 		<module>basic-kaptcha</module>
 		<module>basic-rabbitmq</module>
 		<module>basic-encrypt</module>
+		<module>basic-idgenerator</module>
 	</modules>
 
 	<dependencies>
