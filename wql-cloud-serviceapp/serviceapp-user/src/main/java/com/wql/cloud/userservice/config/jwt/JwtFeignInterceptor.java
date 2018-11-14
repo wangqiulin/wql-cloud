@@ -1,4 +1,4 @@
-package com.wql.cloud.userservice.interceptor;
+package com.wql.cloud.userservice.config.jwt;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
