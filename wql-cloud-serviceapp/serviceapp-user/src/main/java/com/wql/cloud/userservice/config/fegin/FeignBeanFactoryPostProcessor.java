@@ -8,6 +8,9 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * feign方式宕机优雅响应
+ */
 @Component
 public class FeignBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 

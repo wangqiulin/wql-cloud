@@ -25,6 +25,7 @@
 		<module>basic-rabbitmq</module>
 		<module>basic-encrypt</module>
 		<module>basic-idgenerator</module>
+		<module>basic-excel</module>
 	</modules>
 
 	<dependencies>
