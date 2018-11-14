@@ -29,7 +29,7 @@ public class MyBatisMapperScannerConfig {
 		logger.info("【通用mapper】---启用");
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
-        mapperScannerConfigurer.setBasePackage("com.wql.cloud.serviceapp.user.mapper");
+        mapperScannerConfigurer.setBasePackage("com.wql.cloud.userservice.mapper");
         
         //初始化扫描器的相关配置，这里我们要创建一个Mapper的父类
         Properties properties = new Properties();
