@@ -7,6 +7,7 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.wql.cloud.basic.redisson.distributeLock.aop.DistributedLock;
 import com.wql.cloud.userservice.domain.User;
 import com.wql.cloud.userservice.mapper.UserMapper;
 import com.wql.cloud.userservice.service.UserService;
@@ -25,10 +26,11 @@ public class UserServiceImpl implements UserService {
     private RestTemplate loadBalanced;
 	
 	@Override
+	@DistributedLock(lockName="test", tryLock=true)
 	public List<User> queryAll() {
 		List<User> list = userMapper.selectAll();
 		return list;
 	}
 
-
+	
 }

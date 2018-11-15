@@ -16,5 +16,5 @@ public interface UserService {
 	 * @return
 	 */
 	List<User> queryAll();
-	
+
 }

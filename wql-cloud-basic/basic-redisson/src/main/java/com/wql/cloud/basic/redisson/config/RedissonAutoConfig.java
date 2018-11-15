@@ -12,6 +12,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.wql.cloud.basic.redisson.distributeLock.DistributedLockTemplate;
+import com.wql.cloud.basic.redisson.distributeLock.SingleDistributedLockTemplate;
 import com.wql.cloud.basic.redisson.lock.DistributedLocker;
 import com.wql.cloud.basic.redisson.lock.RedissonDistributedLocker;
 import com.wql.cloud.basic.redisson.lock.RedissonLockUtil;
@@ -50,5 +52,12 @@ public class RedissonAutoConfig {
 		RedissonLockUtil.setLocker(locker);
 		return locker;
 	}
+	
+	
+	@Bean
+	DistributedLockTemplate distributedLockTemplate(RedissonClient redissonClient) {
+	    return new SingleDistributedLockTemplate(redissonClient);
+	}
+	
 
 }
