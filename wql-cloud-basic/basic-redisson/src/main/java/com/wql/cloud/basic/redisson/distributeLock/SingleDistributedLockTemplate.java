@@ -4,8 +4,12 @@ import java.util.concurrent.TimeUnit;
 
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SingleDistributedLockTemplate implements DistributedLockTemplate {
+	
+	private static final Logger logger = LoggerFactory.getLogger(SingleDistributedLockTemplate.class);
 	
     private RedissonClient redisson;
 
@@ -44,13 +48,15 @@ public class SingleDistributedLockTemplate implements DistributedLockTemplate {
         RLock lock = getLock(callback.getLockName(), fairLock);
         try {
             if (lock.tryLock(waitTime, leaseTime, timeUnit)) {
+            	logger.info("【分布式锁】 key--->{}, 获取成功", callback.getLockName());
                 return callback.process();
             }
         } catch (InterruptedException e) {
-
+        	logger.error("【分布式锁】处理异常", e);
         } finally {
             if (lock != null && lock.isLocked()) {
                 lock.unlock();
+                logger.info("【分布式锁】 key--->{}, 释放成功", callback.getLockName());
             }
         }
         return null;
