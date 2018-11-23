@@ -48,7 +48,7 @@ public @interface DistributedLock {
     /**
      * lockName后缀
      */
-    String lockNamePost() default "lock";
+    String lockNamePost() default "";
 
     /**
      * 获得锁名时拼接前后缀用到的分隔符
