@@ -7,6 +7,28 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 当service层的方法体格式：
+ * 
+ * 一：参数为一个对象是（User user）userName为user的字段， 需要使用对象参数中的某个字段值作为锁
+ * @DistributedLock(param="userName", tryLock=true)
+ * public boolean method1(User user);
+ * 
+ * 
+ * 二：参数为单个列举时，需要使用其中某个参数值锁时,使用argNum（表示使用第几个参数作为锁）
+ * @DistributedLock(argNum=2, tryLock=true)
+ * public boolean method2(Date payedTime, String orderNo, boolean notify);
+ * 
+ * 
+ * 三：参数为一个对象是（User user）userName为user的字段， 需要使用对象参数中的某个字段值作为锁
+ * @DistributedLock(param="userName", argNum=1, tryLock=true)
+ * public boolean method3(User user, User user2, String str);
+ * 
+ * 优先看lockName属性，
+ * 设置了(lockName)锁名称, 锁名称就是：前缀+lockName+后缀
+ * 没有设置lockName，则看param+argNum
+ * 
+ */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -36,7 +58,7 @@ public @interface DistributedLock {
     
     /**
      * <pre>
-     *     获取注解的方法参数列表的某个参数对象的某个属性值来作为lockName。因为有时候lockName是不固定的。
+     *     获取注解的方法参数列表的【某个参数对象的某个属性值】来作为lockName。因为有时候lockName是不固定的。
      *     当param不为空时，可以通过argNum参数来设置具体是参数列表的第几个参数，不设置则默认取第一个。
      * </pre>
      */

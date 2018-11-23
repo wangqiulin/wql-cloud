@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
@@ -20,7 +21,7 @@ import com.wql.cloud.basic.redisson.distributeLock.DistributedLockTemplate;
 
 @SuppressWarnings("all")
 @Aspect
-@Order(5)  // 保证该AOP在@Transactional之后执行
+@Order(-99)  // 保证该AOP在@Transactional之前执行
 @Component
 public class DistributedLockAspect {
 
@@ -29,7 +30,6 @@ public class DistributedLockAspect {
 
     @Pointcut("@annotation(com.wql.cloud.basic.redisson.distributeLock.aop.DistributedLock)")
     public void DistributedLockAspect() {}
-    
     
 	@Around(value = "DistributedLockAspect()")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
@@ -52,13 +52,12 @@ public class DistributedLockAspect {
     public String getLockName(Method method, Object[] args) {
         Objects.requireNonNull(method);
         DistributedLock annotation = method.getAnnotation(DistributedLock.class);
-
         String lockName = annotation.lockName(),
-                param = annotation.param();
-
-        if (isEmpty(lockName)) {
+        param = annotation.param();
+        //如果设置了lockName,则使用此锁名称； 否则通过param和argNum获取锁名称
+        if (StringUtils.isBlank(lockName)) {
             if (args.length > 0) {
-                if (isNotEmpty(param)) {
+                if (StringUtils.isNotBlank(param)) {
                     Object arg;
                     if (annotation.argNum() > 0) {
                         arg = args[annotation.argNum() - 1];
@@ -70,21 +69,20 @@ public class DistributedLockAspect {
                     lockName = args[annotation.argNum() - 1].toString();
                 }
             }
-        }
-
-        if (isNotEmpty(lockName)) {
-            String preLockName = annotation.lockNamePre(),
-                    postLockName = annotation.lockNamePost(),
-                    separator = annotation.separator();
+        } 
+        if (StringUtils.isNotBlank(lockName)) {
+        	//锁名称不为空
+        	String preLockName = annotation.lockNamePre(),
+        	postLockName = annotation.lockNamePost(),
+        	separator = annotation.separator();
             StringBuilder lName = new StringBuilder();
-            if (isNotEmpty(preLockName)) {
+            if (StringUtils.isNotBlank(preLockName)) {
                 lName.append(preLockName).append(separator);
             }
             lName.append(lockName);
-            if (isNotEmpty(postLockName)) {
+            if (StringUtils.isNotBlank(postLockName)) {
                 lName.append(separator).append(postLockName);
             }
-
             lockName = lName.toString();
             return lockName;
         }
@@ -99,7 +97,7 @@ public class DistributedLockAspect {
      * @return
      */
     public Object getParam(Object arg, String param) {
-        if (isNotEmpty(param) && arg != null) {
+        if (StringUtils.isNotBlank(param) && arg != null) {
             try {
                 Object result = PropertyUtils.getProperty(arg, param);
                 return result;
@@ -138,10 +136,8 @@ public class DistributedLockAspect {
     }
 
     public Object tryLock(ProceedingJoinPoint pjp, DistributedLock annotation, final String lockName, boolean fairLock) {
-        long waitTime = annotation.waitTime(),
-                leaseTime = annotation.leaseTime();
+        long waitTime = annotation.waitTime(), leaseTime = annotation.leaseTime();
         TimeUnit timeUnit = annotation.timeUnit();
-
         return lockTemplate.tryLock(new DistributedLockCallback<Object>() {
             @Override
             public Object process() {
@@ -163,11 +159,4 @@ public class DistributedLockAspect {
         }
     }
 
-    private boolean isEmpty(Object str) {
-        return str == null || "".equals(str);
-    }
-
-    private boolean isNotEmpty(Object str) {
-        return !isEmpty(str);
-    }
 }

@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
     @LoadBalanced
-    private RestTemplate loadBalanced;
+    private RestTemplate balancedRestTemplate;
 	
 	@Override
 	@DistributedLock(lockName="test", tryLock=true)
@@ -32,5 +32,4 @@ public class UserServiceImpl implements UserService {
 		return list;
 	}
 
-	
 }

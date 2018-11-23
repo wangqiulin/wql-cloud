@@ -42,11 +42,10 @@ public class LoggerAspect {
 	public static final Logger log = LoggerFactory.getLogger(LoggerAspect.class);
 
 	public static final String UNKNOWN = "unknown";
-
-	private ThreadLocal<Long> startTimeMillis = new ThreadLocal<>();
-
 	public final String MAC_ADDRESS_PREFIX = "MAC Address = ";
 	public final String LOOPBACK_ADDRESS = "127.0.0.1";
+
+	private ThreadLocal<Long> startTimeMillis = new ThreadLocal<>();
 
 	@Autowired
 	private HttpServletRequest request;
@@ -98,15 +97,10 @@ public class LoggerAspect {
     }
 
     /**
-     * @param joinPoint
-     * @param ip
-     * @param mac
-     * @param submitMethod
-     * @param path
+     * 打印日志
      */
     private void printRequestLog(JoinPoint joinPoint, String ip, String mac, String submitMethod, String path) {
-        StringBuilder sb = new StringBuilder(
-                "\n-------------------------------------begin-------------------------------------");
+        StringBuilder sb = new StringBuilder("\n-----------------------begin-----------------------");
         sb.append("\nrequest info is -------->\n");
         String method = joinPoint.getSignature().getName();
         // sb.append("ip : ").append(ip).append("\n");
@@ -126,9 +120,6 @@ public class LoggerAspect {
 
     /**
      * 打印参数日志
-     *
-     * @param obj
-     * @return
      */
     private String printArgs(Object obj) {
         String result = null;
@@ -142,9 +133,6 @@ public class LoggerAspect {
 
     /**
      * 参数去敏感
-     *
-     * @param obj
-     * @return
      */
     @SuppressWarnings("all")
 	private Object desensitizationArgs(Object obj) {
@@ -207,9 +195,6 @@ public class LoggerAspect {
 
     /**
      * 排除掉request,response对象
-     *
-     * @param args
-     * @return
      */
     private Object[] excludeArgs(Object[] args) {
         return Stream.of(args).filter(
@@ -225,7 +210,7 @@ public class LoggerAspect {
             startTimeMillis.remove();
             StringBuilder sb = new StringBuilder("response info is --->(耗时：" + (System.currentTimeMillis() - startTime)
                     + "ms)\n" + printArgs(returnValue));
-            sb.append("\n-------------------------------------end-------------------------------------");
+            sb.append("\n-----------------------end-----------------------");
             log.info(sb.toString());
         } catch (Exception e) {
             log.warn("请求切面afterReturning日志打印失败", e);

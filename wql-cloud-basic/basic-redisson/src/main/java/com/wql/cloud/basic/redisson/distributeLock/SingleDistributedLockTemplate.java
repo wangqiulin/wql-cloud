@@ -13,13 +13,19 @@ public class SingleDistributedLockTemplate implements DistributedLockTemplate {
 	
     private RedissonClient redisson;
 
+    public void setRedisson(RedissonClient redisson) {
+        this.redisson = redisson;
+    }
+    
     public SingleDistributedLockTemplate() {
+    	
     }
 
     public SingleDistributedLockTemplate(RedissonClient redisson) {
         this.redisson = redisson;
     }
 
+    
     @Override
     public <T> T lock(DistributedLockCallback<T> callback, boolean fairLock) {
         return lock(callback, DEFAULT_TIMEOUT, DEFAULT_TIME_UNIT, fairLock);
@@ -27,17 +33,22 @@ public class SingleDistributedLockTemplate implements DistributedLockTemplate {
 
     @Override
     public <T> T lock(DistributedLockCallback<T> callback, long leaseTime, TimeUnit timeUnit, boolean fairLock) {
-        RLock lock = getLock(callback.getLockName(), fairLock);
+        RLock lock = null;
         try {
-            lock.lock(leaseTime, timeUnit);
-            return callback.process();
+        	lock = getLock(callback.getLockName(), fairLock);
+        	if(lock != null) {
+        		lock.lock(leaseTime, timeUnit);
+        		return callback.process();
+        	}
         } finally {
             if (lock != null && lock.isLocked()) {
                 lock.unlock();
             }
         }
+        return null;
     }
-
+    
+    
     @Override
     public <T> T tryLock(DistributedLockCallback<T> callback, boolean fairLock) {
         return tryLock(callback, DEFAULT_WAIT_TIME, DEFAULT_TIMEOUT, DEFAULT_TIME_UNIT, fairLock);
@@ -45,9 +56,10 @@ public class SingleDistributedLockTemplate implements DistributedLockTemplate {
 
     @Override
     public <T> T tryLock(DistributedLockCallback<T> callback, long waitTime, long leaseTime, TimeUnit timeUnit, boolean fairLock) {
-        RLock lock = getLock(callback.getLockName(), fairLock);
+        RLock lock = null;
         try {
-            if (lock.tryLock(waitTime, leaseTime, timeUnit)) {
+        	lock = getLock(callback.getLockName(), fairLock);
+            if (lock != null && lock.tryLock(waitTime, leaseTime, timeUnit)) {
             	logger.info("【分布式锁】 key--->{}, 获取成功", callback.getLockName());
                 return callback.process();
             }
@@ -72,7 +84,5 @@ public class SingleDistributedLockTemplate implements DistributedLockTemplate {
         return lock;
     }
 
-    public void setRedisson(RedissonClient redisson) {
-        this.redisson = redisson;
-    }
+    
 }
