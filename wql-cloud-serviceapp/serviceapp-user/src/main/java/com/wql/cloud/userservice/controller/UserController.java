@@ -1,9 +1,11 @@
 package com.wql.cloud.userservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wql.cloud.userservice.domain.User;
 import com.wql.cloud.userservice.service.UserService;
 
 @RestController
@@ -12,10 +14,24 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping("/user/all")
-	public Object queryAll() {
-		return userService.queryAll();
+	@PostMapping("/user/query/all")
+	public Object queryUserAll() {
+		return userService.queryUserAll();
 	}
-
+	
+	@PostMapping("/user/query/{id}")
+	public User queryUserById(@PathVariable("id") Integer id) {
+		return userService.queryUserById(id);
+	}
+	
+	@PostMapping("/user/update/{id}")
+	public Object updateUserById(@PathVariable("id") Integer id) {
+		return userService.updateUserById(id);
+	}
+	
+	@PostMapping("/user/delete/{id}")
+	public Object deleteUserById(@PathVariable("id") Integer id) {
+		return userService.deleteUserById(id);
+	}
 	
 }

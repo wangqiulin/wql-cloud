@@ -12,6 +12,7 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -28,15 +29,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport{
 
+	/**
+	 * 自定义默认缓存key生成策略: 类名+方法名+参数名
+	 */
     @Bean
     public KeyGenerator keyGenerator() {
         return new KeyGenerator() {
             @Override
             public Object generate(Object target, Method method, Object... params) {
                 StringBuilder sb = new StringBuilder();
-                sb.append(target.getClass().getName());
+                sb.append("CacheData:");
+                sb.append(target.getClass().getName()).append(":");
                 sb.append(method.getName());
                 for (Object obj : params) {
+                	sb.append(".");
                     sb.append(obj.toString());
                 }
                 return sb.toString();
@@ -44,9 +50,11 @@ public class RedisConfig extends CachingConfigurerSupport{
         };
     }
  
-
-    @SuppressWarnings("rawtypes")
+    /**
+     * 缓存的有效期
+     */
     @Bean
+    @SuppressWarnings("rawtypes")
     public CacheManager cacheManager(RedisTemplate redisTemplate) {
         RedisCacheManager rcm = new RedisCacheManager(redisTemplate);
         //设置缓存过期时间
@@ -55,8 +63,8 @@ public class RedisConfig extends CachingConfigurerSupport{
     }
 
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
 	@Bean
+	@SuppressWarnings({ "rawtypes", "unchecked" })
     public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         ObjectMapper om = new ObjectMapper();
@@ -64,15 +72,16 @@ public class RedisConfig extends CachingConfigurerSupport{
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
         
+        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
         StringRedisTemplate template = new StringRedisTemplate(factory);
         // redis 开启事务 如果开启事务，则redis不会主动释放连接，需要手动释放
         template.setEnableTransactionSupport(false);
         // hash 使用jdk 的序列化
-        template.setHashValueSerializer(jackson2JsonRedisSerializer);
+        template.setHashValueSerializer(genericJackson2JsonRedisSerializer);
         template.setHashKeySerializer(new StringRedisSerializer());
         // keySerializer 对key的默认序列化器。默认值是StringSerializer
         template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(jackson2JsonRedisSerializer);
+        template.setValueSerializer(genericJackson2JsonRedisSerializer);
         template.afterPropertiesSet();
         return template;
     }

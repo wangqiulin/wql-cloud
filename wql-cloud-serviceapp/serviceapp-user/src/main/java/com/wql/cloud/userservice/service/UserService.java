@@ -15,6 +15,12 @@ public interface UserService {
 	 * 查询用户列表
 	 * @return
 	 */
-	List<User> queryAll();
+	List<User> queryUserAll();
+
+	User queryUserById(Integer id);
+
+	Object updateUserById(Integer id);
+
+	Object deleteUserById(Integer id);
 
 }
