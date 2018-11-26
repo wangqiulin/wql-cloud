@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.wql.cloud.basic.datasource.config.SessionFactoryConfig;
+import com.wql.cloud.basic.datasource.tk.MyMapper;
 
 import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 
@@ -33,7 +34,8 @@ public class MyBatisMapperScannerConfig {
         
         //初始化扫描器的相关配置，这里我们要创建一个Mapper的父类
         Properties properties = new Properties();
-        properties.setProperty("mappers", "com.wql.cloud.basic.datasource.tk.MyMapper");
+        //这里要特别注意，不要把MyMapper放到 basePackage 中，也就是不能同其他Mapper一样被扫描到。 
+        properties.setProperty("mappers", MyMapper.class.getName());  //com.wql.cloud.basic.datasource.tk.MyMapper
         properties.setProperty("notEmpty", "false");
         properties.setProperty("IDENTITY", "MYSQL");
         mapperScannerConfigurer.setProperties(properties);

@@ -23,157 +23,111 @@ public abstract class BaseService<T> {
     @Autowired
     private Mapper<T> mapper;
     
+    //=================查询===================//
+    
     public T queryById(Long id) {
         return this.mapper.selectByPrimaryKey(id);
     }
-
-    public List<T> queryList() {
-        return this.mapper.select(null);
+    
+    public T queryById(Integer id) {
+        return this.mapper.selectByPrimaryKey(id);
     }
-
-    /**
-     * 根据条件查询一条数据，如果有多条数据会抛出异常
-     */
+    
     public T queryOne(T record) {
         return this.mapper.selectOne(record);
     }
 
-    /**
-     * 根据条件查询一条数据，如果有多条数据会抛出异常
-     */
     public T queryOne(Example example) {
         List<T> list = this.mapper.selectByExample(example);
-        if(CollectionUtils.isEmpty(list)) {
-        	return null;
-        }
-        return list.get(0);
+        return CollectionUtils.isEmpty(list) ? null : list.get(0);
+    }
+    
+    public List<T> queryList() {
+        return this.mapper.select(null);
     }
 
-    public List<T> queryListByWhere(T record) {
+    public List<T> queryListByCondition(T record) {
         return this.mapper.select(record);
     }
 
-    /**
-     * 根据条件查询数据列表
-     */
     public List<T> queryListByExample(Example example) {
         return this.mapper.selectByExample(example);
     }
 
-    /**
-     * 分页查询
-     */
-    public PageInfo<T> queryPageListByWhere(Integer page, Integer rows, T record) {
+    //=================分页查询===================//
+    
+    public PageInfo<T> queryPageListByCondition(Integer page, Integer rows, T record) {
         PageHelper.startPage(page, rows);
         PageHelper.orderBy("id desc");
         List<T> list = this.mapper.select(record);
         return new PageInfo<T>(list);
     }
     
-    
-    /**
-     * 根据Example， 分页查询
-     */
     public PageInfo<T> queryPageListByExample(Integer page, Integer rows, Example example) {
         PageHelper.startPage(page, rows);
         PageHelper.orderBy("id desc");
         List<T> list = this.mapper.selectByExample(example);
         return new PageInfo<T>(list);
     }
+
+    //=================查询数量===================//	
     
-
-    /**
-     * 根据code， 查询唯一一条记录数据
-     */
-    public T queryOneByCode(Class<T> clazz, String property, String value) {
-        Example example = new Example(clazz);
-        example.createCriteria().andEqualTo(property, value);
-        List<T> list = mapper.selectByExample(example);
-        if (CollectionUtils.isEmpty(list)) {
-            return null;
-        }
-        if (list.size() == 1) {
-            return list.get(0);
-        }
-        throw new RuntimeException(clazz + "，只要一条记录，结果查询出" + list.size() + "条记录");
-    }
-
-    /**
-     * 根据字段(等号关系)，查询数量
-     */
-    public int queryCountByWhere(T record) {
+    public int queryCountByCondition(T record) {
         return this.mapper.selectCount(record);
     }
 
-    /**
-     * 根据字段(等号关系)，查询数量
-     */
     public int queryCountByExample(Example example) {
         return this.mapper.selectCountByExample(example);
     }
-
-    /**
-     * 新增数据，返回成功的条数
-     */
+    
+    //=================新增===================//
+    
     public int save(T record) {
         return this.mapper.insert(record);
     }
 
-    /**
-     * 新增数据，使用不为null的字段，返回成功的条数
-     */
     public int saveSelective(T record) {
         return this.mapper.insertSelective(record);
     }
-
-    /**
-     * 根据主键id，修改数据，返回成功的条数
-     */
+    
+    //=================更新===================//
+    
     public int update(T record) {
         return this.mapper.updateByPrimaryKey(record);
     }
 
-    /**
-     * 根据主键id，修改数据，使用不为null的字段，返回成功的条数
-     */
     public int updateSelective(T record) {
         return this.mapper.updateByPrimaryKeySelective(record);
     }
 
-    /**
-     * 根据主键id，修改数据，返回成功的条数
-     */
     public int updateByExample(T record, Example example) {
         return this.mapper.updateByExample(record, example);
     }
 
-    /**
-     * 根据主键id，修改数据，使用不为null的字段，返回成功的条数
-     */
     public int updateByExampleSelective(T record, Example example) {
         return this.mapper.updateByExampleSelective(record, example);
     }
 
-
-    /**
-     * 根据id，删除数据
-     */
+    
+    //=================删除===================//
+    
     public int deleteById(Long id) {
         return this.mapper.deleteByPrimaryKey(id);
     }
-
-    /**
-     * 批量删除数据
-     */
-    public int deleteByIds(Class<T> clazz, Example example) {
-        return this.mapper.deleteByExample(example);
+    
+    public int deleteById(Integer id) {
+        return this.mapper.deleteByPrimaryKey(id);
     }
 
-    /**
-     * 根据条件，删除数据
-     */
-    public int deleteByWhere(T record) {
+    public int deleteByCondition(T record) {
         return this.mapper.delete(record);
     }
 
+    public int deleteByIds(Class<T> clazz, List<Integer> ids) {
+    	Example example = new Example(clazz);
+    	example.createCriteria().andIn("id", ids);
+        return this.mapper.deleteByExample(example);
+    }
+    
+    
 }
