@@ -1,8 +1,6 @@
 package com.wql.cloud.userservice.service;
 
-import java.util.List;
-
-import com.wql.cloud.userservice.domain.User;
+import com.wql.cloud.basic.response.constant.DataResponse;
 
 /**
  *
@@ -15,12 +13,12 @@ public interface UserService {
 	 * 查询用户列表
 	 * @return
 	 */
-	List<User> queryUserAll();
+	DataResponse queryUserAll();
 
-	User queryUserById(Integer id);
+	DataResponse queryUserById(Integer id);
 
-	Object updateUserById(Integer id);
+	DataResponse updateUserById(Integer id);
 
-	Object deleteUserById(Integer id);
+	DataResponse deleteUserById(Integer id);
 
 }

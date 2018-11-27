@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @Configuration
 @EnableCaching
-public class RedisConfig extends CachingConfigurerSupport{
+public class RedisConfig extends CachingConfigurerSupport {
 
 	/**
 	 * 自定义默认缓存key生成策略: 类名+方法名+参数名
@@ -39,7 +39,7 @@ public class RedisConfig extends CachingConfigurerSupport{
             public Object generate(Object target, Method method, Object... params) {
                 StringBuilder sb = new StringBuilder();
                 sb.append("CacheData:");
-                sb.append(target.getClass().getName()).append(":");
+                sb.append(target.getClass().getName()).append(".");
                 sb.append(method.getName());
                 for (Object obj : params) {
                 	sb.append(".");
@@ -77,8 +77,8 @@ public class RedisConfig extends CachingConfigurerSupport{
         // redis 开启事务 如果开启事务，则redis不会主动释放连接，需要手动释放
         template.setEnableTransactionSupport(false);
         // hash 使用jdk 的序列化
-        template.setHashValueSerializer(genericJackson2JsonRedisSerializer);
         template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(genericJackson2JsonRedisSerializer);
         // keySerializer 对key的默认序列化器。默认值是StringSerializer
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(genericJackson2JsonRedisSerializer);

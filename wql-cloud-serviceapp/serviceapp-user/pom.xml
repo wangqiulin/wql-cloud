@@ -61,6 +61,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.wql.cloud</groupId>
+			<artifactId>basic-response</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.wql.cloud</groupId>
 			<artifactId>basic-httpclient</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>

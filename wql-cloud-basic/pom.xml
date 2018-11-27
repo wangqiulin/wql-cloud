@@ -26,6 +26,7 @@
 		<module>basic-encrypt</module>
 		<module>basic-idgenerator</module>
 		<module>basic-excel</module>
+		<module>basic-response</module>
 	</modules>
 
 	<dependencies>

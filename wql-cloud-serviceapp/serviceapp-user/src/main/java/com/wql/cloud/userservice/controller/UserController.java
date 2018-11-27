@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wql.cloud.userservice.domain.User;
+import com.wql.cloud.basic.response.constant.DataResponse;
 import com.wql.cloud.userservice.service.UserService;
 
 @RestController
@@ -15,22 +15,22 @@ public class UserController {
 	private UserService userService;
 	
 	@PostMapping("/user/query/all")
-	public Object queryUserAll() {
+	public DataResponse queryUserAll() {
 		return userService.queryUserAll();
 	}
 	
 	@PostMapping("/user/query/{id}")
-	public User queryUserById(@PathVariable("id") Integer id) {
+	public DataResponse queryUserById(@PathVariable("id") Integer id) {
 		return userService.queryUserById(id);
 	}
 	
 	@PostMapping("/user/update/{id}")
-	public Object updateUserById(@PathVariable("id") Integer id) {
+	public DataResponse updateUserById(@PathVariable("id") Integer id) {
 		return userService.updateUserById(id);
 	}
 	
 	@PostMapping("/user/delete/{id}")
-	public Object deleteUserById(@PathVariable("id") Integer id) {
+	public DataResponse deleteUserById(@PathVariable("id") Integer id) {
 		return userService.deleteUserById(id);
 	}
 	
