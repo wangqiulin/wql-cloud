@@ -2,7 +2,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>basic-config</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<parent>
 		<groupId>com.wql.cloud</groupId>
 		<artifactId>wql-cloud-basic</artifactId>
@@ -13,7 +12,7 @@
 		<dependency>
 			<groupId>com.xuxueli</groupId>
 			<artifactId>xxl-conf-core</artifactId>
-			<version>1.5.0</version>
+			<version>1.5.2</version>
 		</dependency>
 	</dependencies>
 

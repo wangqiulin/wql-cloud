@@ -41,7 +41,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	
 	@Override
 	@TargetDataSource(name = "read")
-	@Cacheable(cacheNames="cache-users")
+	@Cacheable(cacheNames="CacheData:users")
 	public List<User> queryUserAll() {
 		return this.queryList();
 	}
@@ -49,7 +49,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	
 	@Override
 	@TargetDataSource(name = "read")
-	@Cacheable(cacheNames="cache-users", key = "#id")
+	@Cacheable(cacheNames="CacheData:users", key = "#id")
 	public User queryUserById(Integer id) {
 		return this.queryById(id);
 	}
@@ -57,7 +57,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	
 	@Override
 	@DistributedLock(lockName="lock:test", tryLock=true)
-	@CachePut(cacheNames="cache-users", key = "#id")
+	@CachePut(cacheNames="CacheData:users", key = "#id")
 	public Object updateUserById(Integer id) {
 		User record = new User();
 		record.setId(id);
@@ -67,7 +67,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
 	
 	@Override
-	@CacheEvict(cacheNames="cache-users", key = "#id")
+	@CacheEvict(cacheNames="CacheData:users", key = "#id")
 	public Object deleteUserById(Integer id) {
 		return this.deleteById(id);
 	}
