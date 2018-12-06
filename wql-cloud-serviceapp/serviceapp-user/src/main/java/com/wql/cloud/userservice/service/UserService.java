@@ -13,7 +13,7 @@ public interface UserService {
 	 * 查询用户列表
 	 * @return
 	 */
-	DataResponse queryUserAll();
+	DataResponse queryUserAll(String filePath);
 
 	DataResponse queryUserById(Integer id);
 
