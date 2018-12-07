@@ -27,6 +27,7 @@
 		<module>basic-idgenerator</module>
 		<module>basic-excel</module>
 		<module>basic-response</module>
+		<module>basic-tool</module>
 	</modules>
 
 	<dependencies>

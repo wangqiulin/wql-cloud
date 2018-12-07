@@ -47,12 +47,13 @@ public class RedisUtil {
 	}
 	
 	/**设置当天才有效的值*/
+	@SuppressWarnings("static-access")
 	public boolean setWithCurrentDay(String key, String value) {
 		try {
 			//两个日期之间的差(毫秒值之差)
 			String format = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 			String currentLastTime = format + " 23:59:59";
-			long between = DateUtil.between(new Date(), DateUtil.transString2Date(currentLastTime));  
+			long between = this.between(new Date(), this.transString2Date(currentLastTime));  
 			redisTemplate.opsForValue().set(key, value, between, TimeUnit.MILLISECONDS);
 		} catch (Exception e) {
 			return false;
@@ -106,6 +107,19 @@ public class RedisUtil {
 	public long getExpireByKey(String key) {
 		return redisTemplate.opsForValue().getOperations().getExpire(key);
 	}
+	
+	
+	//=======================================================//
+	
+	public static long between(Date date1, Date date2) {
+        return Math.abs(date2.getTime() - date1.getTime());
+    }
+    
+	public static Date transString2Date(String dataStr) throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   
+        Date date = sdf.parse(dataStr);
+        return date;
+    }
 	
 	
 }

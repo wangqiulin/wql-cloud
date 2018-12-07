@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.redis.util;
+package com.wql.cloud.tool.date;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -6,6 +6,58 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtil {
+	
+	/**
+	 * 往前或往后，推迟多少天
+	 * @param date
+	 * @param day
+	 * @return
+	 */
+	@SuppressWarnings("static-access")
+	public static Date plusDay(Date date, int day) {
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(date); 
+	    //把日期往后增加n天.正数往后推,负数往前移动 
+	    calendar.add(calendar.DATE, day);
+	    return calendar.getTime();  
+	}
+	
+	/**
+     * 获取指定年月的第一天， 返回格式：yyyy-MM-dd
+     * @param year
+     * @param month
+     * @return
+     */
+    public static String getFirstDayOfMonth(int year, int month) {     
+        Calendar cal = Calendar.getInstance();   
+        //设置年份
+        cal.set(Calendar.YEAR, year);
+        //设置月份 
+        cal.set(Calendar.MONTH, month-1); 
+        //获取某月最小天数
+        int firstDay = cal.getMinimum(Calendar.DATE);
+        //设置日历中月份的最小天数 
+        cal.set(Calendar.DAY_OF_MONTH, firstDay);  
+        //格式化日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(cal.getTime());  
+    }
+	
+    
+    /**
+	 * 获取指定年月的最后一天； 返回格式：yyyy-MM-dd
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	public static String getLastDayOfMonth(int year, int month) {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, year);
+		cal.set(Calendar.MONTH, month-1);
+		cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DATE));
+		return new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+	}
+    
 
 	/**
      * 获取第二天凌晨0点毫秒数
@@ -64,8 +116,7 @@ public class DateUtil {
      */
     public static String getCurrentDate() throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String date = sdf.format(new Date());  
-        return date;
+        return sdf.format(new Date());  
     }
     
     /**
@@ -73,8 +124,7 @@ public class DateUtil {
      */
     public static Date transString2Date(String dataStr) throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");   
-        Date date = sdf.parse(dataStr);
-        return date;
+        return sdf.parse(dataStr);
     }
     
     
