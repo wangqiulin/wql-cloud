@@ -1,6 +1,7 @@
 package com.wql.cloud.userservice.service;
 
 import com.wql.cloud.basic.response.constant.DataResponse;
+import com.wql.cloud.userservice.model.req.UserReq;
 
 /**
  *
@@ -8,17 +9,39 @@ import com.wql.cloud.basic.response.constant.DataResponse;
  * @date 2018年5月10日
  */
 public interface UserService {
-
+	
 	/**
-	 * 查询用户列表
+	 * 新增
+	 * @param req
 	 * @return
 	 */
-	DataResponse queryUserAll(String filePath);
+	DataResponse saveUser(UserReq req);
 
+	/**
+	 * 查询列表
+	 * @return
+	 */
+	DataResponse queryUserAll();
+
+	/**
+	 * 根据id，查询记录
+	 * @param id
+	 * @return
+	 */
 	DataResponse queryUserById(Integer id);
 
+	/**
+	 * 根据id，修改记录
+	 * @param id
+	 * @return
+	 */
 	DataResponse updateUserById(Integer id);
 
+	/**
+	 * 根据id，删除记录
+	 * @param id
+	 * @return
+	 */
 	DataResponse deleteUserById(Integer id);
 
 }

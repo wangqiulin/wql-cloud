@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.xml.bind.ValidationException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -49,18 +50,34 @@ public class ErrorExceptionHandler {
 	/**
 	 * 参数异常处理
 	 */
-	@ExceptionHandler({ ValidationException.class, IllegalArgumentException.class })
+	@ExceptionHandler({ IllegalArgumentException.class })
 	@ResponseStatus(HttpStatus.OK)
-	public ModelAndView processException() {
+	public ModelAndView processException(IllegalArgumentException argEx) {
 		 ModelAndView mv = new ModelAndView();
          FastJsonJsonView view = new FastJsonJsonView();
          Map<String, Object> attributes = new HashMap<String, Object>();
          attributes.put(BaseConstant.CODE, BusinessEnum.PARAM_FAIL.getCode());
-         attributes.put(BaseConstant.MSG, BusinessEnum.PARAM_FAIL.getMsg());
+         attributes.put(BaseConstant.MSG, StringUtils.isBlank(argEx.getMessage()) ? 
+        		 BusinessEnum.PARAM_FAIL.getMsg() : argEx.getMessage());
          view.setAttributesMap(attributes);
          mv.setView(view); 
          return mv;
 	}
+	
+	@ExceptionHandler({ ValidationException.class })
+	@ResponseStatus(HttpStatus.OK)
+	public ModelAndView processException(ValidationException validEx) {
+		 ModelAndView mv = new ModelAndView();
+         FastJsonJsonView view = new FastJsonJsonView();
+         Map<String, Object> attributes = new HashMap<String, Object>();
+         attributes.put(BaseConstant.CODE, BusinessEnum.PARAM_FAIL.getCode());
+         attributes.put(BaseConstant.MSG, StringUtils.isBlank(validEx.getMessage()) ? 
+        		 BusinessEnum.PARAM_FAIL.getMsg() : validEx.getMessage());
+         view.setAttributesMap(attributes);
+         mv.setView(view); 
+         return mv;
+	}
+	
 	
 	/**
 	 * 统一异常处理

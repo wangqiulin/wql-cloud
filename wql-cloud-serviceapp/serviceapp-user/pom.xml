@@ -52,7 +52,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-feign</artifactId>
 		</dependency>
-		
+
 		<!-- 基础工具包 -->
 		<dependency>
 			<groupId>com.wql.cloud</groupId>
@@ -62,6 +62,11 @@
 		<dependency>
 			<groupId>com.wql.cloud</groupId>
 			<artifactId>basic-response</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.wql.cloud</groupId>
+			<artifactId>basic-tool</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -99,6 +104,7 @@
 			<artifactId>basic-rabbitmq</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>

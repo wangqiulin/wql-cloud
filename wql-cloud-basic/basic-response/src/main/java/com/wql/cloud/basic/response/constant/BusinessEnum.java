@@ -12,9 +12,10 @@ public enum BusinessEnum {
 	 * 系统级别
 	 */
 	SUCCESS("0000", "处理成功"),
-	FAIL("1000", "系统异常"), 
+	FAIL("1000", "处理失败"), 
 	PARAM_FAIL("1001", "参数异常"), 
 	USER_NOT_LOGIN("1002", "请登录"),
+	SYSTEM_FAIL("1003", "系统异常"), 
 	
 	/**
 	 * 业务级别
