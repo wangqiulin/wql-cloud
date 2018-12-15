@@ -56,14 +56,16 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	@TargetDataSource(name = "read")
 	public DataResponse queryUserById(Integer id) {
 		Assert.notNull(id, "id为空");
+		User user = this.queryById(id);
+		Assert.notNull(user, "用户不存在");
 		DataResponse dr = new DataResponse(BusinessEnum.SUCCESS);
-		dr.setData(this.queryById(id));
+		dr.setData(user);
 		return dr;
 	}
 
 	@Override
-	@DistributedLock(lockName="lock:test", tryLock=true)
 	@Transactional
+	@DistributedLock(lockName="lock:test", tryLock=true)
 	public DataResponse updateUserById(Integer id) {
 		User record = new User();
 		record.setId(id);
