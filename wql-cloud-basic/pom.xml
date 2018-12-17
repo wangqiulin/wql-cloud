@@ -28,6 +28,7 @@
 		<module>basic-excel</module>
 		<module>basic-response</module>
 		<module>basic-tool</module>
+		<module>basic-cat</module>
 	</modules>
 
 	<dependencies>

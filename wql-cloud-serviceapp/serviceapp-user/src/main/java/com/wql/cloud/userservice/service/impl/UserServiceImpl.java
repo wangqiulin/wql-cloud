@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import com.wql.cloud.basic.cat.CatTransaction;
 import com.wql.cloud.basic.datasource.commonService.BaseService;
 import com.wql.cloud.basic.datasource.dynamic.TargetDataSource;
 import com.wql.cloud.basic.redisson.distributeLock.aop.DistributedLock;
@@ -29,6 +30,7 @@ import com.wql.cloud.userservice.service.UserService;
  * 
  */
 @Service
+@CatTransaction
 public class UserServiceImpl extends BaseService<User> implements UserService {
 
 	@Override
