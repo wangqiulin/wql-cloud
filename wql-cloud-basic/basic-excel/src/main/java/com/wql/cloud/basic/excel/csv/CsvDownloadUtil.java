@@ -4,7 +4,6 @@ import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -18,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
@@ -67,6 +67,9 @@ public class CsvDownloadUtil {
         response.setCharacterEncoding("utf-8");
         response.setHeader("content-disposition", "attachment;filename=" + fileName);
         response.setContentType("application/octet-stream;file-name=" + fileName);
+        //解决中文导出乱码问题
+        ServletOutputStream out = response.getOutputStream();
+		out.write(new byte []{( byte ) 0xEF ,( byte ) 0xBB ,( byte ) 0xBF });//加上bom头，才不会中文乱码 
         //写入第一行header
         List header = Arrays.asList(csvHeader);
         writeData(csvHeader, header, response);
@@ -85,8 +88,8 @@ public class CsvDownloadUtil {
             }
             sb.append("\n");
         }
-        PrintWriter out = response.getWriter();
-        out.print(sb.toString());
+        ServletOutputStream out = response.getOutputStream();
+        out.write(sb.toString().getBytes("utf-8"));
         out.flush();
     } 
 
