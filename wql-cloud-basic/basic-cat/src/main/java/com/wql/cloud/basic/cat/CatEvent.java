@@ -7,8 +7,6 @@ import java.lang.annotation.Target;
 
 /**
  * 大众点评cat event注解
- * @author:gaoguangjin
- * @date 2016/7/12 14:27
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

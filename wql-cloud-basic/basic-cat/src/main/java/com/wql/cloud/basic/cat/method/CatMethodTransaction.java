@@ -7,8 +7,6 @@ import java.lang.annotation.Target;
 
 /**
  * 大众点评 cat 方法级别注解
- * @author:gaoguangjin
- * @date 2016/7/12 14:52
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
