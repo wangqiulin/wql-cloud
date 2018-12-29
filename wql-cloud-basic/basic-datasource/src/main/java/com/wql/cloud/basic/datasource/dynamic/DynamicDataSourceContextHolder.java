@@ -5,20 +5,20 @@ import java.util.List;
 
 public class DynamicDataSourceContextHolder {
 	
-    private static final ThreadLocal<String> contextHolder = new ThreadLocal<String>();
+    private static final ThreadLocal<String> CONTEXT_HOLDER = new ThreadLocal<String>();
     
     public static List<String> dataSourceIds = new ArrayList<String>();
     
     public static void setDataSourceType(String dataSourceType) {
-        contextHolder.set(dataSourceType);
+    	CONTEXT_HOLDER.set(dataSourceType);
     }
     
     public static String getDataSourceType() {
-        return contextHolder.get();
+        return CONTEXT_HOLDER.get();
     }
     
     public static void clearDataSourceType() {
-        contextHolder.remove();
+    	CONTEXT_HOLDER.remove();
     }
     
     /**
@@ -30,4 +30,5 @@ public class DynamicDataSourceContextHolder {
     public static boolean containsDataSource(String dataSourceId) {
         return dataSourceIds.contains(dataSourceId);
     }
+    
 }

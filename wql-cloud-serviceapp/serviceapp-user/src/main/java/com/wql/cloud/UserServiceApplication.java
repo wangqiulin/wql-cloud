@@ -2,7 +2,6 @@ package com.wql.cloud;
 
 import java.util.TimeZone;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -21,7 +20,7 @@ import com.wql.cloud.basic.datasource.dynamic.DynamicDataSourceRegister;
 @SpringBootApplication
 @EnableEurekaClient
 @Import({DynamicDataSourceRegister.class})
-@MapperScan("com.wql.cloud.userservice.mapper")
+@tk.mybatis.spring.annotation.MapperScan("com.wql.cloud.userservice.mapper")
 @EnableFeignClients
 public class UserServiceApplication {
 

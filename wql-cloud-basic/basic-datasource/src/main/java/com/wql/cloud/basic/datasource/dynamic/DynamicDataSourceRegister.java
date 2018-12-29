@@ -37,6 +37,7 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 
 	private Map<String, DataSource> customDataSources = new HashMap<String, DataSource>();
 
+	@Override
 	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
 		Map<Object, Object> targetDataSources = new HashMap<Object, Object>();
 		// 将主数据源添加到更多数据源中
@@ -98,6 +99,7 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 	/**
 	 * 加载多数据源配置
 	 */
+	@Override
 	public void setEnvironment(Environment env) {
 		initDefaultDataSource(env);
 		initCustomDataSources(env);
