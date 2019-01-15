@@ -19,6 +19,8 @@ public abstract class BaseService<T> {
 
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    public static final String ORDER_BYID_DESC = "id desc";
+    
     @Autowired
     private Mapper<T> mapper;
     
@@ -54,12 +56,12 @@ public abstract class BaseService<T> {
         return this.mapper.selectByExample(example);
     }
 
-    //=================分页查询===================//
+    //=================分页查询(查询总数)===================//
     
     /**
-     * 升序查询
-     * @param page
-     * @param rows
+     * 条件查询
+     * @param page 页数
+     * @param rows 条数
      * @param record
      * @return
      */
@@ -70,25 +72,26 @@ public abstract class BaseService<T> {
     }
     
     /**
-     * 根据desc值，是否倒序查询
+     * 条件查询
      * @param page
      * @param rows
      * @param record
-     * @param desc  是否倒序 （true倒序， false升序）
+     * @param desc  是否倒序 （true：按id倒序, false：按id升序）
      * @return
      */
     public PageInfo<T> queryPageListByRecord(Integer page, Integer rows, T record, boolean desc) {
     	page = (page == null || page <= 0) ? 1 : page;
     	rows = (rows == null || rows <= 0) ? 10 : rows;
-    	PageHelper.startPage(page, rows);
+    	//分页，根据默认配置
+    	PageHelper.startPage(page, rows); 
         if(desc) {
-        	PageHelper.orderBy("id desc");
+        	PageHelper.orderBy(ORDER_BYID_DESC);
         }
         return new PageInfo<T>(this.mapper.select(record));
     }
     
     /**
-     * 升序查询
+     * 条件查询
      * @param page
      * @param rows
      * @param example
@@ -101,7 +104,7 @@ public abstract class BaseService<T> {
     }
     
     /**
-     * 根据desc值，是否倒序查询
+     * 条件查询
      * @param page
      * @param rows
      * @param example
@@ -113,11 +116,78 @@ public abstract class BaseService<T> {
     	rows = (rows == null || rows <= 0) ? 10 : rows;
         PageHelper.startPage(page, rows);
         if(desc) {
-        	PageHelper.orderBy("id desc");
+        	PageHelper.orderBy(ORDER_BYID_DESC);
         }
         return new PageInfo<T>(this.mapper.selectByExample(example));
     }
 
+    
+    //=================分页查询(不查总数)===================//
+    
+    /**
+     * 条件查询(不查总数)
+     * @param page 页数
+     * @param rows 条数
+     * @param record
+     * @return
+     */
+    public PageInfo<T> queryPageListByRecordWithoutCount(Integer page, Integer rows, T record) {
+    	page = (page == null || page <= 0) ? 1 : page;
+    	rows = (rows == null || rows <= 0) ? 10 : rows;
+    	return queryPageListByRecord(page, rows, record, false);
+    }
+    
+    /**
+     * 条件查询(不查总数)
+     * @param page
+     * @param rows
+     * @param record
+     * @param desc  是否倒序 （true：按id倒序, false：按id升序）
+     * @return
+     */
+    public PageInfo<T> queryPageListByRecordWithoutCount(Integer page, Integer rows, T record, boolean desc) {
+    	page = (page == null || page <= 0) ? 1 : page;
+    	rows = (rows == null || rows <= 0) ? 10 : rows;
+    	//分页，根据默认配置
+    	PageHelper.startPage(page, rows, false);  //false表示不进行count查询
+        if(desc) {
+        	PageHelper.orderBy(ORDER_BYID_DESC);
+        }
+        return new PageInfo<T>(this.mapper.select(record));
+    }
+    
+    /**
+     * 条件查询(不查总数)
+     * @param page
+     * @param rows
+     * @param example
+     * @return
+     */
+    public PageInfo<T> queryPageListByExampleWithoutCount(Integer page, Integer rows, Example example) {
+    	page = (page == null || page <= 0) ? 1 : page;
+    	rows = (rows == null || rows <= 0) ? 10 : rows;
+    	return queryPageListByExample(page, rows, example, false);
+    }
+    
+    /**
+     * 条件查询(不查总数)
+     * @param page
+     * @param rows
+     * @param example
+     * @param desc 是否倒序 （true倒序， false升序）
+     * @return
+     */
+    public PageInfo<T> queryPageListByExampleWithoutCount(Integer page, Integer rows, Example example, boolean desc) {
+    	page = (page == null || page <= 0) ? 1 : page;
+    	rows = (rows == null || rows <= 0) ? 10 : rows;
+        PageHelper.startPage(page, rows, false);   //false表示不进行count查询
+        if(desc) {
+        	PageHelper.orderBy(ORDER_BYID_DESC);
+        }
+        return new PageInfo<T>(this.mapper.selectByExample(example));
+    }
+    
+    
     //=================查询数量===================//	
     
     public int queryCountByRecord(T record) {

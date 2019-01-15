@@ -57,7 +57,8 @@ public class SessionFactoryConfig implements TransactionManagementConfigurer {
 		//添加分页插件 
         PageHelper pageHelper = new PageHelper();
         Properties properties = new Properties();
-        properties.setProperty("reasonable", "false");
+        //分页 查询总数不返回大于页码的数据(false);  查询总数如果页码大于最大页，返回最后一页数据(true)
+        properties.setProperty("reasonable", "false"); 
         properties.setProperty("supportMethodsArguments", "true");
         properties.setProperty("returnPageInfo", "check");
         properties.setProperty("params", "count=countSql");

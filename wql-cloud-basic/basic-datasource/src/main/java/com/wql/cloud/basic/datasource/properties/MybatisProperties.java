@@ -11,8 +11,14 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "mybatis.mapper")
 public class MybatisProperties {
 
+	/**
+	 * 实体类路径
+	 */
 	private String domainPackage;
 
+	/**
+	 * sql的xml路径
+	 */
 	private String xmlPackage;
 
 	public String getDomainPackage() {
