@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletOutputStream;
@@ -76,6 +77,26 @@ public class CsvDownloadUtil {
     }
     
     
+	public static void writeData(Map<String, String> csvHeader, List<Map<String, Object>> data, HttpServletResponse response, BiFunction<String,Object,String> converter) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        for (Map<String, Object> dmap : data) {
+            for (String key : csvHeader.keySet()) {
+                Object val = dmap.get(key);
+                if (converter != null) {
+                    sb.append(converter.apply(key,val)).append(",");
+                } else {
+                    sb.append(cover2cscValue(val)).append(",");
+                }
+            }
+            sb.append("\n");
+        }
+        ServletOutputStream out = response.getOutputStream();
+        out.write(sb.toString().getBytes("utf-8"));
+        out.flush();
+    }
+
+	
+	
     /**
      * 写数据
      */

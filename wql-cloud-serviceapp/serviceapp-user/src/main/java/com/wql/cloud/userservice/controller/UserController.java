@@ -89,7 +89,7 @@ public class UserController {
     		CsvDownloadUtil.writeHeader(csvHeader, sheetNamePrefix, response);
     		CsvDownloadUtil.writeData(csvHeader, userExcelList, response);
     	}
-    	response.getWriter().close();
+    	response.getOutputStream().close();
     }
 	
 }
