@@ -143,14 +143,6 @@ public class HttpUtil {
         //设置请求头(注意会产生中文乱码)
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-        //对中文格式数据进行处理
-        FormHttpMessageConverter fc = new FormHttpMessageConverter();
-        StringHttpMessageConverter stringConverter = new StringHttpMessageConverter(StandardCharsets.UTF_8);
-        List<HttpMessageConverter<?>> partConverters = new ArrayList<HttpMessageConverter<?>>();
-        partConverters.add(stringConverter);
-        partConverters.add(new ResourceHttpMessageConverter());
-        fc.setPartConverters(partConverters);
-        restTemplate.getMessageConverters().addAll(Arrays.asList(fc, new MappingJackson2HttpMessageConverter()));
         //封装参数，千万不要替换为Map与HashMap，否则参数无法传递
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
 		if(!CollectionUtils.isEmpty(paramMap)){
