@@ -29,6 +29,8 @@
 		<module>basic-response</module>
 		<module>basic-tool</module>
 		<module>basic-cat</module>
+		<module>basic-wechatpay</module>
+		<module>basic-alipay</module>
 	</modules>
 
 	<dependencies>

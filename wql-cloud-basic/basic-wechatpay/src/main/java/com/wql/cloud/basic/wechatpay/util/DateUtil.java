@@ -1,6 +1,4 @@
-package com.wql.cloud.userservice.util;
-
-import org.apache.commons.lang3.time.DateUtils;
+package com.wql.cloud.basic.wechatpay.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,21 +6,26 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 public class DateUtil extends DateUtils {
 	/**
 	 * yyyy-MM-dd
 	 */
 	public static final String DATE_FORMAT = "yyyy-MM-dd";
+	
 	/**
 	 * yyyy-MM-dd HH:mm:ss
 	 */
 	public static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
 	public static final String yyyyMMddHHmm = "yyyy-MM-dd HH:mm";
+	
 	/**
 	 * 时间格式常量：yyyyMMddHHmmssSSS
 	 */
 	public static final String DATE_FORMAT_1 = "yyyyMMddHHmmssSSS";
+	
 	/**
 	 * 时间格式常量：yyyyMMddHHmmss
 	 */
