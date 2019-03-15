@@ -1,39 +1,73 @@
 package com.wql.cloud.basic.alipay.config;
 
-/**
- * 支付宝支付相关配置
- */
-public interface AliPayConfig {
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-    /**获取支付宝服务端地址*/
-    default String getServerUrl() {
-        return "https://openapi.alipay.com/gateway.do";
-    }
+@Component
+public class AliPayConfig {
 
-    default String getFormat() {
-        return "json";
-    }
-    
-    default String getCharset() {
-        return "UTF-8";
-    }
+	public final String SERVER_URL = "https://openapi.alipay.com/gateway.do";
+	public final String FORMAT = "json";
+	public final String CHARSET = "utf-8";
+	
+	/**
+	 * 支付宝应用id
+	 */
+	@Value("${alipay.appId:}")
+	private String appId;
+	
+	/**
+	 * 商户密钥
+	 */
+	@Value("${alipay.privateKey:}")
+	private String privateKey;
+	
+	/**
+	 * 支付宝公钥
+	 */
+	@Value("${alipay.publicKey:}")
+	private String publicKey;
+	
+	/**
+	 * 签名方式，一般为RSA2
+	 */
+	@Value("${alipay.signType:RSA2}")
+	private String signType;
+	
+	/**
+	 * 支付成功回调地址
+	 */
+	@Value("${alipay.payNotifyUrl:}")
+	private String payNotifyUrl;
+	
+	/**
+	 * 退款成功回调地址
+	 */
+	@Value("${alipay.refundNotifyUrl:}")
+	private String refundNotifyUrl;
 
-    /**应用ID*/
-    String getAppId();
+	public String getAppId() {
+		return appId;
+	}
 
-    /**应用私钥*/
-    String getPrivateKey();
+	public String getPrivateKey() {
+		return privateKey;
+	}
 
-    /**支付宝公钥*/
-    String getPublicKey();
+	public String getPublicKey() {
+		return publicKey;
+	}
 
-    /**加密方式*/
-    String getSignType();
+	public String getSignType() {
+		return signType;
+	}
 
-    /**支付回调地址*/
-    String getPayNotifyUrl();
+	public String getPayNotifyUrl() {
+		return payNotifyUrl;
+	}
 
-    /**退款回调地址 */
-    String getRefundNotifyUrl();
-
+	public String getRefundNotifyUrl() {
+		return refundNotifyUrl;
+	}
+	
 }

@@ -2,6 +2,8 @@ package com.wql.cloud.basic.wechatpay.model;
 
 import java.math.BigDecimal;
 
+import com.wql.cloud.basic.wechatpay.enums.TradeTypeEnum;
+
 /**
  * 下单请求参数
  * @author wangqiulin
@@ -9,6 +11,13 @@ import java.math.BigDecimal;
  */
 public class PlaceOrderModel {
 
+	private TradeTypeEnum tradeTypeEnum;
+	
+	/**
+	 * 下单订单号
+	 */
+	private String outTradeNo;
+	
 	/**
 	 * 支付金额（元）
 	 */
@@ -24,10 +33,13 @@ public class PlaceOrderModel {
 	 */
 	private String body;
 	
-	/**
-	 * 下单订单号
-	 */
-	private String outTradeNo;
+	public TradeTypeEnum getTradeTypeEnum() {
+		return tradeTypeEnum;
+	}
+
+	public void setTradeTypeEnum(TradeTypeEnum tradeTypeEnum) {
+		this.tradeTypeEnum = tradeTypeEnum;
+	}
 
 	public BigDecimal getTotalFee() {
 		return totalFee;

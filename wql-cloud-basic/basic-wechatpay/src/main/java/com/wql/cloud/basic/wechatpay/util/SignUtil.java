@@ -22,7 +22,7 @@ public class SignUtil {
 		for (Map.Entry<String, String> entry : infoIds) {
 			String k = entry.getKey();
 			String value = String.valueOf(entry.getValue());
-			if (k.equals(WXPayConstont.SIGN)) {
+			if (k.equals(WXPayConstant.SIGN)) {
 				continue;
 			}
 			if (value.trim().length() > 0) // 参数值为空，则不参与签名
@@ -36,7 +36,7 @@ public class SignUtil {
 		if (params == null) {
 			return null;
 		}
-		params.remove(WXPayConstont.SIGN);
+		params.remove(WXPayConstant.SIGN);
 		// params.remove(SIGN_TYPE);
 		StringBuffer content = new StringBuffer();
 		List<String> keys = new ArrayList<String>(params.keySet());
@@ -53,10 +53,10 @@ public class SignUtil {
 	}
 
 	public static boolean checkSign(Map<String, String> params, String key) {
-		if (params == null || StringUtils.isBlank(params.get(WXPayConstont.SIGN))) {
+		if (params == null || StringUtils.isBlank(params.get(WXPayConstant.SIGN))) {
 			return false;
 		}
-		String wxSign = params.remove(WXPayConstont.SIGN);
+		String wxSign = params.remove(WXPayConstant.SIGN);
 		String respSign = sign(params, key);
 		System.out.println(wxSign);
 		System.out.println(respSign);

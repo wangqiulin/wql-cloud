@@ -5,7 +5,11 @@ package com.wql.cloud.basic.wechatpay.util;
  * @author wangqiulin
  *
  */
-public interface WXPayConstont {
+public interface WXPayConstant {
+	
+	public enum SignType {
+        MD5, HMACSHA256
+    }
 	
 	public static final String SUCCESS_CODE = "SUCCESS";
 	public static final String FAIL_CODE = "FAIL";

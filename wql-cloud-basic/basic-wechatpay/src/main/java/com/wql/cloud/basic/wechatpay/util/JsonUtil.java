@@ -233,25 +233,6 @@ public class JsonUtil {
 	}
 
 	/**
-	 * 复杂例子：
-	 * 
-	 * Map<String,List<Map<String,String>>> aa=new HashMap<String,
-	 * List<Map<String,String>>>(); List<Map<String,String>> list=new
-	 * ArrayList<Map<String,String>>(); HashMap<String,String> hm=new
-	 * HashMap<String, String>(); hm.put("province", "210000"); hm.put("name",
-	 * "大连万达集团股份有限公司"); HashMap<String,String> hm2=new HashMap<String, String>();
-	 * hm2.put("province", "220000"); hm2.put("name", "大连万达集团股份有限公司1");
-	 * list.add(hm); list.add(hm2); aa.put("3", list); String
-	 * a=JsonUtil.buildNormalBinder().toJson(aa); System.out.println(aa); 1*
-	 * Map<String,Object> as=(Map<String, Object>)
-	 * JsonUtil.buildNormalBinder().getJsonToMap(a, String.class, Object.class); 2*
-	 * List<Map<String,String>> lll=(List<Map<String, String>>) as.get("3"); 3*
-	 * System.out.println(((Map<String, String>)lll.get(0)).get("name"));
-	 * 1\2\3行等效于4\5 4*Map<String,List<Map<String,String>>>
-	 * as=(Map<String,List<Map<String,String>>>)
-	 * JsonUtil.buildNormalBinder().getJsonToMap(a, String.class, Object.class); 5 *
-	 * System.out.println(as.get("3").get(0).get("name"));
-	 * 
 	 * 把JSON转成Map
 	 * 
 	 * @param json
