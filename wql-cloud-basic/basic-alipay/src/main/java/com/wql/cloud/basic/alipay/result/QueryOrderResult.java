@@ -4,8 +4,6 @@ import java.util.Date;
 
 public class QueryOrderResult {
 
-	private Boolean resultCode;
-	
 	private String resultMsg;
 	
 	private String tradeStatus;
@@ -16,33 +14,22 @@ public class QueryOrderResult {
 		super();
 	}
 
-	public QueryOrderResult(Boolean resultCode, String resultMsg) {
+	public QueryOrderResult(String resultMsg) {
 		super();
-		this.resultCode = resultCode;
 		this.resultMsg = resultMsg;
 	}
 
-	public QueryOrderResult(Boolean resultCode, String resultMsg, String tradeStatus) {
+	public QueryOrderResult(String resultMsg, String tradeStatus) {
 		super();
-		this.resultCode = resultCode;
 		this.resultMsg = resultMsg;
 		this.tradeStatus = tradeStatus;
 	}
 
-	public QueryOrderResult(Boolean resultCode, String resultMsg, String tradeStatus, Date payedTime) {
+	public QueryOrderResult(String resultMsg, String tradeStatus, Date payedTime) {
 		super();
-		this.resultCode = resultCode;
 		this.resultMsg = resultMsg;
 		this.tradeStatus = tradeStatus;
 		this.payedTime = payedTime;
-	}
-
-	public Boolean getResultCode() {
-		return resultCode;
-	}
-
-	public void setResultCode(Boolean resultCode) {
-		this.resultCode = resultCode;
 	}
 
 	public String getResultMsg() {

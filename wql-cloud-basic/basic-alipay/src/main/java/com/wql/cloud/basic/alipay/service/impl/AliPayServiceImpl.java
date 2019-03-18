@@ -83,13 +83,13 @@ public class AliPayServiceImpl implements AliPayService {
 					String tradeStatus = queryResponse.getTradeStatus();
 					switch (tradeStatus) {
 						case TRADE_SUCCESS:
-							return new QueryOrderResult(true, "支付成功", tradeStatus, queryResponse.getSendPayDate());
+							return new QueryOrderResult("支付成功", tradeStatus, queryResponse.getSendPayDate());
 						case WAIT_BUYER_PAY:
-							return new QueryOrderResult(true, "待支付", tradeStatus);
+							return new QueryOrderResult("待支付", tradeStatus);
 						case TRADE_CLOSED:
-							return new QueryOrderResult(true, "未付款交易超时关闭，或支付完成后全额退款", tradeStatus);
+							return new QueryOrderResult("未付款交易超时关闭，或支付完成后全额退款", tradeStatus);
 						case TRADE_FINISHED:
-							return new QueryOrderResult(true, "交易结束，不可退款", tradeStatus);
+							return new QueryOrderResult("交易结束，不可退款", tradeStatus);
 						default:
 							break;
 					}
@@ -98,7 +98,7 @@ public class AliPayServiceImpl implements AliPayService {
 		} catch (Exception e) {
 			logger.error("支付宝支付，查询支付结果异常", e);
 		}
-        return new QueryOrderResult(false, "支付宝查询支付结果异常");
+        return new QueryOrderResult("未知", "unknow");
     }
 
     

@@ -113,7 +113,7 @@ public class WechatPayServiceImpl implements WechatPayService {
   			String respXml = HttpUtil.doPost(WechatPayConfig.QUERY_ORDER_URL, reqXml, true);
   			Map<String, String> respMap = MapUtil.objMap2StrMap(XmlUtil.xml2map(respXml));
   			if(!WXPayConstant.SUCCESS_CODE.equals(respMap.get(WXPayConstant.RETURN_CODE))){
-  	  			return new QueryOrderResult(false, "查询微信支付订单结果失败");
+  	  			return new QueryOrderResult("查询微信支付订单结果失败", "fail");
   			}
   			
   			/**3.查询需要返回的字段*/
@@ -122,15 +122,15 @@ public class WechatPayServiceImpl implements WechatPayService {
 			    switch (tradeState) {
 			        case SUCCESS:
 			        	Date payDate = DateUtil.parseDate(respMap.get("time_end"), "yyyyMMddHHmmss");
-			        	return new QueryOrderResult(true, "支付成功", tradeState, payDate);
+			        	return new QueryOrderResult("支付成功", tradeState, payDate);
 			        case NOTPAY:
-			        	return new QueryOrderResult(true, "未支付", tradeState);
+			        	return new QueryOrderResult("未支付", tradeState);
 			        case CLOSED:
-			        	return new QueryOrderResult(true, "已关闭", tradeState);
+			        	return new QueryOrderResult("已关闭", tradeState);
 			        case USERPAYING:
-			        	return new QueryOrderResult(true, "支付中", tradeState);
+			        	return new QueryOrderResult("支付中", tradeState);
 			        case PAYERROR:
-			        	return new QueryOrderResult(true, "支付失败", tradeState);
+			        	return new QueryOrderResult("支付失败", tradeState);
 			        default:
 			            break;
 			    }
@@ -138,7 +138,7 @@ public class WechatPayServiceImpl implements WechatPayService {
   		} catch (Exception e) {
   			logger.error("调用微信支付结果接口异常", e);
   		}
-  		return new QueryOrderResult(true, "查询微信支付订单结果异常");
+  		return new QueryOrderResult("未知", "unknow");
 	}
 	
 	
