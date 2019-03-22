@@ -11,17 +11,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 
-import com.wql.cloud.basic.encrypt.util.MySqlAesUtil;
+import com.wql.cloud.basic.encrypt.util.MySqlAESUtil;
 
 /**
  * MySqlAesUtil的实现, 默认数据库加密实现
  * @author wangqiulin
  */
 @Component
-@ConditionalOnExpression("'${database.encrypt.type:MySqlAes}'.equalsIgnoreCase('MySqlAes')")
-public class MySqlAesEncryptServiceImpl implements DatabaseEncryptService {
+@ConditionalOnExpression("'${database.encrypt.type:MySqlAES}'.equalsIgnoreCase('MySqlAES')")
+public class MySqlAESEncryptServiceImpl implements DBEncryptService {
 
-    private static final Logger logger = LoggerFactory.getLogger(MySqlAesEncryptServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(MySqlAESEncryptServiceImpl.class);
 
     @Value("${database.encrypt.key:}")
     private String databaseEncryptKey;
@@ -40,19 +40,19 @@ public class MySqlAesEncryptServiceImpl implements DatabaseEncryptService {
             logger.warn("mysqlAes密钥设置过长,系统默认截取前16位");
             databaseEncryptKey = databaseEncryptKey.substring(0,16);
         }
-        encCipher = MySqlAesUtil.getEncryptCipher(databaseEncryptKey);
-        decCipher = MySqlAesUtil.getDecryptCipher(databaseEncryptKey);
+        encCipher = MySqlAESUtil.getEncryptCipher(databaseEncryptKey);
+        decCipher = MySqlAESUtil.getDecryptCipher(databaseEncryptKey);
         logger.info("【MySqlAesEncryptServiceImpl---初始化加密解密器，完成】");
     }
 
     @Override
     public String encrypt(String content) {
-        return MySqlAesUtil.encrypt(content,encCipher);
+        return MySqlAESUtil.encrypt(content,encCipher);
     }
 
     @Override
     public String decrypt(String content) {
-        return MySqlAesUtil.decrypt(content,decCipher);
+        return MySqlAESUtil.decrypt(content,decCipher);
     }
 
     @Override

@@ -18,9 +18,9 @@ import org.springframework.util.Assert;
  * @author wangqiulin
  *
  */
-public class MySqlAesUtil {
+public class MySqlAESUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(MySqlAesUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(MySqlAESUtil.class);
 
     private static final String ENCRYPT_INSTANCE = "AES/ECB/PKCS5Padding";
     private static final String ENCRYPT_TYPE = "AES";

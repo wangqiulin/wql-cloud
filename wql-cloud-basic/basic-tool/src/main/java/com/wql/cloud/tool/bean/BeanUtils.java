@@ -1,12 +1,17 @@
 package com.wql.cloud.tool.bean;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.util.Assert;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import com.alibaba.fastjson.JSON;
 
@@ -104,4 +109,70 @@ public class BeanUtils extends org.springframework.beans.BeanUtils{
         return StringUtils.isEmpty(t.toString());
     }
 
+    
+    /**
+     * 对象转map
+     * 
+     * @param obj
+     * @return
+     * @throws Exception
+     */
+    public static Map<String, Object> objectToMap(Object obj) throws Exception {
+    	Map<String, Object> map = new HashMap<String, Object>();
+		if (obj != null) {
+			Field[] declaredFields = obj.getClass().getDeclaredFields();
+			for (Field field : declaredFields) {
+				field.setAccessible(true);
+				if (field.get(obj) != null && StringUtils.isNotBlank(field.get(obj) + "")) {
+					map.put(field.getName(), field.get(obj));
+				}
+			}
+		}
+		return map;
+	}
+	
+    
+    /**
+	 * 将Map<String,Object>转换成Map<String, String>
+	 * 
+	 * @param objMap
+	 * @return
+	 */
+	public static Map<String,String> objMap2StrMap(Map<String,Object> objMap){
+		if(objMap == null) {
+			return null;
+		}
+		Map<String,String> strMap = new HashMap<String, String>();
+		for(String key:objMap.keySet()){
+			if(null != objMap.get(key)){
+				strMap.put(key, objMap.get(key).toString());
+			} else {
+				strMap.put(key, null);
+			}
+		}
+		return strMap;
+	}
+    
+    
+    /**
+     * 对象转表单
+     * 
+     * @param obj
+     * @return
+     * @throws Exception
+     */
+	public static MultiValueMap<String, Object> objectToMultiValueMap(Object obj) throws Exception {
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+		if (obj != null) {
+			Field[] declaredFields = obj.getClass().getDeclaredFields();
+			for (Field field : declaredFields) {
+				field.setAccessible(true);
+				if (field.get(obj) != null && StringUtils.isNotBlank(field.get(obj) + "")) {
+					map.add(field.getName(), field.get(obj));
+				}
+			}
+		}
+		return map;
+	}
+    
 }

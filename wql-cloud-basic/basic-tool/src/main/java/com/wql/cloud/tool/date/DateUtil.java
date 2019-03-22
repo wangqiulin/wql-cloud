@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class DateUtil {
 	
@@ -72,44 +73,44 @@ public class DateUtil {
         return cal.getTime();
     }
 
-    /**
-     * 获取当天最后23：59:59点毫秒数
-     */
-    public static Date currentDayLastDate() throws Exception {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        cal.add(Calendar.DAY_OF_YEAR, 0);
-        cal.set(Calendar.HOUR_OF_DAY, 23);
-        cal.set(Calendar.MINUTE, 59);
-        cal.set(Calendar.SECOND, 59);
-        return cal.getTime();
-    }
-    
     
     /**
-     * 获取 当天位于一年中的第几天
+     * 获取时间当天的开始时间(yyyy-MM-dd 00:00:00)
+     * @param date
      * @return
      */
-    public static Integer getDayOfYear(){
-    	Calendar cal = Calendar.getInstance();
-    	cal.setTime(new Date());
-    	Integer dayOfYear = cal.get(Calendar.DAY_OF_YEAR);
-    	System.out.println(dayOfYear);
-    	return dayOfYear;
-    }
+    public static final Date getDayDateStart(Date date) {
+		if (date == null) {
+			return null;
+		}
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		return cal.getTime();
+	}
     
     
     /**
-     * 获取当天是哪一年
-     * @return
-     */
-    public static Integer getCurrentYear(){
-    	Calendar cal = Calendar.getInstance();
-    	cal.setTime(new Date());
-    	Integer year = cal.get(Calendar.YEAR);
-    	return year;
-    }
-    
+	 * 获取时间当天的结束时间 (yyyy-MM-dd 23:59:59)
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static final Date getDayDateEnd(Date date) {
+		if (date == null) {
+			return null;
+		}
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+		cal.set(Calendar.MILLISECOND, 59);
+		return cal.getTime();
+	}
     
     /**
      * 获取当天的日期：yyyy-MM-dd
@@ -127,9 +128,9 @@ public class DateUtil {
         return sdf.parse(dataStr);
     }
     
-    
     /**
      * 日期之间相差的数
+     * 
      * @param date1
      * @param date2
      * @return
@@ -138,9 +139,9 @@ public class DateUtil {
         return Math.abs(date2.getTime() - date1.getTime());
     }
     
-    
     /**
      * 将Date类型转成yyyy-MM-dd HH:mm:ss格式的字符串类型
+     * 
      * @return
      * @throws Exception
      */
@@ -149,7 +150,13 @@ public class DateUtil {
     }
 
 
-    /** 当天最后一天到此刻之间相差的毫秒数 */
+    /**
+     * 当天最后一天到此刻之间相差的毫秒数
+     * 
+     * @param nowDate
+     * @return
+     * @throws ParseException
+     */
     public static long betweenDayMillis(Date nowDate) throws ParseException {
         // 当天23:59:59
         String nowDayLast = new SimpleDateFormat("yyyy-MM-dd").format(nowDate) + " 23:59:59";
@@ -158,17 +165,28 @@ public class DateUtil {
         return Math.abs(date2.getTime() - nowDate.getTime());
     }
 
-    /** 当月最后一天到此刻之间相差的毫秒数 */
+    /**
+     * 当月最后一天到此刻之间相差的毫秒数
+     * 
+     * @param nowDate
+     * @return
+     * @throws ParseException
+     */
     public static long betweenMonthMillis(Date nowDate) throws ParseException {
         // 当月23:59:59
-        String nowDayLast = lastDate(nowDate) + " 23:59:59";
+        String nowDayLast = getLastDayByDate(nowDate) + " 23:59:59";
         Date date2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(nowDayLast);
         // 当月最后一刻 到 此刻之间的毫秒数
         return Math.abs(date2.getTime() - nowDate.getTime());
     }
 
-    /** 获取当前月的最后一天 */
-    public static String lastDate(Date nowDate) {
+    /**
+     * 获取当前月的最后一天
+     * 
+     * @param nowDate
+     * @return
+     */
+    public static String getLastDayByDate(Date nowDate) {
         Calendar ca = Calendar.getInstance();
         ca.setTime(nowDate);
         ca.set(Calendar.DAY_OF_MONTH, 1);

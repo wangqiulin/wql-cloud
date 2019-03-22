@@ -5,7 +5,7 @@ package com.wql.cloud.basic.encrypt.config;
  * @author wangqiulin
  *
  */
-public interface DatabaseEncryptService {
+public interface DBEncryptService {
 
     /**
      * 数据库字段加密

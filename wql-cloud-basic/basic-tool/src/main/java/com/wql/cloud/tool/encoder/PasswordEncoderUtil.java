@@ -3,10 +3,15 @@ package com.wql.cloud.tool.encoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
+/**
+ * 加密类（不可解密）
+ * @author wangqiulin
+ *
+ */
 public class PasswordEncoderUtil {
 
 	//秘玥值 
-    private static final String SITE_WIDE_SECRET = "secretKey";  
+    private static final String SITE_WIDE_SECRET = "8592345t43ng439jwek349238";  
    
     private static final PasswordEncoder encoder = new StandardPasswordEncoder(SITE_WIDE_SECRET);  
   
