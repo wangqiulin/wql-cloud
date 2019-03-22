@@ -6,6 +6,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cglib.beans.BeanCopier;
@@ -155,7 +159,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils{
     
     
     /**
-     * 对象转表单
+     * 对象转表单（一般用于表单传值）
      * 
      * @param obj
      * @return
@@ -175,4 +179,34 @@ public class BeanUtils extends org.springframework.beans.BeanUtils{
 		return map;
 	}
     
+	
+	/**
+	 * 从HttpServletRequest中获取数据（一般用于回调接收参数处理）
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static Map<String, String> convertRequestParamsToMap(HttpServletRequest request) {
+        Map<String, String> retMap = new HashMap<String, String>();
+        Set<Entry<String, String[]>> entrySet = request.getParameterMap().entrySet();
+        for (Entry<String, String[]> entry : entrySet) {
+            String name = entry.getKey();
+            String[] values = entry.getValue();
+            int valLen = values.length;
+            if (valLen == 1) {
+                retMap.put(name, values[0]);
+            } else if (valLen > 1) {
+                StringBuilder sb = new StringBuilder();
+                for (String val : values) {
+                    sb.append(",").append(val);
+                }
+                retMap.put(name, sb.toString().substring(1));
+            } else {
+                retMap.put(name, "");
+            }
+        }
+        return retMap;
+    }
+	
+	
 }

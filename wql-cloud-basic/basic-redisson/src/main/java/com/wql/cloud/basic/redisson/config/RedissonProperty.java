@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConfigurationProperties(prefix = "spring.redisson")
-public class RedissonProperties {
+public class RedissonProperty {
 
 	private int timeout;
 

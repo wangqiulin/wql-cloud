@@ -1,5 +1,7 @@
 package com.wql.cloud.basic.alipay.service.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -48,6 +50,10 @@ public class AliPayServiceImpl implements AliPayService {
     @Autowired
     private AliPayConfig config;
     
+    /**
+     * Android需要编码，
+     * IOS编码后需要再处理下
+     */
     @Override
     public String createOrder(CreateOrderModel createOrderModel) {
     	String orderStr = null;
@@ -65,9 +71,12 @@ public class AliPayServiceImpl implements AliPayService {
             request.setNotifyUrl(config.getPayNotifyUrl());
             AlipayTradeAppPayResponse response = getClient().sdkExecute(request);
             orderStr = response.getBody();
+            orderStr = URLEncoder.encode(orderStr, "utf-8");
         } catch (AlipayApiException e) {
         	logger.error("支付宝下单异常", e);
-        }
+        } catch (UnsupportedEncodingException e) {
+        	logger.error("支付宝下单-URLEncoder编码异常", e);
+		}
         return orderStr;
     }
 

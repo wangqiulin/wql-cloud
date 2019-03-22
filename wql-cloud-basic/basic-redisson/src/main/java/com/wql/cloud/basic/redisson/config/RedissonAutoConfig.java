@@ -25,7 +25,7 @@ public class RedissonAutoConfig {
 	private static final Logger logger = LoggerFactory.getLogger(RedissonAutoConfig.class);
 	
 	@Autowired
-	private RedissonProperties redssionProperties;
+	private RedissonProperty redssionProperties;
 
 	@Bean
 	RedissonClient redissonSingle() {
