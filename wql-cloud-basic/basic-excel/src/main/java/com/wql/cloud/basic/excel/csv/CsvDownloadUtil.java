@@ -39,7 +39,7 @@ public class CsvDownloadUtil {
     /**
      * 设置表头信息
      */
-    public static Map<String, String> getCSVHeader(Class<?> clazz) throws Exception {
+    public static Map<String, String> getCsvHeader(Class<?> clazz) throws Exception {
         Map<String, String> header = new LinkedHashMap<>();
         Field[] fields = clazz.getDeclaredFields();
         Class<ExcelField> apiModelPropertyClass = ExcelField.class;
@@ -122,7 +122,7 @@ public class CsvDownloadUtil {
         if (StringUtils.isEmpty(fileName)) {
             return fileName;
         }
-        String dateSuffix = "-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String dateSuffix = "-" + new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
         if (fileName.contains(".")) {
             int index = fileName.lastIndexOf(".");
             return fileName.substring(0, index) + dateSuffix + fileName.substring(index, fileName.length());
@@ -202,6 +202,37 @@ public class CsvDownloadUtil {
   		}
   		return map;
   	}
+    
+    
+    /*public <T> boolean getWorkbook(Class<T> clazz, Object obj) throws Exception {
+    	HttpServletResponse response = null;
+    	
+    	//1.获取excel的头信息
+    	Map<String, String> csvHeader = null; //CsvDownloadUtil.getCSVHeader(clazz);
+    	
+    	//2.写入头信息
+    	CsvDownloadUtil.writeHeader(csvHeader, "名称前缀", response);
+    	
+    	//3.原始list数据，重新组装
+    	List<Map<String, Object>> list = new ArrayList<>();
+    	list.add(CsvDownloadUtil.bean2map(obj, clazz));
+    	
+    	//4.写入数据
+    	CsvDownloadUtil.writeData(csvHeader, list, response, new BiFunction<String, Object, String>() {
+            @Override
+            public String apply(String cloumnName, Object value) {
+                if(cloumnName.equals("字段1")){
+                	//科学计数法数据展示修改
+                    return String.format("=\"%s\"", value);
+                }
+                if(cloumnName.equals("字段1")){
+                    return String.format("=\"%s\"", value);
+                }
+                return value.toString();
+            }
+        });
+    	return true;
+    }*/
     
     
 }
