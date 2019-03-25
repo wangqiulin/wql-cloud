@@ -1,11 +1,8 @@
 package com.wql.cloud.basic.datasource.config;
 
-import java.util.Properties;
-
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -21,7 +18,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
-import com.github.pagehelper.PageHelper;
 import com.wql.cloud.basic.datasource.properties.MybatisProperties;
 
 /**
@@ -55,7 +51,7 @@ public class SessionFactoryConfig implements TransactionManagementConfigurer {
 		sqlSessionFactoryBean.setConfiguration(config);
 		
 		//添加分页插件 
-        PageHelper pageHelper = new PageHelper();
+        /*PageHelper pageHelper = new PageHelper();
         Properties properties = new Properties();
         //分页 查询总数不返回大于页码的数据(false);  查询总数如果页码大于最大页，返回最后一页数据(true)
         properties.setProperty("reasonable", "false"); 
@@ -63,7 +59,7 @@ public class SessionFactoryConfig implements TransactionManagementConfigurer {
         properties.setProperty("returnPageInfo", "check");
         properties.setProperty("params", "count=countSql");
         pageHelper.setProperties(properties);
-        sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper});
+        sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper});*/
         
         if(StringUtils.isNotBlank(mybatisProperties.getXmlPackage())) {
         	//添加XML目录

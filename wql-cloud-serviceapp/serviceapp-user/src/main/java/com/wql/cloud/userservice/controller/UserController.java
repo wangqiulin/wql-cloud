@@ -85,7 +85,7 @@ public class UserController {
 				}
     		});
     		String sheetNamePrefix = "用户列表";
-    	    Map<String, String> csvHeader = CsvDownloadUtil.getCSVHeader(UserExcel.class);
+    	    Map<String, String> csvHeader = CsvDownloadUtil.getCsvHeader(UserExcel.class);
     		CsvDownloadUtil.writeHeader(csvHeader, sheetNamePrefix, response);
     		CsvDownloadUtil.writeData(csvHeader, userExcelList, response);
     	}
