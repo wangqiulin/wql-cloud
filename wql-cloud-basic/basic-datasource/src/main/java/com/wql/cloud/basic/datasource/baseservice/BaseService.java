@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.datasource.commonService;
+package com.wql.cloud.basic.datasource.baseservice;
 
 import java.util.List;
 

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import com.wql.cloud.basic.datasource.commonService.BaseService;
+import com.wql.cloud.basic.datasource.baseservice.BaseService;
 import com.wql.cloud.basic.datasource.dynamic.TargetDataSource;
 import com.wql.cloud.basic.datasource.pagehelper.annotation.ExtPageHelper;
 import com.wql.cloud.basic.datasource.response.constant.BusinessEnum;
