@@ -45,10 +45,14 @@ public class PageHelperAspect {
 		int i = 0;
 		for (String pName : parameterNames) {
 			if (pName.equals("page")) {
-				page = (int) args[i];
+				if(args[i] != null) {
+					page = (int) args[i];
+				}
 			}
 			if (pName.equals("pageSize")) {
-				pageSize = (int) args[i];
+				if(args[i] != null) {
+					pageSize = (int) args[i];
+				}
 			}
 			i++;
 		}

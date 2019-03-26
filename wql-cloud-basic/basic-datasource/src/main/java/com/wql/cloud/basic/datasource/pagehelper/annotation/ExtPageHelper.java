@@ -10,8 +10,18 @@ import java.lang.annotation.Target;
 @Target({ ElementType.METHOD })
 public @interface ExtPageHelper {
 
+	/**
+	 * 页码，默认第1页
+	 * 
+	 * @return
+	 */
 	int page() default 1;
 	
+	/**
+	 * 每页条数，默认每页10条
+	 * 
+	 * @return
+	 */
 	int pageSize() default 10;
 	
 }
