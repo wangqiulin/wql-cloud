@@ -71,6 +71,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.wql.cloud</groupId>
+			<artifactId>basic-swagger</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.wql.cloud</groupId>
 			<artifactId>basic-redis</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
@@ -79,16 +84,11 @@
 			<artifactId>basic-redisson</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>com.wql.cloud</groupId>
-			<artifactId>basic-swagger</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.wql.cloud</groupId>
 			<artifactId>basic-job</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>com.wql.cloud</groupId>
 			<artifactId>basic-rabbitmq</artifactId>
