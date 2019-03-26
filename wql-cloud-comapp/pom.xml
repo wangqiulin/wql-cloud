@@ -46,6 +46,7 @@
 
 	<build>
 		<plugins>
+			<!-- 为springboot提供maven支持 -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -67,6 +68,21 @@
 				<configuration>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
+			</plugin>
+			<!-- 要将源码放上去，需要加入这个插件 -->
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

@@ -73,13 +73,10 @@
 		</pluginManagement>
 		
 		<plugins>
+			<!-- 为springboot提供maven支持 -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
 			</plugin>
 			<!-- jdk版本 -->
 			<plugin>
