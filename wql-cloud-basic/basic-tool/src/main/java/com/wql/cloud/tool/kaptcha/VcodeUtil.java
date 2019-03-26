@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.kaptcha.util;
+package com.wql.cloud.tool.kaptcha;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;

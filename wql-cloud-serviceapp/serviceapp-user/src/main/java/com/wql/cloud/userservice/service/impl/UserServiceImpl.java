@@ -8,9 +8,10 @@ import org.springframework.util.Assert;
 
 import com.wql.cloud.basic.datasource.commonService.BaseService;
 import com.wql.cloud.basic.datasource.dynamic.TargetDataSource;
+import com.wql.cloud.basic.datasource.pagehelper.annotation.ExtPageHelper;
+import com.wql.cloud.basic.datasource.response.constant.BusinessEnum;
+import com.wql.cloud.basic.datasource.response.constant.DataResponse;
 import com.wql.cloud.basic.redisson.distributeLock.aop.DistributedLock;
-import com.wql.cloud.basic.response.constant.BusinessEnum;
-import com.wql.cloud.basic.response.constant.DataResponse;
 import com.wql.cloud.tool.bean.BeanUtils;
 import com.wql.cloud.userservice.domain.User;
 import com.wql.cloud.userservice.model.req.UserReq;
@@ -53,6 +54,15 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		return dr;
 	}
 
+	
+	@Override
+	@TargetDataSource(name = "read")
+	@ExtPageHelper
+	public Object queryPageUser(Integer page, Integer pageSize) {
+		return this.queryListByRecord(new User());
+	}
+	
+	
 	@Override
 	@TargetDataSource(name = "read")
 	public DataResponse queryUserById(Integer id) {

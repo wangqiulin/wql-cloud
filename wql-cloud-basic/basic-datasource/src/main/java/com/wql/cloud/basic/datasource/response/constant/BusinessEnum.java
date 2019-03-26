@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.response.constant;
+package com.wql.cloud.basic.datasource.response.constant;
 
 /**
  * 系统枚举类

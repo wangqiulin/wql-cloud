@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wql.cloud.basic.excel.csv.CsvDownloadUtil;
-import com.wql.cloud.basic.response.constant.BusinessEnum;
-import com.wql.cloud.basic.response.constant.DataResponse;
+import com.wql.cloud.basic.datasource.response.constant.BusinessEnum;
+import com.wql.cloud.basic.datasource.response.constant.DataResponse;
 import com.wql.cloud.tool.bean.BeanUtils;
+import com.wql.cloud.tool.excel.csv.CsvDownloadUtil;
 import com.wql.cloud.userservice.domain.User;
 import com.wql.cloud.userservice.excel.UserExcel;
 import com.wql.cloud.userservice.model.req.UserReq;
@@ -45,6 +45,15 @@ public class UserController {
 	@PostMapping("/user/query/all")
 	public DataResponse queryUserAll() {
 		return userService.queryUserAll();
+	}
+	
+	
+	@ApiOperation(value = "分页查询列表")
+	@PostMapping("/user/query/page")
+	public DataResponse queryPageUser(Integer page, Integer pageSize) {
+		DataResponse dr = new DataResponse(BusinessEnum.SUCCESS);
+		dr.setData(userService.queryPageUser(page, pageSize));
+		return dr;
 	}
 	
 	@ApiOperation(value = "根据id，查询记录")

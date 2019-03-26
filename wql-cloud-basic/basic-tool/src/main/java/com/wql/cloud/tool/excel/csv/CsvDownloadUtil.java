@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.excel.csv;
+package com.wql.cloud.tool.excel.csv;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;

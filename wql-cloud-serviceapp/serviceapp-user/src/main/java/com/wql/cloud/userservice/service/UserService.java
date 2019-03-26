@@ -1,6 +1,6 @@
 package com.wql.cloud.userservice.service;
 
-import com.wql.cloud.basic.response.constant.DataResponse;
+import com.wql.cloud.basic.datasource.response.constant.DataResponse;
 import com.wql.cloud.userservice.model.req.UserReq;
 
 /**
@@ -24,6 +24,12 @@ public interface UserService {
 	DataResponse queryUserAll();
 
 	/**
+	 * 分页查询列表
+	 * @return
+	 */
+	Object queryPageUser(Integer page, Integer pageSize);
+
+	/**
 	 * 根据id，查询记录
 	 * @param id
 	 * @return
@@ -43,5 +49,6 @@ public interface UserService {
 	 * @return
 	 */
 	DataResponse deleteUserById(Integer id);
+
 
 }
