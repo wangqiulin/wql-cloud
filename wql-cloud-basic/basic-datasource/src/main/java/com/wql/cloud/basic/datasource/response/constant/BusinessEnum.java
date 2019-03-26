@@ -15,7 +15,7 @@ public enum BusinessEnum {
 	FAIL("1000", "处理失败"), 
 	PARAM_FAIL("1001", "参数异常"), 
 	USER_NOT_LOGIN("1002", "请登录"),
-	SYSTEM_FAIL("1003", "系统异常"), 
+	SYSTEM_FAIL("1003", "服务器累了，请稍后重试"), 
 	
 	/**
 	 * 业务级别
