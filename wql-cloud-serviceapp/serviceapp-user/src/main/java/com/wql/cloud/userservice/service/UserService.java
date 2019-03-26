@@ -1,7 +1,7 @@
 package com.wql.cloud.userservice.service;
 
 import com.wql.cloud.basic.datasource.response.constant.DataResponse;
-import com.wql.cloud.userservice.model.req.UserReq;
+import com.wql.cloud.userservice.pojo.req.UserReq;
 
 /**
  *

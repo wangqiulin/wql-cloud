@@ -26,33 +26,33 @@ public abstract class BaseService<T> {
     
     //=================查询一条===================//
     
-    public T queryById(Integer id) {
+    public T getById(Integer id) {
         return this.mapper.selectByPrimaryKey(id);
     }
     
-    public T queryById(Long id) {
+    public T getById(Long id) {
         return this.mapper.selectByPrimaryKey(id);
     }
     
-    public T queryOneByRecord(T record) {
+    public T getByRecord(T record) {
         return this.mapper.selectOne(record);
     }
 
-    public T queryOneByExample(Example example) {
+    public T getByExample(Example example) {
         return this.mapper.selectOneByExample(example);
     }
     
     //=================查询多条===================//
     
-    public List<T> queryList() {
+    public List<T> list() {
         return this.mapper.selectAll();
     }
 
-    public List<T> queryListByRecord(T record) {
+    public List<T> listByRecord(T record) {
         return this.mapper.select(record);
     }
 
-    public List<T> queryListByExample(Example example) {
+    public List<T> listByExample(Example example) {
         return this.mapper.selectByExample(example);
     }
 
@@ -65,10 +65,10 @@ public abstract class BaseService<T> {
      * @param record
      * @return
      */
-    public PageInfo<T> queryPageListByRecord(Integer page, Integer rows, T record) {
+    public PageInfo<T> pageListByRecord(Integer page, Integer rows, T record) {
     	page = (page == null || page <= 0) ? 1 : page;
     	rows = (rows == null || rows <= 0) ? 10 : rows;
-    	return queryPageListByRecord(page, rows, record, false);
+    	return pageListByRecord(page, rows, record, false);
     }
     
     /**
@@ -79,7 +79,7 @@ public abstract class BaseService<T> {
      * @param desc  是否倒序 （true：按id倒序, false：按id升序）
      * @return
      */
-    public PageInfo<T> queryPageListByRecord(Integer page, Integer rows, T record, boolean desc) {
+    public PageInfo<T> pageListByRecord(Integer page, Integer rows, T record, boolean desc) {
     	page = (page == null || page <= 0) ? 1 : page;
     	rows = (rows == null || rows <= 0) ? 10 : rows;
     	//分页，根据默认配置
@@ -97,10 +97,10 @@ public abstract class BaseService<T> {
      * @param example
      * @return
      */
-    public PageInfo<T> queryPageListByExample(Integer page, Integer rows, Example example) {
+    public PageInfo<T> pageListByExample(Integer page, Integer rows, Example example) {
     	page = (page == null || page <= 0) ? 1 : page;
     	rows = (rows == null || rows <= 0) ? 10 : rows;
-    	return queryPageListByExample(page, rows, example, false);
+    	return pageListByExample(page, rows, example, false);
     }
     
     /**
@@ -111,7 +111,7 @@ public abstract class BaseService<T> {
      * @param desc 是否倒序 （true倒序， false升序）
      * @return
      */
-    public PageInfo<T> queryPageListByExample(Integer page, Integer rows, Example example, boolean desc) {
+    public PageInfo<T> pageListByExample(Integer page, Integer rows, Example example, boolean desc) {
     	page = (page == null || page <= 0) ? 1 : page;
     	rows = (rows == null || rows <= 0) ? 10 : rows;
         PageHelper.startPage(page, rows);
@@ -131,10 +131,10 @@ public abstract class BaseService<T> {
      * @param record
      * @return
      */
-    public PageInfo<T> queryPageListByRecordWithoutCount(Integer page, Integer rows, T record) {
+    public PageInfo<T> pageListByRecordWithoutCount(Integer page, Integer rows, T record) {
     	page = (page == null || page <= 0) ? 1 : page;
     	rows = (rows == null || rows <= 0) ? 10 : rows;
-    	return queryPageListByRecord(page, rows, record, false);
+    	return pageListByRecord(page, rows, record, false);
     }
     
     /**
@@ -145,7 +145,7 @@ public abstract class BaseService<T> {
      * @param desc  是否倒序 （true：按id倒序, false：按id升序）
      * @return
      */
-    public PageInfo<T> queryPageListByRecordWithoutCount(Integer page, Integer rows, T record, boolean desc) {
+    public PageInfo<T> pageListByRecordWithoutCount(Integer page, Integer rows, T record, boolean desc) {
     	page = (page == null || page <= 0) ? 1 : page;
     	rows = (rows == null || rows <= 0) ? 10 : rows;
     	//分页，根据默认配置
@@ -166,7 +166,7 @@ public abstract class BaseService<T> {
     public PageInfo<T> queryPageListByExampleWithoutCount(Integer page, Integer rows, Example example) {
     	page = (page == null || page <= 0) ? 1 : page;
     	rows = (rows == null || rows <= 0) ? 10 : rows;
-    	return queryPageListByExample(page, rows, example, false);
+    	return pageListByExample(page, rows, example, false);
     }
     
     /**
@@ -177,7 +177,7 @@ public abstract class BaseService<T> {
      * @param desc 是否倒序 （true倒序， false升序）
      * @return
      */
-    public PageInfo<T> queryPageListByExampleWithoutCount(Integer page, Integer rows, Example example, boolean desc) {
+    public PageInfo<T> pageListByExampleWithoutCount(Integer page, Integer rows, Example example, boolean desc) {
     	page = (page == null || page <= 0) ? 1 : page;
     	rows = (rows == null || rows <= 0) ? 10 : rows;
         PageHelper.startPage(page, rows, false);   //false表示不进行count查询
@@ -190,21 +190,21 @@ public abstract class BaseService<T> {
     
     //=================查询数量===================//	
     
-    public int queryCountByRecord(T record) {
+    public int countByRecord(T record) {
         return this.mapper.selectCount(record);
     }
 
-    public int queryCountByExample(Example example) {
+    public int countByExample(Example example) {
         return this.mapper.selectCountByExample(example);
     }
     
     //=================根据主键，查询记录是否存在===================//	
     
-    public boolean queryExistsById(Integer id){
+    public boolean existsById(Integer id){
     	return this.mapper.existsWithPrimaryKey(id);
     }
     
-    public boolean queryExistsById(Long id){
+    public boolean existsById(Long id){
     	return this.mapper.existsWithPrimaryKey(id);
     }
     
@@ -239,23 +239,23 @@ public abstract class BaseService<T> {
     
     //=================删除===================//
     
-    public int deleteById(Integer id) {
+    public int removeById(Integer id) {
         return this.mapper.deleteByPrimaryKey(id);
     }
     
-    public int deleteById(Long id) {
+    public int removeById(Long id) {
         return this.mapper.deleteByPrimaryKey(id);
     }
 
-    public int deleteByRecord(T record) {
+    public int removeByRecord(T record) {
         return this.mapper.delete(record);
     }
     
-    public int deleteByExample(Example example) {
+    public int removeByExample(Example example) {
         return this.mapper.deleteByExample(example);
     }
     
-    public int deleteByIds(List<?> ids, Class<T> clazz) {
+    public int removeByIds(List<?> ids, Class<T> clazz) {
     	Example example = new Example(clazz);
     	example.createCriteria().andIn("id", ids);
         return this.mapper.deleteByExample(example);

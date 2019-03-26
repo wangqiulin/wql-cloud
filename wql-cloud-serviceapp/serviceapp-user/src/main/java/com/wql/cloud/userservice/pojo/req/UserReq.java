@@ -1,4 +1,4 @@
-package com.wql.cloud.userservice.model.req;
+package com.wql.cloud.userservice.pojo.req;
 
 public class UserReq {
 

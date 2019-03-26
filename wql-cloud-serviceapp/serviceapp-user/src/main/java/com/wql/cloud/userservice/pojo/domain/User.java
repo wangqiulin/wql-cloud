@@ -1,4 +1,4 @@
-package com.wql.cloud.userservice.domain;
+package com.wql.cloud.userservice.pojo.domain;
 
 import java.io.Serializable;
 import java.util.Date;

@@ -17,9 +17,9 @@ import com.wql.cloud.basic.datasource.response.constant.BusinessEnum;
 import com.wql.cloud.basic.datasource.response.constant.DataResponse;
 import com.wql.cloud.tool.bean.BeanUtils;
 import com.wql.cloud.tool.excel.csv.CsvDownloadUtil;
-import com.wql.cloud.userservice.domain.User;
-import com.wql.cloud.userservice.excel.UserExcel;
-import com.wql.cloud.userservice.model.req.UserReq;
+import com.wql.cloud.userservice.pojo.domain.User;
+import com.wql.cloud.userservice.pojo.req.UserReq;
+import com.wql.cloud.userservice.pojo.res.UserExcel;
 import com.wql.cloud.userservice.service.UserService;
 
 import io.swagger.annotations.Api;

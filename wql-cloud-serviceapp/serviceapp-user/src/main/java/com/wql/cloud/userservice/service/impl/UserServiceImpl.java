@@ -13,8 +13,8 @@ import com.wql.cloud.basic.datasource.response.constant.BusinessEnum;
 import com.wql.cloud.basic.datasource.response.constant.DataResponse;
 import com.wql.cloud.basic.redisson.distributeLock.aop.DistributedLock;
 import com.wql.cloud.tool.bean.BeanUtils;
-import com.wql.cloud.userservice.domain.User;
-import com.wql.cloud.userservice.model.req.UserReq;
+import com.wql.cloud.userservice.pojo.domain.User;
+import com.wql.cloud.userservice.pojo.req.UserReq;
 import com.wql.cloud.userservice.service.UserService;
 
 /**
@@ -50,7 +50,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	@TargetDataSource(name = "read")
 	public DataResponse queryUserAll() {
 		DataResponse dr = new DataResponse(BusinessEnum.SUCCESS);
-		dr.setData(this.queryList());
+		dr.setData(this.list());
 		return dr;
 	}
 
@@ -59,7 +59,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	@TargetDataSource(name = "read")
 	@ExtPageHelper
 	public Object queryPageUser(Integer page, Integer pageSize) {
-		return this.queryListByRecord(new User());
+		return this.listByRecord(new User());
 	}
 	
 	
@@ -67,7 +67,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	@TargetDataSource(name = "read")
 	public DataResponse queryUserById(Integer id) {
 		Assert.notNull(id, "id为空");
-		User user = this.queryById(id);
+		User user = this.getById(id);
 		Assert.notNull(user, "用户不存在");
 		DataResponse dr = new DataResponse(BusinessEnum.SUCCESS);
 		dr.setData(user);
@@ -89,7 +89,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	@Override
 	public DataResponse deleteUserById(Integer id) {
 		Assert.notNull(id, "id为空");
-		Assert.isTrue(this.deleteById(id) == 1, "删除失败");
+		Assert.isTrue(this.removeById(id) == 1, "删除失败");
 		return new DataResponse(BusinessEnum.SUCCESS);
 	}
 
