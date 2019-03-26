@@ -2,6 +2,8 @@ package com.wql.cloud.basic.idgenerator.builder;
 
 public class BaseOnDBProps {
 
+	private static final String TABLE_NAME = "t_id_gen";
+
 	public BaseOnDBProps(String project, String model) {
 		super();
 		this.project = project;
@@ -34,10 +36,9 @@ public class BaseOnDBProps {
 	 * @param project
 	 * @param model
 	 * @return
-	 * @deprecated
 	 */
 	public static BaseOnDBProps of(String project, String model) {
-		return new BaseOnDBProps(project, model, "t_id_gen");
+		return new BaseOnDBProps(project, model, TABLE_NAME);
 	}
 
 	public static BaseOnDBProps of(String project, String model, String table) {
