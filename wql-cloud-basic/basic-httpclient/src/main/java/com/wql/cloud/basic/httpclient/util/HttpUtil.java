@@ -29,13 +29,37 @@ public class HttpUtil {
 	private RestTemplate restTemplate;
 
 	/**
+	 * 表单请求
+	 * 
+	 * @param url
+	 * @param paramMap
+	 * @return
+	 */
+	public String formPost(String url, Map<String, Object> paramMap) {
+		HttpHeaders headers = new HttpHeaders();
+		//表单提交
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		headers.setAcceptCharset(Arrays.asList(Charset.forName("utf-8")));
+		//封装参数，千万不要替换为Map与HashMap，否则参数无法传递
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+		if(!CollectionUtils.isEmpty(paramMap)){
+			for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
+				params.add(entry.getKey(), String.valueOf(entry.getValue()));
+			}
+		}
+		return restTemplate.postForObject(url, new HttpEntity<MultiValueMap<String, String>>(params, headers), String.class);
+	}
+	
+	
+	/**
 	 * 表单格式的post请求
+	 * 
 	 * @param url
 	 * @param paramMap
 	 * @param headerMap
 	 * @return
 	 */
-	public String postForEntity(String url, Map<String, Object> paramMap, Map<String, Object> headerMap) {
+	public String formPost(String url, Map<String, Object> paramMap, Map<String, Object> headerMap) {
 		HttpHeaders headers = new HttpHeaders();
 		//表单提交
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -55,15 +79,37 @@ public class HttpUtil {
 		return restTemplate.postForObject(url, new HttpEntity<MultiValueMap<String, String>>(params, headers), String.class);
 	}
 	
+	
 	/**
 	 * json格式的post请求
+	 * 
+	 * @param url
+	 * @param paramMap
+	 * @return
+	 */
+	@SuppressWarnings("all")
+	public String jsonPost(String url, Map<String, Object> paramMap) {
+		HttpHeaders headers = new HttpHeaders();
+		//json格式
+		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		String jsonStr = null;
+		if (!CollectionUtils.isEmpty(paramMap)) {
+			jsonStr = JSON.toJSONString(paramMap);
+		}
+		return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity(jsonStr, headers), String.class).getBody();
+	}
+	
+	
+	/**
+	 * json格式的post请求
+	 * 
 	 * @param url
 	 * @param paramMap
 	 * @param headerMap
 	 * @return
 	 */
 	@SuppressWarnings("all")
-	public String postForJson(String url, Map<String, Object> paramMap, Map<String, Object> headerMap) {
+	public String jsonPost(String url, Map<String, Object> paramMap, Map<String, Object> headerMap) {
 		HttpHeaders headers = new HttpHeaders();
 		//json格式
 		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
@@ -79,6 +125,7 @@ public class HttpUtil {
 		return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity(jsonStr, headers), String.class).getBody();
 	}
 	
+	
 	/**
 	 * get请求(无参数)
 	 * @param url
@@ -91,6 +138,7 @@ public class HttpUtil {
 	
 	/**
 	 * get请求(有参数)
+	 * 
 	 * @param url, 拼接参数
 	 * @param paramMap, 参数内容以Map接收 
 	 * @return
@@ -99,15 +147,17 @@ public class HttpUtil {
 		return restTemplate.getForObject(url, String.class, paramMap);
 	}
 	
+	
 	/**
 	 * json格式的get请求
+	 * 
 	 * @param url
 	 * @param paramMap
 	 * @param headerMap
 	 * @return
 	 */
 	@SuppressWarnings("all")
-	public String getForJson(String url, Map<String, Object> paramMap, Map<String, Object> headerMap) {
+	public String jsonGet(String url, Map<String, Object> paramMap, Map<String, Object> headerMap) {
 		HttpHeaders headers = new HttpHeaders();
 		//json格式
 		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
@@ -131,11 +181,10 @@ public class HttpUtil {
 	 * @param paramMap
 	 * @return
 	 */
-	public String postFormData(String url, Map<String, Object> paramMap) {
-        //设置请求头(注意会产生中文乱码)
+	public String formDataPost(String url, Map<String, Object> paramMap) {
+        //设置请求头
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-        //封装参数，千万不要替换为Map与HashMap，否则参数无法传递
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
 		if(!CollectionUtils.isEmpty(paramMap)){
 			for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
