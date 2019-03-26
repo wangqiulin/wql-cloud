@@ -1,13 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>serviceapp-user</artifactId>
-	<packaging>jar</packaging>
 	<parent>
 		<groupId>com.wql.cloud</groupId>
-		<artifactId>wql-cloud-serviceapp</artifactId>
+		<artifactId>wql-bizserviceapp-user</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	<artifactId>bizserviceapp-user</artifactId>
 
 	<!-- 版本锁定 -->
 	<dependencyManagement>
@@ -84,11 +83,6 @@
 			<artifactId>basic-redisson</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>com.wql.cloud</groupId>
-			<artifactId>basic-job</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency> -->
 		<dependency>
 			<groupId>com.wql.cloud</groupId>
 			<artifactId>basic-rabbitmq</artifactId>
@@ -97,10 +91,56 @@
 	</dependencies>
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- 定制化打包 -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.6</version>
+					<configuration>
+						<argLine>-Xms256M -Xmx1024M -XX:PermSize=512M
+							-XX:MaxPermSize=1024M -Dfile.encoding=UTF-8</argLine>
+						<inherited>false</inherited>
+						<appendAssemblyId>false</appendAssemblyId>
+						<recompressZippedFiles>false</recompressZippedFiles>
+						<descriptors>
+							<descriptor>soaclient.xml</descriptor>
+						</descriptors>
+					</configuration>
+					<executions>
+						<execution>
+							<id>make-assembly</id>
+							<phase>package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<!-- 要将源码放上去，需要加入这个插件 -->
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

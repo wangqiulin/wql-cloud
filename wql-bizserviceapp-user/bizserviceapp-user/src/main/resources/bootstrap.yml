@@ -1,6 +1,6 @@
 spring:
   application:
-    name: serviceapp-user
+    name: bizserviceapp-user
   profiles:
     active: dev
     
@@ -48,7 +48,7 @@ spring:
 #      discovery:
 #        enabled: true
 #        serviceId: comapp-config
-#      name: serviceapp-user
+#      name: bizserviceapp-user
 #      profile: dev
 #      label: master
   
@@ -65,7 +65,7 @@ spring:
       discovery:
         enabled: true
         serviceId: comapp-config
-      name: serviceapp-user
+      name: bizserviceapp-user
       profile: prod
       label: master
   
