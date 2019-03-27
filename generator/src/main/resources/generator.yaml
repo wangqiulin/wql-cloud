@@ -1,0 +1,14 @@
+db:
+  url: jdbc:mysql://47.98.209.46:3306/wql-cloud
+  username: root
+  password: root
+author: wangqiulin
+filePathPrefix: C:\coding\wql\wql-cloud\wql-bizserviceapp-user\bizserviceapp-user\src\main\java\
+packageName: com.wql.cloud.userservice
+path:
+  controller: controller
+  service: service.impl
+  interf: service
+  dao: mapper
+  entity: pojo.domain
+  mapper: mappers
