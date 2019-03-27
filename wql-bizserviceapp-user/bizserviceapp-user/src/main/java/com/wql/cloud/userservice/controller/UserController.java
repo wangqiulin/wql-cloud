@@ -72,7 +72,7 @@ public class UserController {
 	}
 	
 	
-	@ApiOperation(value = "根据id，查询记录")
+	@ApiOperation(value = "查询记录")
 	@PostMapping("/user/query")
 	public DataResponse query(@RequestBody User req) {
 		DataResponse dr = new DataResponse(BusinessEnum.SUCCESS);
