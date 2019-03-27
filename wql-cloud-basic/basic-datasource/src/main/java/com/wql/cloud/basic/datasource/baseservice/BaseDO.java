@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public abstract class BaseDO {
 
@@ -30,12 +31,15 @@ public abstract class BaseDO {
 	/**
 	 * 数据标志: 0无效, 1有效
 	 */
+	@JsonIgnore
 	private Integer dataFlag;
 
-	@Transient
+	@Transient //非实体类字段
+	@JsonIgnore  //json忽略返回
 	public Integer page;
 
 	@Transient
+	@JsonIgnore
 	public Integer pageSize;
 
 	public Integer getId() {
