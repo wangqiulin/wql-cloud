@@ -39,6 +39,10 @@ wql:
   eureka: 
     username: admin
     password: admin 
+
+feign:
+  serviceId:
+    user: bizserviceapp-user
       
 ---
 spring: 

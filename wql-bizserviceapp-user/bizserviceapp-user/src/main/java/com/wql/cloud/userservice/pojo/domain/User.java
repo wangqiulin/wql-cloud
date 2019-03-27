@@ -1,69 +1,19 @@
 package com.wql.cloud.userservice.pojo.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.wql.cloud.basic.datasource.baseservice.BaseDO;
 
 @Table(name="t_user")
-public class User implements Serializable {
+public class User extends BaseDO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-    @Column(name = "id") 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-	
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date createDate;
-	
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date updateDate;
-
-	private Integer dataFlag;
-	
 	private String userName;
 	
 	private String userPwd;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-
-	public Integer getDataFlag() {
-		return dataFlag;
-	}
-
-	public void setDataFlag(Integer dataFlag) {
-		this.dataFlag = dataFlag;
-	}
 
 	public String getUserName() {
 		return userName;

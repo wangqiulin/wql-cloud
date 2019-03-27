@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +17,6 @@ import com.wql.cloud.basic.datasource.response.constant.DataResponse;
 import com.wql.cloud.tool.bean.BeanUtils;
 import com.wql.cloud.tool.excel.csv.CsvDownloadUtil;
 import com.wql.cloud.userservice.pojo.domain.User;
-import com.wql.cloud.userservice.pojo.req.UserReq;
 import com.wql.cloud.userservice.pojo.res.UserExcel;
 import com.wql.cloud.userservice.service.UserService;
 
@@ -37,67 +35,71 @@ public class UserController {
 	
 	@ApiOperation(value = "新增")
 	@PostMapping("/user/save")
-	public DataResponse saveUser(@RequestBody UserReq req) {
-		return userService.saveUser(req);
+	public DataResponse save(@RequestBody User req) {
+		return userService.save(req) == 1 ? new DataResponse(BusinessEnum.SUCCESS) : new DataResponse(BusinessEnum.FAIL);
 	}
 	
+	
+	@ApiOperation(value = "修改")
+	@PostMapping("/user/update")
+	public DataResponse update(@RequestBody User req) {
+		return userService.update(req) > 0 ? new DataResponse(BusinessEnum.SUCCESS) : new DataResponse(BusinessEnum.FAIL);
+	}
+	
+	
+	@ApiOperation(value = "删除")
+	@PostMapping("/user/delete")
+	public DataResponse delete(@RequestBody User req) {
+		return userService.delete(req) > 0 ? new DataResponse(BusinessEnum.SUCCESS) : new DataResponse(BusinessEnum.FAIL);
+	}
+	
+	
 	@ApiOperation(value = "查询列表")
-	@PostMapping("/user/query/all")
-	public DataResponse queryUserAll() {
-		return userService.queryUserAll();
+	@PostMapping("/user/queryList")
+	public DataResponse queryList(@RequestBody User req) {
+		DataResponse dr = new DataResponse(BusinessEnum.SUCCESS);
+		dr.setData(userService.queryList(req));
+		return dr;
 	}
 	
 	
 	@ApiOperation(value = "分页查询列表")
-	@PostMapping("/user/query/page")
-	public DataResponse queryPageUser(Integer page, Integer pageSize) {
+	@PostMapping("/user/queryPageList")
+	public DataResponse queryPageList(@RequestBody User req) {
 		DataResponse dr = new DataResponse(BusinessEnum.SUCCESS);
-		dr.setData(userService.queryPageUser(page, pageSize));
+		dr.setData(userService.queryPageList(req.getPage(), req.getPageSize(), req));
 		return dr;
 	}
 	
+	
 	@ApiOperation(value = "根据id，查询记录")
-	@PostMapping("/user/query/{id}")
-	public DataResponse queryUserById(@PathVariable("id") Integer id) {
-		return userService.queryUserById(id);
+	@PostMapping("/user/query")
+	public DataResponse query(@RequestBody User req) {
+		DataResponse dr = new DataResponse(BusinessEnum.SUCCESS);
+		dr.setData(userService.query(req));
+		return dr;
 	}
 	
-	@ApiOperation(value = "根据id，修改记录")
-	@PostMapping("/user/update/{id}")
-	public DataResponse updateUserById(@PathVariable("id") Integer id) {
-		return userService.updateUserById(id);
-	}
-	
-	@ApiOperation(value = "根据id，删除记录")
-	@PostMapping("/user/delete/{id}")
-	public DataResponse deleteUserById(@PathVariable("id") Integer id) {
-		return userService.deleteUserById(id);
-	}
 	
 	@ApiOperation(value = "导出")
 	@GetMapping(value = "/user/export")
-    public void export() throws Exception {
+    public void export(User req) throws Exception {
 		List<Map<String, Object>> userExcelList = new ArrayList<>();
 		//查询
-    	DataResponse dr = userService.queryUserAll();
-    	if(BusinessEnum.SUCCESS.getCode() == dr.getCode()) {
-    		//转换数据
-    		@SuppressWarnings("unchecked")
-			List<User> list = (List<User>) dr.getData();
-    		list.stream().forEach(user -> {
-				try {
-					UserExcel userExcel = new UserExcel();
-	    			BeanUtils.copy(user, userExcel);
-					userExcelList.add(CsvDownloadUtil.bean2map(userExcel, UserExcel.class));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-    		});
-    		String sheetNamePrefix = "用户列表";
-    	    Map<String, String> csvHeader = CsvDownloadUtil.getCsvHeader(UserExcel.class);
-    		CsvDownloadUtil.writeHeader(csvHeader, sheetNamePrefix, response);
-    		CsvDownloadUtil.writeData(csvHeader, userExcelList, response);
-    	}
+    	List<User> list = userService.queryList(req);
+		list.stream().forEach(user -> {
+			try {
+				UserExcel userExcel = new UserExcel();
+    			BeanUtils.copy(user, userExcel);
+				userExcelList.add(CsvDownloadUtil.bean2map(userExcel, UserExcel.class));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		String sheetNamePrefix = "用户列表";
+	    Map<String, String> csvHeader = CsvDownloadUtil.getCsvHeader(UserExcel.class);
+		CsvDownloadUtil.writeHeader(csvHeader, sheetNamePrefix, response);
+		CsvDownloadUtil.writeData(csvHeader, userExcelList, response);
     	response.getOutputStream().close();
     }
 	

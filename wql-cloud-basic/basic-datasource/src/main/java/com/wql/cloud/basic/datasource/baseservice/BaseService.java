@@ -1,5 +1,6 @@
 package com.wql.cloud.basic.datasource.baseservice;
 
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -15,7 +16,7 @@ import tk.mybatis.mapper.entity.Example;
 /**
  * 单表通用的service层的抽象类
  */
-public abstract class BaseService<T> {
+public abstract class BaseService<T extends BaseDO> {
 
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -59,7 +60,21 @@ public abstract class BaseService<T> {
     //=================分页查询(查询总数)===================//
     
     /**
-     * 条件查询
+     * 分页查询
+     * 
+     * @param page 页数
+     * @param rows 条数
+     * @return
+     */
+    public PageInfo<T> pageList(Integer page, Integer rows) {
+    	page = (page == null || page <= 0) ? 1 : page;
+    	rows = (rows == null || rows <= 0) ? 10 : rows;
+    	return pageListByRecord(page, rows, null, true);
+    }
+    
+    /**
+     * 条件分页查询
+     * 
      * @param page 页数
      * @param rows 条数
      * @param record
@@ -72,7 +87,8 @@ public abstract class BaseService<T> {
     }
     
     /**
-     * 条件查询
+     * 条件分页查询
+     * 
      * @param page
      * @param rows
      * @param record
@@ -91,7 +107,8 @@ public abstract class BaseService<T> {
     }
     
     /**
-     * 条件查询
+     * 条件分页查询
+     * 
      * @param page
      * @param rows
      * @param example
@@ -105,6 +122,7 @@ public abstract class BaseService<T> {
     
     /**
      * 条件查询
+     * 
      * @param page
      * @param rows
      * @param example
@@ -124,8 +142,10 @@ public abstract class BaseService<T> {
     
     //=================分页查询(不查总数)===================//
     
+    
     /**
-     * 条件查询(不查总数)
+     * 条件分页查询(不查总数)
+     * 
      * @param page 页数
      * @param rows 条数
      * @param record
@@ -138,7 +158,8 @@ public abstract class BaseService<T> {
     }
     
     /**
-     * 条件查询(不查总数)
+     * 条件分页查询(不查总数)
+     * 
      * @param page
      * @param rows
      * @param record
@@ -157,7 +178,8 @@ public abstract class BaseService<T> {
     }
     
     /**
-     * 条件查询(不查总数)
+     * 条件分页查询(不查总数)
+     * 
      * @param page
      * @param rows
      * @param example
@@ -170,7 +192,8 @@ public abstract class BaseService<T> {
     }
     
     /**
-     * 条件查询(不查总数)
+     * 条件分页查询(不查总数)
+     * 
      * @param page
      * @param rows
      * @param example
@@ -190,11 +213,11 @@ public abstract class BaseService<T> {
     
     //=================查询数量===================//	
     
-    public int countByRecord(T record) {
+    public Integer countByRecord(T record) {
         return this.mapper.selectCount(record);
     }
 
-    public int countByExample(Example example) {
+    public Integer countByExample(Example example) {
         return this.mapper.selectCountByExample(example);
     }
     
@@ -210,52 +233,64 @@ public abstract class BaseService<T> {
     
     //=================新增===================//
     
-    public int save(T record) {
+    public Integer save(T record) {
+    	record.setId(null);
+    	record.setCreateDate(new Date());
+    	record.setUpdateDate(record.getUpdateDate());
+    	record.setDataFlag(1);
         return this.mapper.insert(record);
     }
 
-    public int saveSelective(T record) {
+    public Integer saveSelective(T record) {
+    	record.setId(null);
+    	record.setCreateDate(new Date());
+    	record.setUpdateDate(record.getUpdateDate());
+    	record.setDataFlag(1);
         return this.mapper.insertSelective(record);
     }
     
     //=================更新===================//
     
-    public int updateById(T record) {
+    public Integer updateById(T record) {
+    	record.setUpdateDate(new Date());
         return this.mapper.updateByPrimaryKey(record);
     }
 
-    public int updateSelectiveById(T record) {
+    public Integer updateSelectiveById(T record) {
+    	record.setUpdateDate(new Date());
         return this.mapper.updateByPrimaryKeySelective(record);
     }
 
-    public int updateByExample(T record, Example example) {
+    public Integer updateByExample(T record, Example example) {
+    	record.setUpdateDate(new Date());
         return this.mapper.updateByExample(record, example);
     }
 
-    public int updateByExampleSelective(T record, Example example) {
+    public Integer updateSelectiveByExample(T record, Example example) {
+    	record.setUpdateDate(new Date());
         return this.mapper.updateByExampleSelective(record, example);
     }
 
     
     //=================删除===================//
     
-    public int removeById(Integer id) {
+    public Integer removeById(Integer id) {
         return this.mapper.deleteByPrimaryKey(id);
     }
     
-    public int removeById(Long id) {
+    public Integer removeById(Long id) {
         return this.mapper.deleteByPrimaryKey(id);
     }
 
-    public int removeByRecord(T record) {
+    public Integer removeByRecord(T record) {
         return this.mapper.delete(record);
     }
     
-    public int removeByExample(Example example) {
+    public Integer removeByExample(Example example) {
         return this.mapper.deleteByExample(example);
     }
     
-    public int removeByIds(List<?> ids, Class<T> clazz) {
+    public Integer removeByIds(List<?> ids, Class<T> clazz) {
     	Example example = new Example(clazz);
     	example.createCriteria().andIn("id", ids);
         return this.mapper.deleteByExample(example);
