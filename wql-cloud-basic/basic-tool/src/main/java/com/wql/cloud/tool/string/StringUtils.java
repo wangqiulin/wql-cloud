@@ -31,8 +31,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             }
             strArgs[i] = argStr;
         }
-        String str = MessageFormat.format(format, strArgs);
-        return str;
+        return MessageFormat.format(format, strArgs);
     }
 
     /**
