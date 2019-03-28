@@ -12,7 +12,7 @@
 		<dependency>
 			<groupId>com.xuxueli</groupId>
 			<artifactId>xxl-conf-core</artifactId>
-			<version>1.5.2</version>
+			<version>1.6.1</version>
 		</dependency>
 	</dependencies>
 
