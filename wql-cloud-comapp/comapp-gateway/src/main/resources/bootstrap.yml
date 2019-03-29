@@ -16,12 +16,12 @@ zuul:
   routes:
     #用户服务
     api-user:  
-      path: /user/**
-      serviceId: serviceapp-user
+      path: /api-user/**
+      serviceId: bizserviceapp-user
     #公用服务  
     api-common:  
-      path: /common/**
-      serviceId: serviceapp-common   #如果出现中文文件名，上传文件的文件名会出现失败。访问的是指直接在这个/oss，前面加上"/zuul"，ok
+      path: /api-common/**
+      serviceId: bizserviceapp-common   #如果出现中文文件名，上传文件的文件名会出现失败。访问的是指直接在这个/oss，前面加上"/zuul"，ok
 
 #超时时间配置
 hystrix:
@@ -54,6 +54,15 @@ eureka:
   client: 
     serviceUrl: 
       defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@127.0.0.1:5000/eureka/
+
+xxl:
+  conf:
+    env: test
+    mirrorfile: /application/logs/conf/comapp-gateway.properties
+    admin:
+      address: http://localhost:8080/xxl-conf-admin
+    access: 
+      token:     
       
 ---
 spring: 
@@ -62,5 +71,13 @@ eureka:
   client: 
     serviceUrl: 
       defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@47.98.209.46:5000/eureka/  
-      
+
+xxl:
+  conf:
+    env: product
+    mirrorfile: /application/logs/conf/comapp-gateway.properties
+    admin:
+      address: http://47.98.209.46:8080/xxl-conf-admin
+    access: 
+      token:        
                 

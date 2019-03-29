@@ -27,5 +27,16 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-zuul</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.wql.cloud</groupId>
+			<artifactId>basic-tool</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.wql.cloud</groupId>
+			<artifactId>basic-config</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

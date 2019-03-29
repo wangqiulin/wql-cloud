@@ -61,19 +61,38 @@ eureka:
     serviceUrl: 
       defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@127.0.0.1:5000/eureka/
 
+xxl:
+  conf:
+    env: test
+    mirrorfile: /application/logs/conf/bizserviceapp-user.properties
+    admin:
+      address: http://localhost:8080/xxl-conf-admin
+    access: 
+      token:  
+
 ---
 spring: 
   profiles: prod
-  cloud: 
-    config:
-      discovery:
-        enabled: true
-        serviceId: comapp-config
-      name: bizserviceapp-user
-      profile: prod
-      label: master
+#  cloud: 
+#    config:
+#      discovery:
+#        enabled: true
+#        serviceId: comapp-config
+#      name: bizserviceapp-user
+#      profile: prod
+#      label: master
   
 eureka: 
   client: 
     serviceUrl: 
       defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@47.98.209.46:5000/eureka/  
+
+xxl:
+  conf:
+    env: product
+    mirrorfile: /application/logs/conf/bizserviceapp-user.properties
+    admin:
+      address: http://47.98.209.46:8080/xxl-conf-admin
+    access: 
+      token:        
+      

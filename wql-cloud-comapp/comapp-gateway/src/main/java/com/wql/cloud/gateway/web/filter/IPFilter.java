@@ -1,13 +1,20 @@
 package com.wql.cloud.gateway.web.filter;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import com.wql.cloud.gateway.property.GatewayProperty;
+import com.wql.cloud.tool.ip.IPUtil;
 
 /**
  * ip白名单
@@ -20,17 +27,23 @@ public class IPFilter extends ZuulFilter {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
 
+	@Autowired
+	private GatewayProperty gatewayProperty;
+	
 	@Override
 	public Object run() {
 		RequestContext ctx = RequestContext.getCurrentContext();
 		HttpServletRequest req = ctx.getRequest();
-		String ipAddr = this.getIpAddr(req);
+		String ipAddr = IPUtil.getIpAdrress(req);
 		logger.info("IP请求地址为：[{}]", ipAddr);
 		
-		//TODO 配置本地IP白名单，生产环境可放入数据库或者redis中
-		/*List<String> ips = new ArrayList<String>();
-		ips.add("127.0.0.1");
-		if (!ips.contains(ipAddr)) {
+		//配置本地IP白名单，生产环境可放入数据库或者redis中
+		List<String> ips = null;
+		String whiteIps = gatewayProperty.whiteIps;
+		if(StringUtils.isNotBlank(whiteIps)) {
+			ips = Arrays.asList(whiteIps.split(","));
+		}
+		if (ips == null || !ips.contains(ipAddr)) {
 			logger.info("IP地址校验不通过");
 			ctx.setSendZuulResponse(false);
 			ctx.setResponseStatusCode(403);
@@ -41,7 +54,7 @@ public class IPFilter extends ZuulFilter {
             ctx.setResponseStatusCode(200);
             ctx.set("isSuccess", true);
             ctx.getZuulRequestHeaders().put("HTTP_X_FORWARDED_FOR", ipAddr);
-        }*/
+        }
 		return null;
 	}
 
@@ -66,26 +79,4 @@ public class IPFilter extends ZuulFilter {
         return (boolean) ctx.get("isSuccess");
 	}
 
-	/**
-	 * 获取真实ip地址
-	 */
-	public String getIpAddr(HttpServletRequest request) {
-		String ip = request.getHeader("X-Forwarded-For");
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("Proxy-Client-IP");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("WL-Proxy-Client-IP");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("HTTP_CLIENT_IP");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getRemoteAddr();
-		}
-		return ip;
-	}
 }

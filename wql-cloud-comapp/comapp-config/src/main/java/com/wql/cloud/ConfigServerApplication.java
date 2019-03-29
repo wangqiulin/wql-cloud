@@ -1,4 +1,4 @@
-package com.wql.cloud.server.config;
+package com.wql.cloud;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
