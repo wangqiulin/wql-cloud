@@ -12,16 +12,6 @@ import com.wql.cloud.basic.redisson.distributeLock.aop.DistributedLock;
 import com.wql.cloud.userservice.pojo.domain.User;
 import com.wql.cloud.userservice.service.UserService;
 
-/**
- * 
- *  @Autowired
-	private RestTemplate restTemplate;
-	
-	@Autowired
-    @LoadBalanced
-    private RestTemplate balancedRestTemplate;
- * 
- */
 @Service
 public class UserServiceImpl extends BaseService<User> implements UserService {
 
