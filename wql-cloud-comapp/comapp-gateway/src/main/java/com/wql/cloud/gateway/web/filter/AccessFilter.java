@@ -60,6 +60,7 @@ public class AccessFilter extends ZuulFilter {
 			ctx.setResponseBody("unAuthrized");
 		} else {
 			logger.info("accessToken： {}", accessToken);
+			//TODO 从token中获取请求的用户id，再根据用户id，查询用户的资源权限
 			ctx.setSendZuulResponse(true);
 			ctx.setResponseStatusCode(200);
 			ctx.set("isSuccess", true);
