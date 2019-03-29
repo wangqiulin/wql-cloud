@@ -28,6 +28,7 @@
 		<module>basic-cat</module>
 		<module>basic-wechatpay</module>
 		<module>basic-alipay</module>
+		<module>basic-log</module>
 	</modules>
 
 	<dependencies>

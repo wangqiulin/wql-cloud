@@ -1,4 +1,4 @@
-package com.wql.cloud.userservice.config.log;
+package com.wql.cloud.basic.log.aop;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;

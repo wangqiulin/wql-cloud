@@ -1,4 +1,4 @@
-package com.wql.cloud.userservice.config.cors;
+package com.wql.cloud.tool.cors;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

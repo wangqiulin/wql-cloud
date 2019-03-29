@@ -1,4 +1,4 @@
-package com.wql.cloud.userservice.config.fegin;
+package com.wql.cloud.basic.log.fegin;
 
 import feign.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.wql.cloud.userservice.config.executor;
+package com.wql.cloud.tool.executor;
 
 import java.util.concurrent.ThreadPoolExecutor;
 

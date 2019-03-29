@@ -1,4 +1,4 @@
-package com.wql.cloud.userservice.config.fegin;
+package com.wql.cloud.basic.log.fegin;
 
 import java.util.Arrays;
 
