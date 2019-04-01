@@ -7,8 +7,11 @@
 		<artifactId>wql-cloud-basic</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 		<!-- 数据源 -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -23,7 +26,6 @@
 			<artifactId>druid</artifactId>
 			<version>1.1.10</version>
 		</dependency>
-
 		<!-- mybatis -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
@@ -35,7 +37,6 @@
 			<artifactId>mybatis-spring</artifactId>
 			<version>2.0.0</version>
 		</dependency>
-		
 		<!-- springboot-aop包,AOP切面注解,Aspectd等相关注解 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -47,17 +48,12 @@
   	         <artifactId>pagehelper-spring-boot-starter</artifactId>
   	         <version>1.2.10</version>
 		</dependency>
+		<!-- 集成tk插件 -->
 		<dependency>
 			<groupId>tk.mybatis</groupId>
 			<artifactId>mapper-spring-boot-starter</artifactId>
 			<version>2.1.5</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>

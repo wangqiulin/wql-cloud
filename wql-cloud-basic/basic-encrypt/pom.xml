@@ -7,12 +7,10 @@
 		<artifactId>wql-cloud-basic</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
 		</dependency>
 	</dependencies>
-
 </project>

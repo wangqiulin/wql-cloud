@@ -7,7 +7,6 @@
 		<artifactId>wql-cloud-basic</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -29,7 +28,6 @@
 			<artifactId>feign-slf4j</artifactId>
 			<version>8.18.0</version>
 		</dependency>
-		
 		<!-- springboot-aop包,AOP切面注解,Aspectd等相关注解 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -44,5 +42,4 @@
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
 	</dependencies>
-
 </project>

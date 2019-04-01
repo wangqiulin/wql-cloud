@@ -7,7 +7,6 @@
 		<artifactId>wql-cloud-basic</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.elasticsearch.client</groupId>
@@ -18,7 +17,6 @@
 			<artifactId>elasticsearch</artifactId>
 		</dependency>
 	</dependencies>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -33,5 +31,4 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 </project>

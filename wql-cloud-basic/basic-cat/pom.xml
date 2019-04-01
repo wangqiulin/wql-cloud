@@ -7,7 +7,6 @@
 		<artifactId>wql-cloud-basic</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -19,5 +18,4 @@
 			<version>2.0.0</version>
 		</dependency>
 	</dependencies>
-
 </project>
