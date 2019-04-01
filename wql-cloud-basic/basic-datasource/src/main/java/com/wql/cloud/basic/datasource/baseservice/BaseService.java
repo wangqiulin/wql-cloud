@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.wql.cloud.basic.datasource.tk.MyMapper;
 
-import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
 /**
@@ -23,38 +23,38 @@ public abstract class BaseService<T extends BaseDO> {
     public static final String ORDER_BYID_DESC = "id desc";
     
     @Autowired
-    private Mapper<T> mapper;
+    private MyMapper<T> myMapper;
     
     //=================查询一条===================//
     
     public T getById(Integer id) {
-        return this.mapper.selectByPrimaryKey(id);
+        return this.myMapper.selectByPrimaryKey(id);
     }
     
     public T getById(Long id) {
-        return this.mapper.selectByPrimaryKey(id);
+        return this.myMapper.selectByPrimaryKey(id);
     }
     
     public T getByRecord(T record) {
-        return this.mapper.selectOne(record);
+        return this.myMapper.selectOne(record);
     }
 
     public T getByExample(Example example) {
-        return this.mapper.selectOneByExample(example);
+        return this.myMapper.selectOneByExample(example);
     }
     
     //=================查询多条===================//
     
     public List<T> list() {
-        return this.mapper.selectAll();
+        return this.myMapper.selectAll();
     }
 
     public List<T> listByRecord(T record) {
-        return this.mapper.select(record);
+        return this.myMapper.select(record);
     }
 
     public List<T> listByExample(Example example) {
-        return this.mapper.selectByExample(example);
+        return this.myMapper.selectByExample(example);
     }
 
     //=================分页查询(查询总数)===================//
@@ -103,7 +103,7 @@ public abstract class BaseService<T extends BaseDO> {
         if(desc) {
         	PageHelper.orderBy(ORDER_BYID_DESC);
         }
-        return new PageInfo<T>(this.mapper.select(record));
+        return new PageInfo<T>(this.myMapper.select(record));
     }
     
     /**
@@ -136,7 +136,7 @@ public abstract class BaseService<T extends BaseDO> {
         if(desc) {
         	PageHelper.orderBy(ORDER_BYID_DESC);
         }
-        return new PageInfo<T>(this.mapper.selectByExample(example));
+        return new PageInfo<T>(this.myMapper.selectByExample(example));
     }
 
     
@@ -174,7 +174,7 @@ public abstract class BaseService<T extends BaseDO> {
         if(desc) {
         	PageHelper.orderBy(ORDER_BYID_DESC);
         }
-        return new PageInfo<T>(this.mapper.select(record));
+        return new PageInfo<T>(this.myMapper.select(record));
     }
     
     /**
@@ -207,28 +207,28 @@ public abstract class BaseService<T extends BaseDO> {
         if(desc) {
         	PageHelper.orderBy(ORDER_BYID_DESC);
         }
-        return new PageInfo<T>(this.mapper.selectByExample(example));
+        return new PageInfo<T>(this.myMapper.selectByExample(example));
     }
     
     
     //=================查询数量===================//	
     
     public Integer countByRecord(T record) {
-        return this.mapper.selectCount(record);
+        return this.myMapper.selectCount(record);
     }
 
     public Integer countByExample(Example example) {
-        return this.mapper.selectCountByExample(example);
+        return this.myMapper.selectCountByExample(example);
     }
     
     //=================根据主键，查询记录是否存在===================//	
     
     public boolean existsById(Integer id){
-    	return this.mapper.existsWithPrimaryKey(id);
+    	return this.myMapper.existsWithPrimaryKey(id);
     }
     
     public boolean existsById(Long id){
-    	return this.mapper.existsWithPrimaryKey(id);
+    	return this.myMapper.existsWithPrimaryKey(id);
     }
     
     //=================新增===================//
@@ -236,64 +236,74 @@ public abstract class BaseService<T extends BaseDO> {
     public Integer save(T record) {
     	record.setId(null);
     	record.setCreateDate(new Date());
-    	record.setUpdateDate(record.getUpdateDate());
+    	record.setUpdateDate(record.getCreateDate());
     	record.setDataFlag(1);
-        return this.mapper.insert(record);
+        return this.myMapper.insert(record);
     }
 
     public Integer saveSelective(T record) {
     	record.setId(null);
     	record.setCreateDate(new Date());
-    	record.setUpdateDate(record.getUpdateDate());
+    	record.setUpdateDate(record.getCreateDate());
     	record.setDataFlag(1);
-        return this.mapper.insertSelective(record);
+        return this.myMapper.insertSelective(record);
+    }
+    
+    public Integer batchSaveList(List<T> recordList) {
+    	for (T record : recordList) {
+    		record.setId(null);
+        	record.setCreateDate(new Date());
+        	record.setUpdateDate(record.getCreateDate());
+        	record.setDataFlag(1);
+		}
+        return this.myMapper.insertList(recordList);
     }
     
     //=================更新===================//
     
     public Integer updateById(T record) {
     	record.setUpdateDate(new Date());
-        return this.mapper.updateByPrimaryKey(record);
+        return this.myMapper.updateByPrimaryKey(record);
     }
 
     public Integer updateSelectiveById(T record) {
     	record.setUpdateDate(new Date());
-        return this.mapper.updateByPrimaryKeySelective(record);
+        return this.myMapper.updateByPrimaryKeySelective(record);
     }
 
     public Integer updateByExample(T record, Example example) {
     	record.setUpdateDate(new Date());
-        return this.mapper.updateByExample(record, example);
+        return this.myMapper.updateByExample(record, example);
     }
 
     public Integer updateSelectiveByExample(T record, Example example) {
     	record.setUpdateDate(new Date());
-        return this.mapper.updateByExampleSelective(record, example);
+        return this.myMapper.updateByExampleSelective(record, example);
     }
 
     
     //=================删除===================//
     
     public Integer removeById(Integer id) {
-        return this.mapper.deleteByPrimaryKey(id);
+        return this.myMapper.deleteByPrimaryKey(id);
     }
     
     public Integer removeById(Long id) {
-        return this.mapper.deleteByPrimaryKey(id);
+        return this.myMapper.deleteByPrimaryKey(id);
     }
 
     public Integer removeByRecord(T record) {
-        return this.mapper.delete(record);
+        return this.myMapper.delete(record);
     }
     
     public Integer removeByExample(Example example) {
-        return this.mapper.deleteByExample(example);
+        return this.myMapper.deleteByExample(example);
     }
     
     public Integer removeByIds(List<?> ids, Class<T> clazz) {
     	Example example = new Example(clazz);
     	example.createCriteria().andIn("id", ids);
-        return this.mapper.deleteByExample(example);
+        return this.myMapper.deleteByExample(example);
     }
     
 }

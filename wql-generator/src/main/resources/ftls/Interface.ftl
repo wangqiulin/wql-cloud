@@ -28,7 +28,7 @@ public interface ${ClassName}Service {
 	Integer update(${ClassName} ${EntityName});
 
 	/**
-	 * 删除记录
+	 * 删除
 	 * 
 	 * @param ${EntityName}
 	 * @return
@@ -36,7 +36,7 @@ public interface ${ClassName}Service {
 	Integer delete(${ClassName} ${EntityName});
 
 	/**
-	 * 查询记录
+	 * 查询
 	 * 
 	 * @param ${EntityName}
 	 * @return
