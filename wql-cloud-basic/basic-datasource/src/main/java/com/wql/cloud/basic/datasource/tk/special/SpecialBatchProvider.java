@@ -16,6 +16,12 @@ public class SpecialBatchProvider extends MapperTemplate {
 		super(mapperClass, mapperHelper);
 	}
 
+	
+	/**
+	 * insert into table (aa,bb,cc) values(xx,xx,xx),(oo,oo,oo)
+	 * @param ms
+	 * @return
+	 */
 	public String batchInsertList(MappedStatement ms) {
 		Class<?> entityClass = getEntityClass(ms);
 		// 开始拼sql
@@ -37,5 +43,5 @@ public class SpecialBatchProvider extends MapperTemplate {
 		sql.append("</foreach>");
 		return sql.toString();
 	}
-
+	
 }

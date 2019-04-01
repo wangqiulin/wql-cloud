@@ -22,5 +22,5 @@ public interface SpecialBatchMapper<T> {
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	@InsertProvider(type = SpecialBatchProvider.class, method = "batchInsertList")
 	int batchInsertList(List<T> list);
-
+	
 }
