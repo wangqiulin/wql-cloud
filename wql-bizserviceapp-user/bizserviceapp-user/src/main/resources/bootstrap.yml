@@ -29,7 +29,10 @@ hystrix:
       execution:
         isolation:
           strategy: SEMAPHORE
-
+          thread:
+            timeoutInMilliseconds: 5000  #Hystrix的超时时间改为5秒
+            
+#feign.hystrix.enabled: false 索性禁用feign的hystrix。该做法除非一些特殊场景，不推荐使用
 #fegin调用打印日志
 logging:
   level:
@@ -41,7 +44,7 @@ wql:
     password: admin 
 
 feign:
-  serviceId:
+  serviceId: 
     user: bizserviceapp-user
       
 ---
