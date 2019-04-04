@@ -29,6 +29,7 @@
 		<module>basic-alipay</module>
 		<module>basic-log</module>
 		<module>basic-mail</module>
+		<module>basic-mq</module>
 	</modules>
 	<dependencies>
 		<dependency>
