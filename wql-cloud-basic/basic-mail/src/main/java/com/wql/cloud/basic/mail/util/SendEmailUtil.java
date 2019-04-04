@@ -44,7 +44,7 @@ public class SendEmailUtil {
 			simpleMailMessage.setText(mailBean.getContent());
 			javaMailSender.send(simpleMailMessage);
 		} catch (Exception e) {
-			logger.error("邮件发送失败", e.getMessage());
+			logger.error("邮件发送失败", e);
 		}
 	}
 
@@ -73,7 +73,7 @@ public class SendEmailUtil {
 			mimeMessageHelper.setText(sb.toString(), true);
 			javaMailSender.send(mimeMailMessage);
 		} catch (Exception e) {
-			logger.error("邮件发送失败", e.getMessage());
+			logger.error("邮件发送失败", e);
 		}
 	}
 
@@ -103,7 +103,7 @@ public class SendEmailUtil {
             mimeMessageHelper.addAttachment("mail.png", file);
             javaMailSender.send(mimeMailMessage);
         } catch (Exception e) {
-            logger.error("邮件发送失败", e.getMessage());
+            logger.error("邮件发送失败", e);
         }
     }
 	
@@ -133,7 +133,7 @@ public class SendEmailUtil {
             mimeMessageHelper.addInline("picture", file);
             javaMailSender.send(mimeMailMessage);
         } catch (Exception e) {
-            logger.error("邮件发送失败", e.getMessage());
+            logger.error("邮件发送失败", e);
         }
     }
 	
