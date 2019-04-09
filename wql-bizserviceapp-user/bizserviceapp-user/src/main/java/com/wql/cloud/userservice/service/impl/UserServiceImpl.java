@@ -8,10 +8,15 @@ import org.springframework.util.Assert;
 import com.github.pagehelper.PageInfo;
 import com.wql.cloud.basic.datasource.baseservice.BaseService;
 import com.wql.cloud.basic.datasource.dynamic.TargetDataSource;
-import com.wql.cloud.basic.redisson.distributeLock.aop.DistributedLock;
 import com.wql.cloud.userservice.pojo.domain.User;
 import com.wql.cloud.userservice.service.UserService;
 
+/**
+ * 分布式锁： @DistributedLock(lockName="lock:test", tryLock=true)
+ * 
+ * @author wangqiulin
+ *
+ */
 @Service
 public class UserServiceImpl extends BaseService<User> implements UserService {
 
@@ -21,7 +26,6 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	}
 
 	@Override
-	@DistributedLock(lockName="lock:test", tryLock=true)
 	public Integer update(User req) {
 		return this.updateSelectiveById(req);
 	}
@@ -50,6 +54,5 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	public PageInfo<User> queryPageList(Integer page, Integer pageSize, User req) {
 		return this.pageListByRecord(page, pageSize, req);
 	}
-	
 
 }
