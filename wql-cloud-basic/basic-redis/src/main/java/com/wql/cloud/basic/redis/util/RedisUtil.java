@@ -2,6 +2,7 @@ package com.wql.cloud.basic.redis.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
@@ -120,6 +121,26 @@ public class RedisUtil {
         Date date = sdf.parse(dataStr);
         return date;
     }
+	
+	
+	//========================Hash结构，保存和读取map=============================//
+	
+	public void setMap(String key, Map<Object, Object> dataMap) {
+		redisTemplate.opsForHash().putAll(key, dataMap); 
+	}
+	
+	public Map<Object, Object> getMap(String key) {
+		return redisTemplate.opsForHash().entries(key);
+	}
+	
+	public Object getMap(String key, Object K) {
+		return redisTemplate.opsForHash().get(key, K); 
+	}
+	
+	
+	//========================保存和读取list=============================//
+	
+	
 	
 	
 }
