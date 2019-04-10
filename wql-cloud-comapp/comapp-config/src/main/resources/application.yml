@@ -3,6 +3,11 @@ spring:
     name: comapp-config
   profiles: 
     active: dev
+  http: 
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true  
   cloud: 
     config:
       server:
@@ -15,6 +20,8 @@ spring:
 
 server: 
   port: 5001
+  tomcat: 
+    uri-encoding: UTF-8
 
 wql: 
   eureka: 
@@ -35,6 +42,7 @@ eureka:
 management:
   security:
     enabled: false #是否开启actuator安全认证
+
 
 # 不同环境的配置
 ---

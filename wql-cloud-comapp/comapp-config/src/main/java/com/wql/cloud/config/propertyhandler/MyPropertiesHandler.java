@@ -1,8 +1,9 @@
-package com.wql.cloud.basic.datasource.propertyhandler;
+package com.wql.cloud.config.propertyhandler;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -13,6 +14,8 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.Resource;
 
 /**
+ * https://www.cnblogs.com/huanzi-qch/p/10149547.html
+ * 
  * 在使用 spring cloud config 时，如果在 properties 文件里面有中文的话，会出现乱码。 乱码的原因是：spring
  * 默认使用org.springframework.boot.env.PropertiesPropertySourceLoader 来加载配置，底层是通过调用
  * Properties 的 load 方法，而load方法输入流的编码是 ISO 8859-1
@@ -46,7 +49,7 @@ public class MyPropertiesHandler implements PropertySourceLoader {
 		InputStream inputStream = null;
 		try {
 			inputStream = resource.getInputStream();
-			properties.load(new InputStreamReader(inputStream, "utf-8"));
+			properties.load(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 			inputStream.close();
 		} catch (IOException e) {
 			logger.error("load inputstream failure...", e);
@@ -63,3 +66,4 @@ public class MyPropertiesHandler implements PropertySourceLoader {
 	}
 
 }
+
