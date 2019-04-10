@@ -19,12 +19,14 @@ public abstract class BaseDO {
 	/**
 	 * 创建时间
 	 */
+	@JsonIgnore
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createDate;
 
 	/**
 	 * 修改时间
 	 */
+	@JsonIgnore
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date updateDate;
 
