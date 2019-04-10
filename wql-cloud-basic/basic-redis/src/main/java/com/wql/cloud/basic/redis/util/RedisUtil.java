@@ -42,6 +42,10 @@ public class RedisUtil {
 		redisTemplate.opsForHash().put(key, hashKey, value);
 	}
 	
+	public void setAllMap(String key, Map<Object, Object> dataMap) {
+		redisTemplate.opsForHash().putAll(key, dataMap); 
+	}
+	
 	/**在hashKey已经存在的情况下, putIfAbsent下不会进入修改value*/
 	public void hashSetIfAbsent(String key, String hashKey, Object value) {
 		redisTemplate.opsForHash().putIfAbsent(key, hashKey, value);
@@ -79,6 +83,10 @@ public class RedisUtil {
 	
 	public Object hashGet(String key, String hashKey) {
 		return redisTemplate.opsForHash().get(key, hashKey);
+	}
+	
+	public Map<Object, Object> getMapByKey(String key) {
+		return redisTemplate.opsForHash().entries(key);
 	}
 	
 	
@@ -121,26 +129,6 @@ public class RedisUtil {
         Date date = sdf.parse(dataStr);
         return date;
     }
-	
-	
-	//========================Hash结构，保存和读取map=============================//
-	
-	public void setMap(String key, Map<Object, Object> dataMap) {
-		redisTemplate.opsForHash().putAll(key, dataMap); 
-	}
-	
-	public Map<Object, Object> getMap(String key) {
-		return redisTemplate.opsForHash().entries(key);
-	}
-	
-	public Object getMap(String key, Object K) {
-		return redisTemplate.opsForHash().get(key, K); 
-	}
-	
-	
-	//========================保存和读取list=============================//
-	
-	
 	
 	
 }
