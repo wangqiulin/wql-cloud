@@ -10,6 +10,8 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
+ * http://ghoulich.xninja.org/2018/04/19/xxl-job-basic-usage-guide/
+ * 
  * 任务Handler示例（Bean模式）
  *
  * 开发步骤：
