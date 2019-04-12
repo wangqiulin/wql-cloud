@@ -12,25 +12,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public abstract class BaseDO {
 
+	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = DATE_FORMAT)
 	private Date createDate;
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = DATE_FORMAT)
 	private Date updateDate;
 
 	/**数据标志: 0无效, 1有效*/
 	@JsonIgnore
 	private Integer dataFlag;
 
-	@JsonIgnore
 	@Transient //非实体类字段
 	public Integer page;
 
-	@JsonIgnore
 	@Transient
 	public Integer pageSize;
 
