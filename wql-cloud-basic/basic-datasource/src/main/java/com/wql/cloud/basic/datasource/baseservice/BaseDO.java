@@ -1,5 +1,6 @@
 package com.wql.cloud.basic.datasource.baseservice;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.GeneratedValue;
@@ -9,8 +10,21 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public abstract class BaseDO {
+/**
+ * 
+ * @Transient 非实体类字段
+ * @JsonIgnore 请求和返回时都忽略该字段
+ * @JsonIgnoreProperties({ "字段1", "字段2" }) 请求时不忽略字段，返回时忽略该字段
+ * 
+ * @author wangqiulin
+ *
+ */
+@JsonIgnoreProperties({ "page", "pageSize" })
+public abstract class BaseDO implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	
