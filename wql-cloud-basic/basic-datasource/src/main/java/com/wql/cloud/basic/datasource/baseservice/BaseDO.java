@@ -16,32 +16,22 @@ public abstract class BaseDO {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	/**
-	 * 创建时间
-	 */
-	@JsonIgnore
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createDate;
 
-	/**
-	 * 修改时间
-	 */
-	@JsonIgnore
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date updateDate;
 
-	/**
-	 * 数据标志: 0无效, 1有效
-	 */
+	/**数据标志: 0无效, 1有效*/
 	@JsonIgnore
 	private Integer dataFlag;
 
+	@JsonIgnore
 	@Transient //非实体类字段
-	@JsonIgnore  //json忽略返回
 	public Integer page;
 
-	@Transient
 	@JsonIgnore
+	@Transient
 	public Integer pageSize;
 
 	public Integer getId() {
