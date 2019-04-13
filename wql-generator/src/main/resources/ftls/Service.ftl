@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.util.Assert;
 import com.github.pagehelper.PageInfo;
 import com.wql.cloud.basic.datasource.dynamic.TargetDataSource;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Author ${Author}
@@ -17,16 +18,19 @@ import com.wql.cloud.basic.datasource.dynamic.TargetDataSource;
 public class ${ClassName}ServiceImpl extends BaseService<${ClassName}> ${Impl} {
 
 	@Override
+	@Transactional
 	public Integer save(${ClassName} ${EntityName}) {
 		return this.saveSelective(${EntityName});
 	}
 
 	@Override
+	@Transactional
 	public Integer update(${ClassName} ${EntityName}) {
 		return this.updateSelectiveById(${EntityName});
 	}
 
 	@Override
+	@Transactional
 	public Integer delete(${ClassName} ${EntityName}) {
 		Assert.notNull(${EntityName}.getId(), "id为空");
 		return this.removeById(${EntityName}.getId());
