@@ -4,7 +4,7 @@
     <!-- 日志文件输出根目录 -->
     <property name="log.root" value="/application/logs"/>
     <!-- 模块名称， 影响日志配置名，日志文件名 -->
-    <property name="log.moduleName" value="bizserviceapp-user"/>
+    <property name="log.moduleName" value="bizserviceapp-pay"/>
     <!-- 单日志文件大小 -->
     <property name="log.max.size" value="100MB"/>
     <!-- 日志文件输出目录 -->

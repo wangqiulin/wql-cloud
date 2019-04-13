@@ -2,12 +2,16 @@ package com.wql.cloud.userservice.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import com.alibaba.fescar.spring.annotation.GlobalTransactional;
 import com.github.pagehelper.PageInfo;
 import com.wql.cloud.basic.datasource.baseservice.BaseService;
 import com.wql.cloud.basic.datasource.dynamic.TargetDataSource;
+import com.wql.cloud.payservice.client.PayClient;
+import com.wql.cloud.payservice.pojo.domain.Order;
 import com.wql.cloud.userservice.pojo.domain.User;
 import com.wql.cloud.userservice.service.UserService;
 
@@ -20,8 +24,21 @@ import com.wql.cloud.userservice.service.UserService;
 @Service
 public class UserServiceImpl extends BaseService<User> implements UserService {
 
+	@Autowired
+	private PayClient payClient;
+	
 	@Override
+	@GlobalTransactional
 	public Integer save(User req) {
+		Order order = new Order();
+		order.setOrderNo("110");
+		order.setGoodsName("测试分布式事务商品");
+		payClient.save(order);
+		
+		this.saveSelective(req);
+		
+		int i = 1/0;
+		
 		return this.saveSelective(req);
 	}
 

@@ -1,11 +1,11 @@
 spring:
   application:
-    name: bizserviceapp-user
+    name: bizserviceapp-pay
   profiles:
     active: dev
     
 server: 
-  port: 6001
+  port: 6002
 
 eureka: 
   instance:
@@ -45,7 +45,6 @@ wql:
 
 feign:
   serviceId: 
-    user: bizserviceapp-user
     pay: bizserviceapp-pay
       
 ---
@@ -56,7 +55,7 @@ spring:
 #      discovery:
 #        enabled: true
 #        serviceId: comapp-config
-#      name: bizserviceapp-user
+#      name: bizserviceapp-pay
 #      profile: dev
 #      label: master
   
@@ -73,7 +72,7 @@ spring:
 #      discovery:
 #        enabled: true
 #        serviceId: comapp-config
-#      name: bizserviceapp-user
+#      name: bizserviceapp-pay
 #      profile: prod
 #      label: master
   

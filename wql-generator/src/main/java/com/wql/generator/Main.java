@@ -38,8 +38,8 @@ public class Main {
     public static void single() {
         Invoker invoker = new SingleInvoker.Builder()
         		.setDbName("wql-cloud")
-                .setTableName("t_user")
-                .setClassName("User2")
+                .setTableName("t_order")
+                .setClassName("Order")
                 .build();
         invoker.execute();
     }

@@ -2,13 +2,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>bizserviceapp-user</artifactId>
+	<artifactId>bizserviceapp-pay</artifactId>
 	<parent>
 		<groupId>com.wql.cloud</groupId>
-		<artifactId>wql-bizserviceapp-user</artifactId>
+		<artifactId>wql-bizserviceapp-pay</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-
 	<!-- 版本锁定 -->
 	<dependencyManagement>
 		<dependencies>
@@ -54,28 +53,6 @@
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
 
-		<!-- 解决分布式事务问题-fescar -->
-		<dependency>
-			<groupId>com.alibaba.boot</groupId>
-			<artifactId>nacos-config-spring-boot-starter</artifactId>
-			<version>0.2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba.fescar</groupId>
-			<artifactId>fescar-spring</artifactId>
-			<version>0.4.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba.fescar</groupId>
-			<artifactId>fescar-dubbo</artifactId>
-			<version>0.4.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba.fescar</groupId>
-			<artifactId>fescar-dubbo-alibaba</artifactId>
-			<version>0.4.1</version>
-		</dependency>
-
 		<!-- refresh手动刷新 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -104,31 +81,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.wql.cloud</groupId>
-			<artifactId>basic-httpclient</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.wql.cloud</groupId>
 			<artifactId>basic-swagger</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>com.wql.cloud</groupId>
-			<artifactId>basic-redis</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.wql.cloud</groupId>
-			<artifactId>basic-redisson</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		
-		<!-- soaclient -->
-		<dependency>
-			<groupId>com.wql.cloud</groupId>
-			<artifactId>wql-soaclient-pay</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		
 	</dependencies>
 </project>

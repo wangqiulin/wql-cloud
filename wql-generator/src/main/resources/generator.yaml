@@ -1,10 +1,10 @@
 db:
-  url: jdbc:mysql://47.98.209.46:3306/wql-cloud
+  url: jdbc:mysql://127.0.0.1:3306/wql-cloud?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=UTC
   username: root
   password: root
 author: wangqiulin
-filePathPrefix: C:\coding\wql\wql-cloud\wql-bizserviceapp-user\bizserviceapp-user\src\main\java\
-packageName: com.wql.cloud.userservice
+filePathPrefix: C:\coding\wql\wql-cloud\wql-bizserviceapp-pay\bizserviceapp-pay\src\main\java\
+packageName: com.wql.cloud.payservice
 path:
   controller: controller
   service: service.impl
