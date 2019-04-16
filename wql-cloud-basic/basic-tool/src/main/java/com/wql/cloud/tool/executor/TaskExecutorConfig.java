@@ -15,7 +15,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
  *  @Autowired
     private TaskExecutor taskExecutor;
  * 	
- * 	taskExecutor.execute("Runnable线程类");
+ * 	taskExecutor.execute(() -> { 线程任务 });
  * 
  */
 @Configuration
