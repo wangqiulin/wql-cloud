@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.rabbitmq.config;
+package com.wql.cloud.basic.mq.rabbitconfig;
 
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
