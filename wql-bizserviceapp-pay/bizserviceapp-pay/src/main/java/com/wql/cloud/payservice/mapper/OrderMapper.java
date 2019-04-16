@@ -1,9 +1,7 @@
 package com.wql.cloud.payservice.mapper;
 
-import com.wql.cloud.payservice.pojo.domain.Order;
-import org.apache.ibatis.annotations.Mapper;
 import com.wql.cloud.basic.datasource.tk.MyMapper;
-import java.util.List;
+import com.wql.cloud.payservice.pojo.domain.Order;
 
 /**
  * Author wangqiulin

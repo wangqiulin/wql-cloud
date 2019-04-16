@@ -17,6 +17,6 @@ public interface PayClient {
 	DataResponse<List<Order>> queryList(@RequestBody Order req);
 
 	@RequestMapping(value = "/order/save", method = RequestMethod.POST)
-	public DataResponse<Void> save(@RequestBody Order req);
+	DataResponse<Void> save(@RequestBody Order req);
 	
 }
