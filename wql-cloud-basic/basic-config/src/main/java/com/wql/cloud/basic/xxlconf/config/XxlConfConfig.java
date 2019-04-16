@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.config.config;
+package com.wql.cloud.basic.xxlconf.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.config.demo;
+package com.wql.cloud.basic.xxlconf.demo;
 
 import org.springframework.stereotype.Component;
 
