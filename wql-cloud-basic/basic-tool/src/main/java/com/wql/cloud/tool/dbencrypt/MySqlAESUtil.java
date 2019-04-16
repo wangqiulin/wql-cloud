@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.encrypt.util;
+package com.wql.cloud.tool.dbencrypt;
 
 import java.io.UnsupportedEncodingException;
 import java.security.Key;
@@ -14,7 +14,8 @@ import org.springframework.security.crypto.codec.Hex;
 import org.springframework.util.Assert;
 
 /**
- * mysql aes加密工具类
+ * mysql AES加密工具类
+ * 
  * @author wangqiulin
  *
  */

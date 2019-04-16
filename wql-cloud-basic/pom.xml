@@ -14,14 +14,11 @@
 		<module>basic-redis</module>
 		<module>basic-datasource</module>
 		<module>basic-redisson</module>
-		<module>basic-httpclient</module>
-		<module>basic-swagger</module>
 		<module>basic-jwt</module>
 		<module>basic-job</module>
 		<module>basic-config</module>
 		<module>basic-elasticsearch</module>
 		<module>basic-rabbitmq</module>
-		<module>basic-encrypt</module>
 		<module>basic-idgenerator</module>
 		<module>basic-tool</module>
 		<module>basic-cat</module>

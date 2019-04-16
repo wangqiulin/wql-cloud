@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.swagger.config;
+package com.wql.cloud.basic.datasource.swagger2;
 
 import java.util.ArrayList;
 import java.util.List;

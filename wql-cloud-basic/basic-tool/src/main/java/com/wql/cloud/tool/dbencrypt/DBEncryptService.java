@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.encrypt.config;
+package com.wql.cloud.tool.dbencrypt;
 
 /**
  * 

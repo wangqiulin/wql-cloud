@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.httpclient.util;
+package com.wql.cloud.tool.httpclient;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;

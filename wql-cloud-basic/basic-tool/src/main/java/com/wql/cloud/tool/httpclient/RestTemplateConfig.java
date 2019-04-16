@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.httpclient.config;
+package com.wql.cloud.tool.httpclient;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;

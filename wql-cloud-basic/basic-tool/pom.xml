@@ -68,5 +68,14 @@
 			<artifactId>commons-net</artifactId>
 			<version>3.5</version>
 		</dependency>
+		<!-- httpclient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+		</dependency>
 	</dependencies>
 </project>

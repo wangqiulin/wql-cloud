@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.httpclient.config;
+package com.wql.cloud.tool.httpclient;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

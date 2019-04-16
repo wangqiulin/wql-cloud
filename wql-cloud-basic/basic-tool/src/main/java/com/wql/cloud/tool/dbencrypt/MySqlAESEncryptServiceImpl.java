@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.encrypt.config;
+package com.wql.cloud.tool.dbencrypt;
 
 
 import javax.annotation.PostConstruct;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
 
-import com.wql.cloud.basic.encrypt.util.MySqlAESUtil;
 
 /**
  * MySqlAesUtil的实现, 默认数据库加密实现
