@@ -32,6 +32,7 @@
 		<module>basic-mq</module>
 		<module>basic-sso</module>
 		<module>basic-fescar</module>
+		<module>basic-oss</module>
 	</modules>
 	<dependencies>
 		<dependency>
