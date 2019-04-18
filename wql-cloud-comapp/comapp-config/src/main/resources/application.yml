@@ -20,8 +20,6 @@ spring:
 
 server: 
   port: 5001
-  tomcat: 
-    uri-encoding: UTF-8
 
 wql: 
   eureka: 
