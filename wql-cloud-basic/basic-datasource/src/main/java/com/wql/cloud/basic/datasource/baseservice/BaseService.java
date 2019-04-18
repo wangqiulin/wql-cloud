@@ -20,6 +20,7 @@ public abstract class BaseService<T extends BaseDO> {
 
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    public static final String ID = "id";
     public static final String ORDER_BYID_DESC = "id desc";
     
     @Autowired
@@ -302,7 +303,7 @@ public abstract class BaseService<T extends BaseDO> {
     
     public Integer removeByIds(List<?> ids, Class<T> clazz) {
     	Example example = new Example(clazz);
-    	example.createCriteria().andIn("id", ids);
+    	example.createCriteria().andIn(ID, ids);
         return this.mapper.deleteByExample(example);
     }
     
