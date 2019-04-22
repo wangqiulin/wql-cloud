@@ -24,18 +24,18 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
-			<version>1.1.10</version>
+			<version>1.1.16</version>
 		</dependency>
 		<!-- mybatis -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
-			<version>3.5.0</version>
+			<version>3.5.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
-			<version>2.0.0</version>
+			<version>2.0.1</version>
 		</dependency>
 		<!-- springboot-aop包,AOP切面注解,Aspectd等相关注解 -->
 		<dependency>
