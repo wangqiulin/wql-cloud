@@ -15,7 +15,7 @@
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
-				<version>6.0.6</version>
+				<version>8.0.15</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>
@@ -80,21 +80,6 @@
 			<artifactId>basic-log</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>com.wql.cloud</groupId>
-			<artifactId>basic-redis</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.wql.cloud</groupId>
-			<artifactId>basic-redisson</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-        <dependency>
-            <groupId>com.wql.cloud</groupId>
-            <artifactId>basic-job</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
 		
 		<!-- soaclient -->
 		<dependency>
@@ -102,6 +87,5 @@
 			<artifactId>wql-soaclient-pay</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
 	</dependencies>
 </project>
