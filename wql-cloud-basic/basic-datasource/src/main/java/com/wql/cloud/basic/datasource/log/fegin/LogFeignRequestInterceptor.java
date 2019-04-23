@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.log.fegin;
+package com.wql.cloud.basic.datasource.log.fegin;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
