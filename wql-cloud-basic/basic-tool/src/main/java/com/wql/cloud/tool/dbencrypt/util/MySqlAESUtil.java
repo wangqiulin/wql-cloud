@@ -1,4 +1,4 @@
-package com.wql.cloud.tool.dbencrypt;
+package com.wql.cloud.tool.dbencrypt.util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.Key;

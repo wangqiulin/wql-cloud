@@ -1,10 +1,5 @@
-package com.wql.cloud.tool.dbencrypt;
+package com.wql.cloud.tool.dbencrypt.service;
 
-/**
- * 
- * @author wangqiulin
- *
- */
 public interface DBEncryptService {
 
     /**
