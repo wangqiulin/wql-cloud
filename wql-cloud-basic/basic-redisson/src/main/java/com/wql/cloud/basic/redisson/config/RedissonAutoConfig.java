@@ -61,6 +61,23 @@ public class RedissonAutoConfig {
 	
 	
 	/*@Bean
+	RedissonClient redissonSentinel() {
+		logger.info("【Redisson-哨兵模式】------>开始初始化 ");
+		Config config = new Config();
+		config.setCodec(new org.redisson.client.codec.StringCodec());
+		SentinelServersConfig sentinelServersConfig = config.useSentinelServers().setMasterName("mymaster")
+				.addSentinelAddress("redis://127.0.0.1:26378", "redis://127.0.0.1:26379")
+				.addSentinelAddress("redis://127.0.0.1:26380");
+		if (StringUtils.isNotBlank(redissionProperty.getPassword())) {
+			sentinelServersConfig.setPassword(redissionProperty.getPassword());
+		} 
+		RedissonClient client = Redisson.create(config);
+		logger.info("【Redisson-哨兵模式】------>初始化成功");
+		return client;
+	}*/
+	
+	
+	/*@Bean
 	RedissonClient redissonCluster() {
 		logger.info("【Redisson-集群模式】------>开始初始化 ");
 		Config config = new Config();
@@ -75,27 +92,10 @@ public class RedissonAutoConfig {
 		RedissonClient client = Redisson.create(config);
 		logger.info("【Redisson-集群模式】------>初始化成功");
 		return client;
-	}
+	}*/
 	
 	
-	@Bean
-	RedissonClient redissonSentinel() {
-		logger.info("【Redisson-哨兵模式】------>开始初始化 ");
-		Config config = new Config();
-		config.setCodec(new org.redisson.client.codec.StringCodec());
-		SentinelServersConfig sentinelServersConfig = config.useSentinelServers().setMasterName("mymaster")
-				.addSentinelAddress("127.0.0.1:26389", "127.0.0.1:26379")
-				.addSentinelAddress("127.0.0.1:26319");
-		if (StringUtils.isNotBlank(redissionProperty.getPassword())) {
-			sentinelServersConfig.setPassword(redissionProperty.getPassword());
-		} 
-		RedissonClient client = Redisson.create(config);
-		logger.info("【Redisson-哨兵模式】------>初始化成功");
-		return client;
-	}
-	
-	
-	@Bean
+	/*@Bean
 	RedissonClient redissonMasterSlave() {
 		logger.info("【Redisson-主从模式】------>开始初始化 ");
 		Config config = new Config();
