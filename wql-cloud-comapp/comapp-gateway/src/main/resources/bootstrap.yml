@@ -14,14 +14,15 @@ wql:
       
 zuul:
   routes:
-    #用户服务
-    api-user:  
-      path: /api-user/**
-      serviceId: bizserviceapp-user
-    #公用服务  
-    api-common:  
+    api-common: #公用服务   
       path: /api-common/**
       serviceId: bizserviceapp-common   #如果出现中文文件名，上传文件的文件名会出现失败。访问的是指直接在这个/oss，前面加上"/zuul"，ok
+    api-user:  #用户服务
+      path: /api-user/**
+      serviceId: bizserviceapp-user
+    api-pay:   #用户服务
+      path: /api-pay/**
+      serviceId: bizserviceapp-pay
 
 #超时时间配置
 hystrix:

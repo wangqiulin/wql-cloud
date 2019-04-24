@@ -70,7 +70,6 @@ public class ResponseFilter extends ZuulFilter {
 			ctx.setResponseStatusCode(200);
 			ctx.set("isSuccess", FilterResponseEnum.SUCCESS.getCode());
 		}
-
 		return null;
 	}
 
