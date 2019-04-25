@@ -11,6 +11,9 @@ import com.wql.cloud.basic.wechatpay.enums.TradeTypeEnum;
  */
 public class PlaceOrderModel {
 
+	/**
+	 * 支付方式
+	 */
 	private TradeTypeEnum tradeTypeEnum;
 	
 	/**
