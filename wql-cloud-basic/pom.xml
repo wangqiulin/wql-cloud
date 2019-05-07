@@ -19,7 +19,6 @@
         <module>basic-job</module>
         <module>basic-config</module>
         <module>basic-elasticsearch</module>
-        <module>basic-rabbitmq</module>
         <module>basic-idgenerator</module>
         <module>basic-tool</module>
         <module>basic-cat</module>
