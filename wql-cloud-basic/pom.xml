@@ -29,6 +29,7 @@
         <module>basic-sso</module>
         <module>basic-fescar</module>
         <module>basic-oss</module>
+        <module>basic-seata</module>
     </modules>
     <dependencyManagement>
         <dependencies>
