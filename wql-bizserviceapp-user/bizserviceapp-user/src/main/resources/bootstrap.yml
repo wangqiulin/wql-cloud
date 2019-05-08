@@ -37,6 +37,7 @@ hystrix:
 logging:
   level:
     com.wql.cloud.client: DEBUG
+    io.seata: DEBUG
 
 wql: 
   eureka: 

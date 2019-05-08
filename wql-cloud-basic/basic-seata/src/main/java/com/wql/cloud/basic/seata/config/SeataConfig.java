@@ -20,7 +20,7 @@ public class SeataConfig {
 	@Bean
 	public GlobalTransactionScanner globalTransactionScanner() {
         GlobalTransactionScanner globalTransactionScanner = new GlobalTransactionScanner(
-        		applicationId, "tx_group");
+        		applicationId, "my_test_tx_group");
 		return globalTransactionScanner;
 	}
 	
