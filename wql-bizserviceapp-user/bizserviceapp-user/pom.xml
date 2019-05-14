@@ -75,7 +75,7 @@
 			<artifactId>basic-tool</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-        <!-- <dependency>
+        <dependency>
             <groupId>com.wql.cloud</groupId>
             <artifactId>basic-job</artifactId>
             <version>0.0.1-SNAPSHOT</version>
@@ -89,12 +89,12 @@
             <groupId>com.wql.cloud</groupId>
             <artifactId>basic-mq</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency> -->
-        <dependency>
+        </dependency>
+        <!-- <dependency>
             <groupId>com.wql.cloud</groupId>
             <artifactId>basic-seata</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+        </dependency> -->
         
 		<!-- soaclient -->
 		<dependency>
