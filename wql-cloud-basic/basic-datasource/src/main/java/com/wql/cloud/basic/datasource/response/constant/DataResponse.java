@@ -81,6 +81,10 @@ public class DataResponse<T> implements Serializable {
 	
 	//==================封装公用的响应方法========================//
 	
+	public static <T> DataResponse<T> success() {
+		return new DataResponse<>(BusinessEnum.SUCCESS, null);
+	}
+	
 	public static <T> DataResponse<T> success(T data) {
 		return new DataResponse<>(BusinessEnum.SUCCESS, data);
 	}
@@ -91,6 +95,11 @@ public class DataResponse<T> implements Serializable {
 	
 	public static <T> DataResponse<T> success(String code, String message, T data) {
 		return new DataResponse<>(code, message, data);
+	}
+	
+	
+	public static <T> DataResponse<T> failure() {
+		return new DataResponse<>(BusinessEnum.FAIL);
 	}
 	
 	public static <T> DataResponse<T> failure(String message) {

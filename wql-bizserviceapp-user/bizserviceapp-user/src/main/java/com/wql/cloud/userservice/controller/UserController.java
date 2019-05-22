@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
-import com.wql.cloud.basic.datasource.response.constant.BusinessEnum;
 import com.wql.cloud.basic.datasource.response.constant.DataResponse;
 import com.wql.cloud.tool.bean.BeanUtils;
 import com.wql.cloud.tool.excel.csv.CsvDownloadUtil;
@@ -37,48 +36,42 @@ public class UserController {
 	@ApiOperation(value = "新增")
 	@PostMapping("/user/save")
 	public DataResponse<Void> save(@RequestBody User req) {
-		return userService.save(req) == 1 ? new DataResponse<>(BusinessEnum.SUCCESS) : new DataResponse<>(BusinessEnum.FAIL);
+		return userService.save(req) == 1 ? DataResponse.success() : DataResponse.failure();
 	}
 	
 	
 	@ApiOperation(value = "修改")
 	@PostMapping("/user/update")
 	public DataResponse<Void> update(@RequestBody User req) {
-		return userService.update(req) > 0 ? new DataResponse<>(BusinessEnum.SUCCESS) : new DataResponse<>(BusinessEnum.FAIL);
+		return userService.update(req) > 0 ? DataResponse.success() : DataResponse.failure();
 	}
 	
 	
 	@ApiOperation(value = "删除")
 	@PostMapping("/user/delete")
 	public DataResponse<Void> delete(@RequestBody User req) {
-		return userService.delete(req) > 0 ? new DataResponse<>(BusinessEnum.SUCCESS) : new DataResponse<>(BusinessEnum.FAIL);
+		return userService.delete(req) > 0 ? DataResponse.success() : DataResponse.failure();
 	}
 	
 	
 	@ApiOperation(value = "查询列表")
 	@PostMapping("/user/queryList")
 	public DataResponse<List<User>> queryList(@RequestBody User req) {
-		DataResponse<List<User>> dr = new DataResponse<>(BusinessEnum.SUCCESS);
-		dr.setData(userService.queryList(req));
-		return dr;
+		return DataResponse.success(userService.queryList(req));
 	}
 	
 	
 	@ApiOperation(value = "分页查询列表")
 	@PostMapping("/user/queryPageList")
 	public DataResponse<PageInfo<User>> queryPageList(@RequestBody User req) {
-		DataResponse<PageInfo<User>> dr = new DataResponse<>(BusinessEnum.SUCCESS);
-		dr.setData(userService.queryPageList(req.getPage(), req.getPageSize(), req));
-		return dr;
+		return DataResponse.success(userService.queryPageList(req.getPage(), req.getPageSize(), req));
 	}
 	
 	
 	@ApiOperation(value = "查询记录")
 	@PostMapping("/user/query")
 	public DataResponse<User> query(@RequestBody User req) {
-		DataResponse<User> dr = new DataResponse<>(BusinessEnum.SUCCESS);
-		dr.setData(userService.query(req));
-		return dr;
+		return DataResponse.success(userService.query(req));
 	}
 	
 	
