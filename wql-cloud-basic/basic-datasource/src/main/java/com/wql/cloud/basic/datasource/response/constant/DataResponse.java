@@ -54,7 +54,7 @@ public class DataResponse<T> implements Serializable {
 		this.code = code;
 		this.msg = msg;
 	}
-
+	
 	public String getCode() {
 		return code;
 	}
@@ -78,5 +78,27 @@ public class DataResponse<T> implements Serializable {
 	public void setData(T data) {
 		this.data = data;
 	}
-
+	
+	//==================封装公用的响应方法========================//
+	
+	public static <T> DataResponse<T> success(T data) {
+		return new DataResponse<>(BusinessEnum.SUCCESS, data);
+	}
+	
+	public static <T> DataResponse<T> success(String code, T data) {
+		return new DataResponse<>(code, null, data);
+	}
+	
+	public static <T> DataResponse<T> success(String code, String message, T data) {
+		return new DataResponse<>(code, message, data);
+	}
+	
+	public static <T> DataResponse<T> failure(String message) {
+		return new DataResponse<>(BusinessEnum.FAIL.getCode(), message);
+	}
+	
+	public static <T> DataResponse<T> failure(String code, String message) {
+		return new DataResponse<>(code, message);
+	}
+	
 }
