@@ -9,8 +9,8 @@ import org.springframework.util.Assert;
 import com.github.pagehelper.PageInfo;
 import com.wql.cloud.basic.datasource.baseservice.BaseService;
 import com.wql.cloud.basic.datasource.dynamic.TargetDataSource;
+import com.wql.cloud.basic.redisson.distributeLock.aop.DistributedLock;
 import com.wql.cloud.payservice.client.PayClient;
-import com.wql.cloud.payservice.pojo.domain.Order;
 import com.wql.cloud.userservice.pojo.domain.User;
 import com.wql.cloud.userservice.service.UserService;
 
@@ -29,12 +29,13 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	
 	@Override
 //	@GlobalTransactional
+	@DistributedLock(param = "userName", tryLock=true)
 	public Integer save(User req) {
-		Order order = new Order();
-		order.setOrderNo("111000");
-		order.setGoodsName("测试分布式事务");
-		payClient.save(order);
-		int i = 1/0;
+//		Order order = new Order();
+//		order.setOrderNo("111000");
+//		order.setGoodsName("测试分布式事务");
+//		payClient.save(order);
+//		int i = 1/0;
 		return this.saveSelective(req);
 	}
 

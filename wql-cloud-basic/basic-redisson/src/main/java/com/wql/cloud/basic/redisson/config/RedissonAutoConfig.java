@@ -33,10 +33,6 @@ public class RedissonAutoConfig {
 	@Autowired
 	private RedissonProperty redissionProperty;
 
-	/**
-	 * 单例模式
-	 * @return
-	 */
 	@Bean
 	RedissonClient redissonSingle() {
 		logger.info("【Redisson-单例模式】------>开始初始化 ");
@@ -51,66 +47,72 @@ public class RedissonAutoConfig {
 				.setTimeout(redissionProperty.getTimeout())
 				.setConnectionPoolSize(redissionProperty.getConnectionPoolSize())
 				.setConnectionMinimumIdleSize(redissionProperty.getConnectionMinimumIdleSize());
-		if (StringUtils.isNotBlank(redissionProperty.getPassword())) {
-			serverConfig.setPassword(redissionProperty.getPassword());
-		} 
+		String password = redissionProperty.getPassword();
+		if (StringUtils.isNotBlank(password)) {
+			serverConfig.setPassword(password);
+		}
 		RedissonClient client = Redisson.create(config);
 		logger.info("【Redisson-单例模式】------>初始化成功");
 		return client;
 	}
 	
 	
-	/*@Bean
-	RedissonClient redissonSentinel() {
-		logger.info("【Redisson-哨兵模式】------>开始初始化 ");
-		Config config = new Config();
-		config.setCodec(new org.redisson.client.codec.StringCodec());
-		SentinelServersConfig sentinelServersConfig = config.useSentinelServers().setMasterName("mymaster")
-				.addSentinelAddress("redis://127.0.0.1:26378", "redis://127.0.0.1:26379")
-				.addSentinelAddress("redis://127.0.0.1:26380");
-		if (StringUtils.isNotBlank(redissionProperty.getPassword())) {
-			sentinelServersConfig.setPassword(redissionProperty.getPassword());
-		} 
-		RedissonClient client = Redisson.create(config);
-		logger.info("【Redisson-哨兵模式】------>初始化成功");
-		return client;
-	}*/
+	//主节点不能挂，由于只配置了一个master
+//	@Bean
+//	RedissonClient redissonSentinel() {
+//		logger.info("【Redisson-哨兵模式】------>开始初始化 ");
+//		Config config = new Config();
+//		config.setCodec(new org.redisson.client.codec.StringCodec());
+//		SentinelServersConfig sentinelServersConfig = config.useSentinelServers().setMasterName("mymaster")
+//				.addSentinelAddress("redis://192.168.1.92:26379", "redis://192.168.1.91:26379")
+//				.addSentinelAddress("redis://192.168.1.90:26379");
+//		String password = redissionProperty.getPassword();
+//		if (StringUtils.isNotBlank(password)) {
+//			sentinelServersConfig.setPassword(password);
+//		}
+//		RedissonClient client = Redisson.create(config);
+//		logger.info("【Redisson-哨兵模式】------>初始化成功");
+//		return client;
+//	}
 	
 	
-	/*@Bean
-	RedissonClient redissonCluster() {
-		logger.info("【Redisson-集群模式】------>开始初始化 ");
-		Config config = new Config();
-		config.setCodec(new org.redisson.client.codec.StringCodec());
-		ClusterServersConfig clusterServersConfig = config.useClusterServers()
-			.setScanInterval(2000)	// cluster state scan interval in milliseconds
-			.addNodeAddress("127.0.0.1:7000", "127.0.0.1:7001")
-			.addNodeAddress("127.0.0.1:7002");
-		if (StringUtils.isNotBlank(redissionProperty.getPassword())) {
-			clusterServersConfig.setPassword(redissionProperty.getPassword());
-		} 
-		RedissonClient client = Redisson.create(config);
-		logger.info("【Redisson-集群模式】------>初始化成功");
-		return client;
-	}*/
+	//主节点不能挂
+//	@Bean
+//	RedissonClient redissonMasterSlave() {
+//		logger.info("【Redisson-主从模式】------>开始初始化 ");
+//		Config config = new Config();
+//		config.setCodec(new org.redisson.client.codec.StringCodec());
+//		MasterSlaveServersConfig masterSlaveServersConfig = config.useMasterSlaveServers() 
+//				.setMasterAddress("redis://192.168.1.92:6379") 
+//				.addSlaveAddress("redis://192.168.1.90:6379", "redis://192.168.1.91:6379");
+//		String password = redissionProperty.getPassword();
+//		if (StringUtils.isNotBlank(password)) {
+//			masterSlaveServersConfig.setPassword(password);
+//		} 
+//		RedissonClient client = Redisson.create(config);
+//		logger.info("【Redisson-主从模式】------>初始化成功");
+//		return client;
+//	}
 	
 	
-	/*@Bean
-	RedissonClient redissonMasterSlave() {
-		logger.info("【Redisson-主从模式】------>开始初始化 ");
-		Config config = new Config();
-		config.setCodec(new org.redisson.client.codec.StringCodec());
-		MasterSlaveServersConfig masterSlaveServersConfig = config.useMasterSlaveServers() 
-				.setMasterAddress("127.0.0.1:6379") 
-				.addSlaveAddress("127.0.0.1:6389", "127.0.0.1:6332", "127.0.0.1:6419") 
-				.addSlaveAddress("127.0.0.1:6399");
-		if (StringUtils.isNotBlank(redissionProperty.getPassword())) {
-			masterSlaveServersConfig.setPassword(redissionProperty.getPassword());
-		} 
-		RedissonClient client = Redisson.create(config);
-		logger.info("【Redisson-主从模式】------>初始化成功");
-		return client;
-	}*/
+//	@Bean
+//	RedissonClient redissonCluster() {
+//		logger.info("【Redisson-集群模式】------>开始初始化 ");
+//		Config config = new Config();
+//		config.setCodec(new org.redisson.client.codec.StringCodec());
+//		ClusterServersConfig clusterServersConfig = config.useClusterServers()
+//			.setScanInterval(2000)	// cluster state scan interval in milliseconds
+//			.addNodeAddress("redis://127.0.0.1:7000", "redis://127.0.0.1:7001")
+//			.addNodeAddress("redis://127.0.0.1:7002");
+//		String password = redissionProperty.getPassword();
+//		if (StringUtils.isNotBlank(password)) {
+//			clusterServersConfig.setPassword(password);
+//		}
+//		RedissonClient client = Redisson.create(config);
+//		logger.info("【Redisson-集群模式】------>初始化成功");
+//		return client;
+//	}
+	
 
 	@Bean
 	DistributedLocker distributedLocker(RedissonClient redissonClient) {
