@@ -1,13 +1,15 @@
 package com.wql.cloud.payservice.service.impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
+import com.github.pagehelper.PageInfo;
+import com.wql.cloud.basic.datasource.baseservice.BaseService;
+import com.wql.cloud.basic.datasource.dynamic.TargetDataSource;
 import com.wql.cloud.payservice.pojo.domain.Order;
 import com.wql.cloud.payservice.service.OrderService;
-import org.springframework.stereotype.Service;
-import com.wql.cloud.basic.datasource.baseservice.BaseService;
-import java.util.List;
-import org.springframework.util.Assert;
-import com.github.pagehelper.PageInfo;
-import com.wql.cloud.basic.datasource.dynamic.TargetDataSource;
 
 /**
  * Author wangqiulin
@@ -47,8 +49,8 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
 
 	@Override
 	@TargetDataSource(name = "read")
-	public PageInfo<Order> queryPageList(Integer page, Integer pageSize, Order order) {
-		return this.pageListByRecord(page, pageSize, order);
+	public PageInfo<Order> queryPageList(Order order) {
+		return this.pageListByRecord(order.getPage(), order.getPageSize(), order);
 	}
 	
 }

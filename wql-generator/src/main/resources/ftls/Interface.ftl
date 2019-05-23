@@ -54,11 +54,9 @@ public interface ${ClassName}Service {
 	/**
 	 * 分页查询列表
 	 * 
-	 * @param page
-	 * @param pageSize
 	 * @param ${EntityName}
 	 * @return
 	 */
-	PageInfo<${ClassName}> queryPageList(Integer page, Integer pageSize, ${ClassName} ${EntityName});
+	PageInfo<${ClassName}> queryPageList(${ClassName} ${EntityName});
 
 }

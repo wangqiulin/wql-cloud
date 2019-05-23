@@ -52,7 +52,7 @@ public class ${ClassName}Controller {
 	@ApiOperation(value = "分页查询列表")
 	@PostMapping("/${EntityName}/queryPageList")
 	public DataResponse<PageInfo<${ClassName}>> queryPageList(@RequestBody ${ClassName} ${EntityName}) {
-		return DataResponse.success(${EntityName}Service.queryPageList(${EntityName}.getPage(), ${EntityName}.getPageSize(), ${EntityName}));
+		return DataResponse.success(${EntityName}Service.queryPageList(${EntityName}));
 	}
 	
 	

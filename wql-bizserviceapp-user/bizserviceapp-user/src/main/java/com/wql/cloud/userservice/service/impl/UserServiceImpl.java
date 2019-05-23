@@ -64,8 +64,8 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
 	@Override
 	@TargetDataSource(name = "read")
-	public PageInfo<User> queryPageList(Integer page, Integer pageSize, User req) {
-		return this.pageListByRecord(page, pageSize, req);
+	public PageInfo<User> queryPageList(User req) {
+		return this.pageListByRecord(req.getPage(), req.getPageSize(), req);
 	}
 
 }

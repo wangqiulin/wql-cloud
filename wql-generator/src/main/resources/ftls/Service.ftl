@@ -51,8 +51,8 @@ public class ${ClassName}ServiceImpl extends BaseService<${ClassName}> ${Impl} {
 
 	@Override
 	@TargetDataSource(name = "read")
-	public PageInfo<${ClassName}> queryPageList(Integer page, Integer pageSize, ${ClassName} ${EntityName}) {
-		return this.pageListByRecord(page, pageSize, ${EntityName});
+	public PageInfo<${ClassName}> queryPageList(${ClassName} ${EntityName}) {
+		return this.pageListByRecord(${EntityName}.getPage(), ${EntityName}.getPageSize(), ${EntityName});
 	}
 	
 }

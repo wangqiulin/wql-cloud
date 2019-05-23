@@ -10,7 +10,6 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * 
@@ -21,11 +20,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * @author wangqiulin
  *
  */
-@JsonIgnoreProperties({ "page", "pageSize" })
 public abstract class BaseDO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	
 	@Id
@@ -38,11 +35,10 @@ public abstract class BaseDO implements Serializable{
 	@JsonFormat(pattern = DATE_FORMAT)
 	private Date updateDate;
 
-	/**数据标志: 0无效, 1有效*/
 	@JsonIgnore
-	private Integer dataFlag;
-
-	@Transient //非实体类字段
+	private Integer dataFlag;  //数据标志: 0无效, 1有效
+	
+	@Transient
 	public Integer page;
 
 	@Transient

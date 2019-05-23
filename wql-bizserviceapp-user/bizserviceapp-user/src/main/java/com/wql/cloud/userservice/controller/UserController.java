@@ -64,7 +64,7 @@ public class UserController {
 	@ApiOperation(value = "分页查询列表")
 	@PostMapping("/user/queryPageList")
 	public DataResponse<PageInfo<User>> queryPageList(@RequestBody User req) {
-		return DataResponse.success(userService.queryPageList(req.getPage(), req.getPageSize(), req));
+		return DataResponse.success(userService.queryPageList(req));
 	}
 	
 	

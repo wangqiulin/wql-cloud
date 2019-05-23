@@ -54,11 +54,9 @@ public interface OrderService {
 	/**
 	 * 分页查询列表
 	 * 
-	 * @param page
-	 * @param pageSize
 	 * @param order
 	 * @return
 	 */
-	PageInfo<Order> queryPageList(Integer page, Integer pageSize, Order order);
+	PageInfo<Order> queryPageList(Order order);
 
 }

@@ -55,11 +55,9 @@ public interface UserService {
 	/**
 	 * 分页查询列表
 	 * 
-	 * @param page
-	 * @param pageSize
 	 * @param user
 	 * @return
 	 */
-	PageInfo<User> queryPageList(Integer page, Integer pageSize, User user);
+	PageInfo<User> queryPageList(User user);
 
 }

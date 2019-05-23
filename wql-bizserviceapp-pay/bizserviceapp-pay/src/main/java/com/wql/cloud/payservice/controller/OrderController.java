@@ -55,7 +55,7 @@ public class OrderController {
 	@ApiOperation(value = "分页查询列表")
 	@PostMapping("/order/queryPageList")
 	public DataResponse<PageInfo<Order>> queryPageList(@RequestBody Order order) {
-		return DataResponse.success(orderService.queryPageList(order.getPage(), order.getPageSize(), order));
+		return DataResponse.success(orderService.queryPageList(order));
 	}
 	
 	
