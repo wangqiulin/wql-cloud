@@ -20,8 +20,10 @@ public abstract class BaseService<T extends BaseDO> {
 
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    public static final Integer PAGE = 1;
+    public static final Integer ROWS = 10;
     public static final String ID = "id";
-    public static final String ORDER_BYID_DESC = "id desc";
+    public static final String ID_DESC = "id desc";
     
     @Autowired
     private MyMapper<T> mapper;
@@ -68,8 +70,8 @@ public abstract class BaseService<T extends BaseDO> {
      * @return
      */
     public PageInfo<T> pageList(Integer page, Integer rows) {
-    	page = (page == null || page <= 0) ? 1 : page;
-    	rows = (rows == null || rows <= 0) ? 10 : rows;
+    	page = (page == null || page <= 0) ? PAGE : page;
+    	rows = (rows == null || rows <= 0) ? ROWS : rows;
     	return pageListByRecord(page, rows, null, true);
     }
     
@@ -82,8 +84,8 @@ public abstract class BaseService<T extends BaseDO> {
      * @return
      */
     public PageInfo<T> pageListByRecord(Integer page, Integer rows, T record) {
-    	page = (page == null || page <= 0) ? 1 : page;
-    	rows = (rows == null || rows <= 0) ? 10 : rows;
+    	page = (page == null || page <= 0) ? PAGE : page;
+    	rows = (rows == null || rows <= 0) ? ROWS : rows;
     	return pageListByRecord(page, rows, record, false);
     }
     
@@ -97,12 +99,12 @@ public abstract class BaseService<T extends BaseDO> {
      * @return
      */
     public PageInfo<T> pageListByRecord(Integer page, Integer rows, T record, boolean desc) {
-    	page = (page == null || page <= 0) ? 1 : page;
-    	rows = (rows == null || rows <= 0) ? 10 : rows;
+    	page = (page == null || page <= 0) ? PAGE : page;
+    	rows = (rows == null || rows <= 0) ? ROWS : rows;
     	//分页，根据默认配置
     	PageHelper.startPage(page, rows); 
         if(desc) {
-        	PageHelper.orderBy(ORDER_BYID_DESC);
+        	PageHelper.orderBy(ID_DESC);
         }
         return new PageInfo<T>(this.mapper.select(record));
     }
@@ -116,8 +118,8 @@ public abstract class BaseService<T extends BaseDO> {
      * @return
      */
     public PageInfo<T> pageListByExample(Integer page, Integer rows, Example example) {
-    	page = (page == null || page <= 0) ? 1 : page;
-    	rows = (rows == null || rows <= 0) ? 10 : rows;
+    	page = (page == null || page <= 0) ? PAGE : page;
+    	rows = (rows == null || rows <= 0) ? ROWS : rows;
     	return pageListByExample(page, rows, example, false);
     }
     
@@ -131,11 +133,11 @@ public abstract class BaseService<T extends BaseDO> {
      * @return
      */
     public PageInfo<T> pageListByExample(Integer page, Integer rows, Example example, boolean desc) {
-    	page = (page == null || page <= 0) ? 1 : page;
-    	rows = (rows == null || rows <= 0) ? 10 : rows;
+    	page = (page == null || page <= 0) ? PAGE : page;
+    	rows = (rows == null || rows <= 0) ? ROWS : rows;
         PageHelper.startPage(page, rows);
         if(desc) {
-        	PageHelper.orderBy(ORDER_BYID_DESC);
+        	PageHelper.orderBy(ID_DESC);
         }
         return new PageInfo<T>(this.mapper.selectByExample(example));
     }
@@ -153,8 +155,8 @@ public abstract class BaseService<T extends BaseDO> {
      * @return
      */
     public PageInfo<T> pageListByRecordWithoutCount(Integer page, Integer rows, T record) {
-    	page = (page == null || page <= 0) ? 1 : page;
-    	rows = (rows == null || rows <= 0) ? 10 : rows;
+    	page = (page == null || page <= 0) ? PAGE : page;
+    	rows = (rows == null || rows <= 0) ? ROWS : rows;
     	return pageListByRecord(page, rows, record, false);
     }
     
@@ -168,12 +170,12 @@ public abstract class BaseService<T extends BaseDO> {
      * @return
      */
     public PageInfo<T> pageListByRecordWithoutCount(Integer page, Integer rows, T record, boolean desc) {
-    	page = (page == null || page <= 0) ? 1 : page;
-    	rows = (rows == null || rows <= 0) ? 10 : rows;
+    	page = (page == null || page <= 0) ? PAGE : page;
+    	rows = (rows == null || rows <= 0) ? ROWS : rows;
     	//分页，根据默认配置
     	PageHelper.startPage(page, rows, false);  //false表示不进行count查询
         if(desc) {
-        	PageHelper.orderBy(ORDER_BYID_DESC);
+        	PageHelper.orderBy(ID_DESC);
         }
         return new PageInfo<T>(this.mapper.select(record));
     }
@@ -187,8 +189,8 @@ public abstract class BaseService<T extends BaseDO> {
      * @return
      */
     public PageInfo<T> queryPageListByExampleWithoutCount(Integer page, Integer rows, Example example) {
-    	page = (page == null || page <= 0) ? 1 : page;
-    	rows = (rows == null || rows <= 0) ? 10 : rows;
+    	page = (page == null || page <= 0) ? PAGE : page;
+    	rows = (rows == null || rows <= 0) ? ROWS : rows;
     	return pageListByExample(page, rows, example, false);
     }
     
@@ -202,11 +204,11 @@ public abstract class BaseService<T extends BaseDO> {
      * @return
      */
     public PageInfo<T> pageListByExampleWithoutCount(Integer page, Integer rows, Example example, boolean desc) {
-    	page = (page == null || page <= 0) ? 1 : page;
-    	rows = (rows == null || rows <= 0) ? 10 : rows;
+    	page = (page == null || page <= 0) ? PAGE : page;
+    	rows = (rows == null || rows <= 0) ? ROWS : rows;
         PageHelper.startPage(page, rows, false);   //false表示不进行count查询
         if(desc) {
-        	PageHelper.orderBy(ORDER_BYID_DESC);
+        	PageHelper.orderBy(ID_DESC);
         }
         return new PageInfo<T>(this.mapper.selectByExample(example));
     }
@@ -251,10 +253,11 @@ public abstract class BaseService<T extends BaseDO> {
     }
     
     public Integer batchSaveList(List<T> recordList) {
+    	Date date = new Date();
     	for (T record : recordList) {
     		record.setId(null);
-        	record.setCreateDate(new Date());
-        	record.setUpdateDate(record.getCreateDate());
+        	record.setCreateDate(date);
+        	record.setUpdateDate(date);
         	record.setDataFlag(1);
 		}
         return this.mapper.insertList(recordList);
