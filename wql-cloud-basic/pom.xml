@@ -30,6 +30,7 @@
         <module>basic-fescar</module>
         <module>basic-oss</module>
         <module>basic-seata</module>
+        <module>basic-push</module>
     </modules>
     <dependencyManagement>
         <dependencies>
