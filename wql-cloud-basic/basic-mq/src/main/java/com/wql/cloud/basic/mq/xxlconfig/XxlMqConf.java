@@ -9,7 +9,8 @@ import com.xxl.mq.client.factory.impl.XxlMqSpringClientFactory;
 /**
  * 生产者：
  * 并行消费: XxlMqProducer.produce(new XxlMqMessage("topic_1", data));
- * 串行消费: XxlMqProducer.produce(new XxlMqMessage("topic_1", data, 1L));
+ * 串行消费: XxlMqProducer.produce(new XxlMqMessage("topic_1", data, 1L)); 
+ * 			（ ShardingId 保持一致即可；如秒杀消息，可将 ShardingId 设置为商品ID，则该商户全部消息固定在一台机器消费；）
  * 广播消费: XxlMqProducer.broadcast(new XxlMqMessage("topic_1", data));
  * 延时消息: XxlMqProducer.produce(new XxlMqMessage("topic_1", data, effectTime));
  * 
