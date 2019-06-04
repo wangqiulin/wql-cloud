@@ -47,18 +47,23 @@ zuul:
     enabled: true
     # 存储方式
     repository: REDIS
+    # 默认限流
+    default-policy:
+      limit: 1
+      quota: 1
+      refresh-interval: 3
     # 限流策略
     policies:
       # 指定限流服务
       api-user:
         # 每个周期内请求次数
         limit: 10
-        # 单位时间内允许访问的总时间
-        quota: 1
-        # 周期时间
-        refresh-interval: 1
+        # 单位时间内允许访问的总时间，非必要参数
+        quota: 50
+        # 周期时间（秒）
+        refresh-interval: 60
         # 限流方式 USER 根据用户；ORIGIN 原始请求；URL 请求地址；
-        type: ORIGIN
+        type: URL
   
 #超时时间配置
 hystrix:
@@ -72,7 +77,6 @@ ribbon:
   ConnectTimeout: 3000
   ReadTimeout: 60000
 
-      
 eureka: 
   instance:
     preferIpAddress: true
