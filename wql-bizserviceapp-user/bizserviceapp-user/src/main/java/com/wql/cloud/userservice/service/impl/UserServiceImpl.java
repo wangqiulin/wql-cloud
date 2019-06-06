@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.github.pagehelper.PageInfo;
@@ -27,15 +28,17 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	private PayClient payClient;
 	
 	@Override
+	@Transactional
 //	@GlobalTransactional
 //	@DistributedLock(param = "userName", tryLock=true)
 	public Integer save(User req) {
+		Integer saveSelective = this.saveSelective(req);
 //		Order order = new Order();
 //		order.setOrderNo("111000");
 //		order.setGoodsName("测试分布式事务");
 //		payClient.save(order);
 //		int i = 1/0;
-		return this.saveSelective(req);
+		return saveSelective;
 	}
 
 	@Override
