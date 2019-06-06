@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.wql.cloud.basic.fescar.config.FescarAutoConfiguration
