@@ -29,10 +29,10 @@ public abstract class BaseDO implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@JsonFormat(pattern = DATE_FORMAT)
+	@JsonFormat(pattern = DATE_FORMAT, timezone = "GMT+8")
 	private Date createDate;
 
-	@JsonFormat(pattern = DATE_FORMAT)
+	@JsonFormat(pattern = DATE_FORMAT, timezone = "GMT+8")
 	private Date updateDate;
 
 	@JsonIgnore
