@@ -24,161 +24,209 @@ import com.alipay.api.AlipayResponse;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.domain.AlipayTradeQueryModel;
+import com.alipay.api.domain.AlipayTradeRefundModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
+import com.alipay.api.request.AlipayTradeFastpayRefundQueryRequest;
 import com.alipay.api.request.AlipayTradeQueryRequest;
+import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
+import com.alipay.api.response.AlipayTradeFastpayRefundQueryResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
+import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.wql.cloud.basic.alipay.config.AliPayConfig;
 import com.wql.cloud.basic.alipay.model.CreateOrderModel;
+import com.wql.cloud.basic.alipay.model.RefundOrderModel;
 import com.wql.cloud.basic.alipay.result.PayNotifyResult;
 import com.wql.cloud.basic.alipay.result.QueryOrderResult;
+import com.wql.cloud.basic.alipay.result.QueryRefundOrderResult;
 import com.wql.cloud.basic.alipay.service.AliPayService;
 
 @Service
 public class AliPayServiceImpl implements AliPayService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    //销售产品码，商家和支付宝签约的产品码
-    private static final String QUICK_MSECURITY_PAY = "QUICK_MSECURITY_PAY";
-    private static final String TRADE_SUCCESS = "TRADE_SUCCESS";
-    private static final String WAIT_BUYER_PAY = "WAIT_BUYER_PAY";
-    private static final String TRADE_CLOSED = "TRADE_CLOSED";
-    private static final String TRADE_FINISHED = "TRADE_FINISHED";
-    
-    @Autowired
-    private AliPayConfig config;
-    
-    /**
-     * Android需要编码，
-     * IOS编码后需要再处理下
-     */
-    @Override
-    public String createOrder(CreateOrderModel createOrderModel) {
-    	String orderStr = null;
-        try {
-        	//设置参数
-        	AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-        	model.setOutTradeNo(createOrderModel.getOutTradeNo());
-            model.setTotalAmount(createOrderModel.getTotalAmount());
-            model.setSubject(createOrderModel.getBody());
-            model.setTimeoutExpress(createOrderModel.getTimeoutExpress());
-            model.setProductCode(QUICK_MSECURITY_PAY); 
-            //发起预下单请求
-            AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
-            request.setBizModel(model);
-            request.setNotifyUrl(config.getPayNotifyUrl());
-            AlipayTradeAppPayResponse response = getClient().sdkExecute(request);
-            orderStr = response.getBody();
-            orderStr = URLEncoder.encode(orderStr, "utf-8");
-        } catch (AlipayApiException e) {
-        	logger.error("支付宝下单异常", e);
-        } catch (UnsupportedEncodingException e) {
-        	logger.error("支付宝下单-URLEncoder编码异常", e);
+	// 销售产品码，商家和支付宝签约的产品码
+	private static final String QUICK_MSECURITY_PAY = "QUICK_MSECURITY_PAY";
+	private static final String TRADE_SUCCESS = "TRADE_SUCCESS";
+	private static final String WAIT_BUYER_PAY = "WAIT_BUYER_PAY";
+	private static final String TRADE_CLOSED = "TRADE_CLOSED";
+	private static final String TRADE_FINISHED = "TRADE_FINISHED";
+
+	@Autowired
+	private AliPayConfig config;
+
+	/**
+	 * Android需要编码， IOS编码后需要再处理下
+	 */
+	@Override
+	public String createOrder(CreateOrderModel createOrderModel) {
+		String orderStr = null;
+		try {
+			// 设置参数
+			AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+			model.setOutTradeNo(createOrderModel.getOutTradeNo());
+			model.setTotalAmount(createOrderModel.getTotalAmount());
+			model.setSubject(createOrderModel.getBody());
+			model.setTimeoutExpress(createOrderModel.getTimeoutExpress());
+			model.setProductCode(QUICK_MSECURITY_PAY);
+			// 发起预下单请求
+			AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
+			request.setBizModel(model);
+			request.setNotifyUrl(config.getPayNotifyUrl());
+			AlipayTradeAppPayResponse response = getClient().sdkExecute(request);
+			orderStr = response.getBody();
+			orderStr = URLEncoder.encode(orderStr, "utf-8");
+		} catch (AlipayApiException e) {
+			logger.error("支付宝下单异常", e);
+		} catch (UnsupportedEncodingException e) {
+			logger.error("支付宝下单-URLEncoder编码异常", e);
 		}
-        return orderStr;
-    }
+		return orderStr;
+	}
 
-    
-    @Override
-    public QueryOrderResult queryOrderByTradeNo(String outTradeNo) {
-    	try {
+	@Override
+	public QueryOrderResult queryOrderByTradeNo(String outTradeNo) {
+		try {
 			AlipayTradeQueryModel model = new AlipayTradeQueryModel();
 			model.setOutTradeNo(outTradeNo);
 			AlipayTradeQueryResponse queryResponse = execAliPayClient(model, new AlipayTradeQueryRequest());
-			if(queryResponse != null) {
-				if(queryResponse.isSuccess()) {
-					String tradeStatus = queryResponse.getTradeStatus();
-					switch (tradeStatus) {
-						case TRADE_SUCCESS:
-							return new QueryOrderResult("支付成功", tradeStatus, queryResponse.getSendPayDate());
-						case WAIT_BUYER_PAY:
-							return new QueryOrderResult("待支付", tradeStatus);
-						case TRADE_CLOSED:
-							return new QueryOrderResult("未付款交易超时关闭，或支付完成后全额退款", tradeStatus);
-						case TRADE_FINISHED:
-							return new QueryOrderResult("交易结束，不可退款", tradeStatus);
-						default:
-							break;
-					}
+			if (queryResponse != null && queryResponse.isSuccess()) {
+				String tradeStatus = queryResponse.getTradeStatus();
+				switch (tradeStatus) {
+					case TRADE_SUCCESS:
+						return new QueryOrderResult("支付成功", tradeStatus, queryResponse.getSendPayDate());
+					case WAIT_BUYER_PAY:
+						return new QueryOrderResult("待支付", tradeStatus);
+					case TRADE_CLOSED:
+						return new QueryOrderResult("未付款交易超时关闭，或支付完成后全额退款", tradeStatus);
+					case TRADE_FINISHED:
+						return new QueryOrderResult("交易结束，不可退款", tradeStatus);
+					default:
+						break;
 				}
 			}
 		} catch (Exception e) {
 			logger.error("支付宝支付，查询支付结果异常", e);
 		}
-        return new QueryOrderResult("未知", "unknow");
-    }
+		return new QueryOrderResult("未知", "unknow");
+	}
 
-    
-    @Override
-    public PayNotifyResult paySuccessNotify(Map<String, String> dataMap) {
-        try {
-        	//首先进行签名验证
-        	boolean signVerified = AlipaySignature.rsaCheckV1(dataMap, config.getPublicKey(), config.CHARSET, config.getSignType());
-        	if(!signVerified) {
-        		logger.warn("支付宝支付回调，签名失败");
-        		return null;
-        	}
-        	//数据转换
-        	PayNotifyResult param = JSON.parseObject(JSON.toJSONString(dataMap), PayNotifyResult.class);
-        	if(StringUtils.equalsAny(param.getTradeStatus(), TRADE_SUCCESS, TRADE_FINISHED)) {
-        		return param;
-        	}
+	@Override
+	public String refundOrder(RefundOrderModel refundOrderModel) {
+		String strResponse = null;
+		try {
+			// 设置参数
+			AlipayTradeRefundModel model = new AlipayTradeRefundModel();
+			model.setOutTradeNo(refundOrderModel.getOutTradeNo());
+			model.setTradeNo(refundOrderModel.getTradeNo());
+			model.setRefundAmount(refundOrderModel.getRefundAmount());
+			model.setRefundReason(refundOrderModel.getRefundReason());
+			// 发起请求
+			AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
+			request.setBizContent(JSON.toJSONString(model));
+			AlipayTradeRefundResponse response = getClient().sdkExecute(request);
+			strResponse = response.getCode();
+			if ("10000".equals(response.getCode())) {
+				strResponse = "退款成功";
+			} else {
+				strResponse = response.getSubMsg();
+			}
+		} catch (Exception e) {
+			logger.error("支付宝退款, 出现异常", e);
+		}
+		return strResponse;
+	}
+	
+	
+	@Override
+	public QueryRefundOrderResult queryRefundOrderByTradeNo(String outTradeNo, String outRequestNo) {
+		QueryRefundOrderResult res = new QueryRefundOrderResult();
+	    try {
+	    	Map<String, String> map = new HashMap<>();
+	    	map.put("out_trade_no", outTradeNo);
+	    	map.put("out_request_no", outRequestNo);
+	    	//退款查询
+	        AlipayTradeFastpayRefundQueryRequest request = new AlipayTradeFastpayRefundQueryRequest();
+	        request.setBizContent(JSON.toJSONString(map));
+	        AlipayTradeFastpayRefundQueryResponse response = getClient().sdkExecute(request);
+	        if (response.isSuccess()) {
+	            res.setGmtRefundPay(response.getGmtRefundPay());
+	            res.setRefundStatus(response.getRefundStatus());
+	            return res;
+	        }
+	    } catch (Exception e) {
+	    	logger.error("支付宝退款查询, 出现异常", e);
+	    }
+	    return res;
+	}
+	
+	
+
+	@Override
+	public PayNotifyResult paySuccessNotify(Map<String, String> dataMap) {
+		try {
+			// 首先进行签名验证
+			boolean signVerified = AlipaySignature.rsaCheckV1(dataMap, config.getPublicKey(), config.CHARSET, config.getSignType());
+			if (!signVerified) {
+				logger.warn("支付宝支付回调，签名失败");
+				return null;
+			}
+			// 数据转换
+			PayNotifyResult param = JSON.parseObject(JSON.toJSONString(dataMap), PayNotifyResult.class);
+			if (StringUtils.equalsAny(param.getTradeStatus(), TRADE_SUCCESS, TRADE_FINISHED)) {
+				return param;
+			}
 		} catch (AlipayApiException e) {
 			logger.error("支付宝回调处理异常", e);
 		}
-        return null;
-    }
-    
-    
-    /**
-     * 从request域中读取出支付宝回调的内容
-     * 
-     * @param request
-     * @return
-     */
-    public static Map<String, String> convertRequestParamsToMap(HttpServletRequest request) {
-        Map<String, String> retMap = new HashMap<String, String>();
-        Set<Entry<String, String[]>> entrySet = request.getParameterMap().entrySet();
-        for (Entry<String, String[]> entry : entrySet) {
-            String name = entry.getKey();
-            String[] values = entry.getValue();
-            int valLen = values.length;
-            if (valLen == 1) {
-                retMap.put(name, values[0]);
-            } else if (valLen > 1) {
-                StringBuilder sb = new StringBuilder();
-                for (String val : values) {
-                    sb.append(",").append(val);
-                }
-                retMap.put(name, sb.toString().substring(1));
-            } else {
-                retMap.put(name, "");
-            }
-        }
-        return retMap;
-    }
-    
-    
-    
-    /*****************************以下为公共方法**********************************/
-    
-    private <R extends AlipayResponse> R execAliPayClient(AlipayObject dataModel, AlipayRequest<R> request) {
-        try {
-            request.setBizModel(dataModel);
-            return getClient().execute(request);
-        } catch (AlipayApiException e) {
-            logger.error("支付宝接口调用失败,", e);
-            throw new RuntimeException("支付宝下单失败", e);
-        }
-    }
+		return null;
+	}
 
-    private AlipayClient getClient() {
-        return new DefaultAlipayClient(config.SERVER_URL, 
-        		config.getAppId(), config.getPrivateKey(), 
-        		config.FORMAT,  config.CHARSET,
-                config.getPublicKey(), config.getSignType());
-    }
-    
+	/**
+	 * 从request域中读取出支付宝回调的内容
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static Map<String, String> convertRequestParamsToMap(HttpServletRequest request) {
+		Map<String, String> retMap = new HashMap<String, String>();
+		Set<Entry<String, String[]>> entrySet = request.getParameterMap().entrySet();
+		for (Entry<String, String[]> entry : entrySet) {
+			String name = entry.getKey();
+			String[] values = entry.getValue();
+			int valLen = values.length;
+			if (valLen == 1) {
+				retMap.put(name, values[0]);
+			} else if (valLen > 1) {
+				StringBuilder sb = new StringBuilder();
+				for (String val : values) {
+					sb.append(",").append(val);
+				}
+				retMap.put(name, sb.toString().substring(1));
+			} else {
+				retMap.put(name, "");
+			}
+		}
+		return retMap;
+	}
+
+	/***************************** 以下为公共方法 **********************************/
+
+	private <R extends AlipayResponse> R execAliPayClient(AlipayObject dataModel, AlipayRequest<R> request) {
+		try {
+			request.setBizModel(dataModel);
+			return getClient().execute(request);
+		} catch (AlipayApiException e) {
+			logger.error("支付宝接口调用失败,", e);
+			throw new RuntimeException("支付宝下单失败", e);
+		}
+	}
+
+	private AlipayClient getClient() {
+		return new DefaultAlipayClient(config.SERVER_URL, config.getAppId(), config.getPrivateKey(), config.FORMAT,
+				config.CHARSET, config.getPublicKey(), config.getSignType());
+	}
+
 }

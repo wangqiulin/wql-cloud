@@ -1,17 +1,32 @@
 package com.wql.cloud.basic.wechatpay.service.impl;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
+import java.security.KeyStore;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLContexts;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +34,11 @@ import org.springframework.stereotype.Service;
 
 import com.wql.cloud.basic.wechatpay.config.WechatPayConfig;
 import com.wql.cloud.basic.wechatpay.model.PlaceOrderModel;
+import com.wql.cloud.basic.wechatpay.model.RefundOrderModel;
 import com.wql.cloud.basic.wechatpay.result.PayNotifyResult;
 import com.wql.cloud.basic.wechatpay.result.PlaceOrderResult;
 import com.wql.cloud.basic.wechatpay.result.QueryOrderResult;
+import com.wql.cloud.basic.wechatpay.result.RefundNotifyResult;
 import com.wql.cloud.basic.wechatpay.service.WechatPayService;
 import com.wql.cloud.basic.wechatpay.util.DateUtil;
 import com.wql.cloud.basic.wechatpay.util.HttpUtil;
@@ -33,6 +50,7 @@ import com.wql.cloud.basic.wechatpay.util.WXPayConstant;
 import com.wql.cloud.basic.wechatpay.util.WXPayUtil;
 import com.wql.cloud.basic.wechatpay.util.XmlUtil;
 
+@SuppressWarnings("deprecation")
 @Service
 public class WechatPayServiceImpl implements WechatPayService {
 	
@@ -136,7 +154,123 @@ public class WechatPayServiceImpl implements WechatPayService {
 			    }
 			}
   		} catch (Exception e) {
-  			logger.error("调用微信支付结果接口异常", e);
+  			logger.error("查询微信支付结果异常", e);
+  		}
+  		return new QueryOrderResult("未知", "unknow");
+	}
+	
+	
+	
+	@Override
+	@SuppressWarnings("all")
+	public String refundOrder(RefundOrderModel refundOrderModel) {
+        String result = "";//这里用于返回处理返回结果 
+        try {
+            TreeMap<String, String> bizParams = new TreeMap<String, String>();
+            bizParams.put(WXPayConstant.APPID, wechatPayConfig.getAppId());
+		    bizParams.put(WXPayConstant.MCH_ID, wechatPayConfig.getMchId());
+		    bizParams.put(WXPayConstant.NONCE_STR, UUIDUtil.getShortUuid());
+			bizParams.put("out_trade_no", refundOrderModel.getOutTradeNo());
+		    bizParams.put("out_refund_no", refundOrderModel.getOutRefundNo()); // 我们自己设定的退款申请号，约束为UK
+		    bizParams.put("total_fee", String.valueOf(refundOrderModel.getTotalFee().multiply(new BigDecimal(100)))); // 单位为分
+		    bizParams.put("refund_fee", String.valueOf(refundOrderModel.getRefundFee().multiply(new BigDecimal(100)))); // 单位为分
+		    bizParams.put("op_user_id", wechatPayConfig.getMchId());
+		    bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wechatPayConfig.getPrivateKey())); 
+			
+			/**2.发起请求*/
+			String reqXml = XmlUtil.mapToXml(bizParams, WXPayConstant.XML_ROOT);
+			
+			//退款证书
+			KeyStore keyStore = KeyStore.getInstance("PKCS12");
+			FileInputStream instream = new FileInputStream(new File(wechatPayConfig.getCertLocalPath()));// 放退款证书的路径
+			try {
+				keyStore.load(instream, wechatPayConfig.getMchId().toCharArray());
+			} finally {
+				instream.close();
+			}
+			SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, wechatPayConfig.getMchId().toCharArray()).build();
+			SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, 
+					new String[] { "TLSv1" }, null, SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+			CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
+			try {
+				HttpPost httpPost = new HttpPost(wechatPayConfig.REFUND_ORDER_URL);// 退款接口
+				StringEntity reqEntity = new StringEntity(reqXml);
+				// 设置类型
+				reqEntity.setContentType("application/x-www-form-urlencoded");
+				httpPost.setEntity(reqEntity);
+				CloseableHttpResponse response = httpclient.execute(httpPost);
+				try {
+					HttpEntity entity = response.getEntity();
+					if (entity != null) {
+						BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(entity.getContent(), "UTF-8"));
+						String text;
+						while ((text = bufferedReader.readLine()) != null) {
+							if(!text.startsWith("</xml>")) {
+								text = "<xml>"+text+"</xml>";
+	                    	  	Map<String, Object> xmlResultMap = XmlUtil.xml2map(text);
+	                    	  	if(xmlResultMap.get("result_code") != null) {
+	                    		  result = xmlResultMap.get("result_code")+"";
+	                    	  	}
+		                    }
+						}
+					}
+					EntityUtils.consume(entity);
+				} finally {
+					response.close();
+				}
+			} finally {
+				httpclient.close();
+			}
+        } catch (Exception e) {
+        	logger.error("微信退款, 出现异常", e);
+        }
+        return result;
+	}
+	
+	
+	@Override
+	public QueryOrderResult queryRefundOrderByTradeNo(String outTradeNo) {
+		try {
+  			/**1.组装参数*/
+  			HashMap<String, String> bizParams = new HashMap<String, String>();
+  	        bizParams.put(WXPayConstant.APPID, wechatPayConfig.getAppId());
+  	        bizParams.put(WXPayConstant.MCH_ID, wechatPayConfig.getMchId());
+  	        bizParams.put(WXPayConstant.OUT_TRADE_NO, outTradeNo);
+  	        bizParams.put(WXPayConstant.NONCE_STR, UUIDUtil.getShortUuid());
+  			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wechatPayConfig.getPrivateKey()));
+  			
+  			/**2.发起请求，微信支付查询*/
+  			String reqXml = XmlUtil.mapToXml(bizParams, WXPayConstant.XML_ROOT);
+  			String respXml = HttpUtil.doPost(WechatPayConfig.QUERY_REFUND_ORDER_URL, reqXml, true);
+  			Map<String, String> respMap = MapUtil.objMap2StrMap(XmlUtil.xml2map(respXml));
+  			if(!WXPayConstant.SUCCESS_CODE.equals(respMap.get(WXPayConstant.RETURN_CODE))){
+  	  			return new QueryOrderResult("查询微信支付订单结果失败", "fail");
+  			}
+			if (SUCCESS.equals(respMap.get("return_code"))) {
+				int n = 0;
+				for(int i = 0; i <= 50; i++) {
+					if(null != respMap.get("refund_status_"+i)) {
+						n = i;
+						break;
+					}
+				}
+				String refundStatus = respMap.get("refund_status_"+n);
+			    switch (refundStatus) {
+			        case SUCCESS:
+			        	Date payDate = DateUtil.parseDate(respMap.get("refund_success_time_"+n), "yyyyMMddHHmmss");
+			        	return new QueryOrderResult("退款成功", refundStatus, payDate);
+			        case "REFUNDCLOSE":
+			        	return new QueryOrderResult("退款关闭", refundStatus);
+			        case "PROCESSING":
+			        	return new QueryOrderResult("退款处理中", refundStatus);
+			        case "CHANGE":
+			        	return new QueryOrderResult("退款异常", refundStatus);
+			        default:
+			            break;
+			    }
+			}
+  		} catch (Exception e) {
+  			logger.error("查询微信退款结果异常", e);
   		}
   		return new QueryOrderResult("未知", "unknow");
 	}
@@ -159,15 +293,47 @@ public class WechatPayServiceImpl implements WechatPayService {
         		logger.warn("微信app支付，支付返回失败");
         		return payNotifyResult;
         	}
-        	//支付成功，组装返回对象
+        	//响应对象
         	payNotifyResult.setOutTradeNo(String.valueOf(xml2map.get("out_trade_no")));
         	payNotifyResult.setPayedTime(DateUtils.parseDate(String.valueOf(xml2map.get("time_end")), "yyyyMMddHHmmss"));
 		} catch (Exception e) {
-			logger.error("微信支付，回调校验异常", e);
+			logger.error("微信支付回调，校验异常", e);
 		}
 		return payNotifyResult;
 	}
 
+	
+	
+	@Override
+	public RefundNotifyResult refundNotify(String xmlStr) {
+		RefundNotifyResult notify = new RefundNotifyResult();
+		try {
+			boolean signatureValid = WXPayUtil.isSignatureValid(xmlStr, wechatPayConfig.getPrivateKey());
+			if(!signatureValid) {
+				logger.warn("微信支付回调，验签失败");
+				return notify;
+			}
+			//解析返回内容
+			Map<String, Object> xml2map = XmlUtil.xml2map(xmlStr);
+        	String returnCode = String.valueOf(xml2map.get("return_code"));
+        	String resultCode = String.valueOf(xml2map.get("result_code"));
+        	if(!SUCCESS.equals(returnCode) || !SUCCESS.equals(resultCode)) {
+        		logger.warn("微信app支付，支付返回失败");
+        		return notify;
+        	}
+        	//响应对象
+        	notify.setOutRefundNo(String.valueOf(xml2map.get("out_refund_no")));
+        	notify.setRefundStatus(String.valueOf(xml2map.get("refund_status")));
+        	notify.setOutTradeNo(String.valueOf(xml2map.get("out_trade_no")));
+        	notify.setSuccessTime(DateUtils.parseDate(String.valueOf(xml2map.get("success_time")), "yyyy-MM-dd HH:mm:ss"));
+		} catch (Exception e) {
+			logger.error("微信退款回调，校验异常", e);
+		}
+		return notify;
+	}
+	
+	
+	
 	/**
      * 从request域中读取出支付宝回调的内容
      * 
