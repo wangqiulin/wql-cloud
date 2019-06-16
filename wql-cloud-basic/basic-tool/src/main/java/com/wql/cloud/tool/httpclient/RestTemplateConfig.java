@@ -58,7 +58,6 @@ public class RestTemplateConfig {
 	@Bean
 	public ClientHttpRequestFactory httpComponentsClientHttpRequestFactory(HttpClientBuilder httpClientBuilder) 
 			throws Exception{
-
         SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
         	@Override
             public boolean isTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
