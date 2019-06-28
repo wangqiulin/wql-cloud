@@ -1,9 +1,23 @@
 package com.wql.cloud.tool.string;
 
 import java.io.UnsupportedEncodingException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
+	/**
+	 * url的校验： 必须以http或https开头
+	 * 
+	 * @param url
+	 * @return
+	 */
+	public static boolean matchUrlPrefix(String url) {
+		Pattern pattern = Pattern.compile("(http|https):\\/\\/([\\w.]+\\/?)\\S*");
+		Matcher matcher = pattern.matcher(url);
+		return matcher.matches();
+	}
+	
     /**
      * 手机号去敏(隐藏中间四位,若传入参数格式有误原样返回)
      *

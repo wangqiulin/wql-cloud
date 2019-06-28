@@ -35,6 +35,7 @@ import org.springframework.stereotype.Service;
 import com.wql.cloud.basic.wechatpay.config.WechatPayConfig;
 import com.wql.cloud.basic.wechatpay.model.PlaceOrderModel;
 import com.wql.cloud.basic.wechatpay.model.RefundOrderModel;
+import com.wql.cloud.basic.wechatpay.refund.DecodeUtil;
 import com.wql.cloud.basic.wechatpay.result.PayNotifyResult;
 import com.wql.cloud.basic.wechatpay.result.PlaceOrderResult;
 import com.wql.cloud.basic.wechatpay.result.QueryOrderResult;
@@ -160,12 +161,12 @@ public class WechatPayServiceImpl implements WechatPayService {
 	}
 	
 	
-	
 	@Override
 	@SuppressWarnings("all")
 	public String refundOrder(RefundOrderModel refundOrderModel) {
         String result = "";//这里用于返回处理返回结果 
         try {
+        	/**1.组合业务参数（xml格式）*/
             TreeMap<String, String> bizParams = new TreeMap<String, String>();
             bizParams.put(WXPayConstant.APPID, wechatPayConfig.getAppId());
 		    bizParams.put(WXPayConstant.MCH_ID, wechatPayConfig.getMchId());
@@ -176,21 +177,29 @@ public class WechatPayServiceImpl implements WechatPayService {
 		    bizParams.put("refund_fee", String.valueOf(refundOrderModel.getRefundFee().multiply(new BigDecimal(100)))); // 单位为分
 		    bizParams.put("op_user_id", wechatPayConfig.getMchId());
 		    bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wechatPayConfig.getPrivateKey())); 
-			
-			/**2.发起请求*/
 			String reqXml = XmlUtil.mapToXml(bizParams, WXPayConstant.XML_ROOT);
 			
-			//退款证书
+			/**2.发起请求*/
+			//加载证书，进行https加密传输
 			KeyStore keyStore = KeyStore.getInstance("PKCS12");
 			FileInputStream instream = new FileInputStream(new File(wechatPayConfig.getCertLocalPath()));// 放退款证书的路径
 			try {
+				//加载证书密码，默认为商户ID
 				keyStore.load(instream, wechatPayConfig.getMchId().toCharArray());
 			} finally {
 				instream.close();
 			}
-			SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, wechatPayConfig.getMchId().toCharArray()).build();
-			SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, 
-					new String[] { "TLSv1" }, null, SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+			// Trust own CA and all self-signed certs
+			SSLContext sslcontext = SSLContexts.custom()
+					.loadKeyMaterial(keyStore, wechatPayConfig.getMchId().toCharArray())  //加载证书密码，默认为商户ID
+					.build();
+			// Allow TLSv1 protocol only
+			SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+					sslcontext, 
+					new String[] { "TLSv1" }, 
+					null, 
+					SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+			
 			CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
 			try {
 				HttpPost httpPost = new HttpPost(wechatPayConfig.REFUND_ORDER_URL);// 退款接口
@@ -278,58 +287,58 @@ public class WechatPayServiceImpl implements WechatPayService {
 	
 	@Override
 	public PayNotifyResult paySuccessNotify(String xmlStr) {
-		PayNotifyResult payNotifyResult = new PayNotifyResult();
 		try {
 			boolean signatureValid = WXPayUtil.isSignatureValid(xmlStr, wechatPayConfig.getPrivateKey());
 			if(!signatureValid) {
 				logger.warn("微信支付回调，验签失败");
-				return payNotifyResult;
+				return null;
 			}
+			
 			//解析返回内容
 			Map<String, Object> xml2map = XmlUtil.xml2map(xmlStr);
         	String returnCode = String.valueOf(xml2map.get("return_code"));
         	String resultCode = String.valueOf(xml2map.get("result_code"));
         	if(!SUCCESS.equals(returnCode) || !SUCCESS.equals(resultCode)) {
         		logger.warn("微信app支付，支付返回失败");
-        		return payNotifyResult;
+        		return null;
         	}
+        	
         	//响应对象
+        	PayNotifyResult payNotifyResult = new PayNotifyResult();
         	payNotifyResult.setOutTradeNo(String.valueOf(xml2map.get("out_trade_no")));
         	payNotifyResult.setPayedTime(DateUtils.parseDate(String.valueOf(xml2map.get("time_end")), "yyyyMMddHHmmss"));
+        	return payNotifyResult;
 		} catch (Exception e) {
 			logger.error("微信支付回调，校验异常", e);
 		}
-		return payNotifyResult;
+		return null;
 	}
 
 	
 	
 	@Override
 	public RefundNotifyResult refundNotify(String xmlStr) {
-		RefundNotifyResult notify = new RefundNotifyResult();
 		try {
-			boolean signatureValid = WXPayUtil.isSignatureValid(xmlStr, wechatPayConfig.getPrivateKey());
-			if(!signatureValid) {
-				logger.warn("微信支付回调，验签失败");
-				return notify;
-			}
-			//解析返回内容
 			Map<String, Object> xml2map = XmlUtil.xml2map(xmlStr);
-        	String returnCode = String.valueOf(xml2map.get("return_code"));
-        	String resultCode = String.valueOf(xml2map.get("result_code"));
-        	if(!SUCCESS.equals(returnCode) || !SUCCESS.equals(resultCode)) {
-        		logger.warn("微信app支付，支付返回失败");
-        		return notify;
-        	}
-        	//响应对象
-        	notify.setOutRefundNo(String.valueOf(xml2map.get("out_refund_no")));
-        	notify.setRefundStatus(String.valueOf(xml2map.get("refund_status")));
-        	notify.setOutTradeNo(String.valueOf(xml2map.get("out_trade_no")));
-        	notify.setSuccessTime(DateUtils.parseDate(String.valueOf(xml2map.get("success_time")), "yyyy-MM-dd HH:mm:ss"));
+			if("SUCCESS".equals(xml2map.get("return_code"))){
+				//获得加密信息 （req_info）
+                String passMap = DecodeUtil.decryptData(String.valueOf(xml2map.get("req_info")));
+                //拿到解密信息
+                Map<String, Object> decodeMap = XmlUtil.xml2map(passMap);
+                logger.info("退款-微信回调返回，拿到解密后：" + decodeMap);
+                
+                //响应对象
+                RefundNotifyResult notify = new RefundNotifyResult();
+            	notify.setOutRefundNo(String.valueOf(decodeMap.get("out_refund_no")));
+            	notify.setRefundStatus(String.valueOf(decodeMap.get("refund_status")));
+            	notify.setOutTradeNo(String.valueOf(decodeMap.get("out_trade_no")));
+            	notify.setSuccessTime(DateUtils.parseDate(String.valueOf(decodeMap.get("success_time")), "yyyy-MM-dd HH:mm:ss"));
+            	return notify;
+			} 
 		} catch (Exception e) {
 			logger.error("微信退款回调，校验异常", e);
 		}
-		return notify;
+		return null;
 	}
 	
 	

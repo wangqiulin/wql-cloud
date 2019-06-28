@@ -20,7 +20,10 @@ public class RefundNotifyResult {
 	private String outRefundNo;
 	
 	/**
-	 * 退款状态
+	 * 退款状态：
+	 * 	SUCCESS-退款成功
+		CHANGE-退款异常
+		REFUNDCLOSE—退款关闭
 	 */
 	private String refundStatus;
 	

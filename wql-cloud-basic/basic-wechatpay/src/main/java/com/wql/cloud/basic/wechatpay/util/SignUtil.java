@@ -31,6 +31,31 @@ public class SignUtil {
 		sb.append("key=").append(key);
 		return MD5Util.MD5(sb.toString()).toUpperCase();
 	}
+	
+	
+	public static String sign2(Map<String, Object> params, String key) {
+		List<Map.Entry<String, Object>> infoIds = new ArrayList<Map.Entry<String, Object>>(params.entrySet());
+		// 对所有传入参数按照字段名的 ASCII 码从小到大排序（字典序）
+		Collections.sort(infoIds, new Comparator<Map.Entry<String, Object>>() {
+			public int compare(Map.Entry<String, Object> o1, Map.Entry<String, Object> o2) {
+				return (o1.getKey()).toString().compareTo(o2.getKey());
+			}
+		});
+		// 组装签名
+		StringBuilder sb = new StringBuilder();
+		for (Map.Entry<String, Object> entry : infoIds) {
+			String k = entry.getKey();
+			String value = String.valueOf(entry.getValue());
+			if (k.equals(WXPayConstant.SIGN)) {
+				continue;
+			}
+			if (value.trim().length() > 0) // 参数值为空，则不参与签名
+				sb.append(k).append("=").append(value.trim()).append("&");
+		}
+		sb.append("key=").append(key);
+		return MD5Util.MD5(sb.toString()).toUpperCase();
+	}
+	
 
 	public static String getSignContent(Map<String, String> params) {
 		if (params == null) {
