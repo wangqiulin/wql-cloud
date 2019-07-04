@@ -41,22 +41,21 @@ public class SignUtil {
 				return (o1.getKey()).toString().compareTo(o2.getKey());
 			}
 		});
-		// 组装签名
+    	//组装签名
 		StringBuilder sb = new StringBuilder();
 		for (Map.Entry<String, Object> entry : infoIds) {
 			String k = entry.getKey();
 			String value = String.valueOf(entry.getValue());
 			if (k.equals(WXPayConstant.SIGN)) {
-				continue;
-			}
-			if (value.trim().length() > 0) // 参数值为空，则不参与签名
-				sb.append(k).append("=").append(value.trim()).append("&");
+                continue;
+            }
+            if (value.trim().length() > 0) // 参数值为空，则不参与签名
+                sb.append(k).append("=").append(value.trim()).append("&");
 		}
-		sb.append("key=").append(key);
-		return MD5Util.MD5(sb.toString()).toUpperCase();
+        sb.append("key=").append(key);
+        return MD5Util.MD5(sb.toString()).toUpperCase();
 	}
 	
-
 	public static String getSignContent(Map<String, String> params) {
 		if (params == null) {
 			return null;

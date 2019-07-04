@@ -167,17 +167,19 @@ public class WechatPayServiceImpl implements WechatPayService {
         String result = "";//这里用于返回处理返回结果 
         try {
         	/**1.组合业务参数（xml格式）*/
-            TreeMap<String, String> bizParams = new TreeMap<String, String>();
+            TreeMap<String, Object> bizParams = new TreeMap<String, Object>();
             bizParams.put(WXPayConstant.APPID, wechatPayConfig.getAppId());
 		    bizParams.put(WXPayConstant.MCH_ID, wechatPayConfig.getMchId());
 		    bizParams.put(WXPayConstant.NONCE_STR, UUIDUtil.getShortUuid());
 			bizParams.put("out_trade_no", refundOrderModel.getOutTradeNo());
 		    bizParams.put("out_refund_no", refundOrderModel.getOutRefundNo()); // 我们自己设定的退款申请号，约束为UK
-		    bizParams.put("total_fee", String.valueOf(refundOrderModel.getTotalFee().multiply(new BigDecimal(100)))); // 单位为分
-		    bizParams.put("refund_fee", String.valueOf(refundOrderModel.getRefundFee().multiply(new BigDecimal(100)))); // 单位为分
+		    long totalFee = refundOrderModel.getTotalFee().multiply(BigDecimal.TEN).multiply(BigDecimal.TEN).longValue();
+		    long refundFee = refundOrderModel.getRefundFee().multiply(BigDecimal.TEN).multiply(BigDecimal.TEN).longValue();
+		    bizParams.put("total_fee", totalFee); // 单位为分
+		    bizParams.put("refund_fee", refundFee); // 单位为分
 		    bizParams.put("op_user_id", wechatPayConfig.getMchId());
-		    bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wechatPayConfig.getPrivateKey())); 
-			String reqXml = XmlUtil.mapToXml(bizParams, WXPayConstant.XML_ROOT);
+		    bizParams.put(WXPayConstant.SIGN, SignUtil.sign2(bizParams, wechatPayConfig.getPrivateKey())); 
+			String reqXml = XmlUtil.mapToXml2(bizParams, WXPayConstant.XML_ROOT);
 			
 			/**2.发起请求*/
 			//加载证书，进行https加密传输
@@ -213,15 +215,17 @@ public class WechatPayServiceImpl implements WechatPayService {
 					if (entity != null) {
 						BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(entity.getContent(), "UTF-8"));
 						String text;
+						StringBuffer sbf = new StringBuffer();
 						while ((text = bufferedReader.readLine()) != null) {
-							if(!text.startsWith("</xml>")) {
-								text = "<xml>"+text+"</xml>";
-	                    	  	Map<String, Object> xmlResultMap = XmlUtil.xml2map(text);
-	                    	  	if(xmlResultMap.get("result_code") != null) {
-	                    		  result = xmlResultMap.get("result_code")+"";
-	                    	  	}
-		                    }
+							sbf.append(text);
 						}
+						Map<String, String> xmlResultMap = MapUtil.objMap2StrMap(XmlUtil.xml2map(sbf.toString()));
+                	  	if("FAIL".equals(xmlResultMap.get("return_code"))) {
+                	  		return result;
+                	  	}
+						if(xmlResultMap.get("result_code") != null) {
+                		  result = xmlResultMap.get("result_code")+"";
+                	  	}
 					}
 					EntityUtils.consume(entity);
 				} finally {

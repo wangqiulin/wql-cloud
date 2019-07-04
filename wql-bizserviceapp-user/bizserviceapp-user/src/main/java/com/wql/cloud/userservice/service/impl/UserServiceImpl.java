@@ -2,6 +2,8 @@ package com.wql.cloud.userservice.service.impl;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,8 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
 	@Autowired
 	private PayClient payClient;
+	@Autowired
+	private HttpServletResponse response;
 	
 	@Override
 	@Transactional
@@ -62,7 +66,13 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	@Override
 	@TargetDataSource(name = "read")
 	public List<User> queryList(User req) {
-		return this.listByRecord(req);
+		List<User> list = this.listByRecord(req);
+//		try {
+//			EasyPoiUtil.exportExcel("用户信息", "用户列表", "user-excel.xls", User.class, list, response);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		return list;
 	}
 
 	@Override

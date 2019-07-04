@@ -117,24 +117,27 @@ public class AliPayServiceImpl implements AliPayService {
 	public String refundOrder(RefundOrderModel refundOrderModel) {
 		String strResponse = null;
 		try {
+			AlipayClient alipayClient = new DefaultAlipayClient(config.SERVER_URL, 
+					config.getAppId(), config.getPrivateKey(), config.FORMAT, 
+					config.CHARSET, config.getPublicKey(), config.getSignType());
 			// 设置参数
 			AlipayTradeRefundModel model = new AlipayTradeRefundModel();
 			model.setOutTradeNo(refundOrderModel.getOutTradeNo());
-			model.setTradeNo(refundOrderModel.getTradeNo());
 			model.setRefundAmount(refundOrderModel.getRefundAmount());
-			model.setRefundReason(refundOrderModel.getRefundReason());
 			// 发起请求
 			AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
-			request.setBizContent(JSON.toJSONString(model));
-			AlipayTradeRefundResponse response = getClient().sdkExecute(request);
+			request.setBizModel(model);
+			AlipayTradeRefundResponse response = alipayClient.execute(request);
 			strResponse = response.getCode();
 			if ("10000".equals(response.getCode())) {
-				strResponse = "退款成功";
+				strResponse = "success";
 			} else {
-				strResponse = response.getSubMsg();
+				logger.info("【支付宝退款】请求失败：" + response.getSubMsg());
+				strResponse = "fail";
 			}
 		} catch (Exception e) {
 			logger.error("支付宝退款, 出现异常", e);
+			strResponse = "fail";
 		}
 		return strResponse;
 	}
@@ -147,10 +150,13 @@ public class AliPayServiceImpl implements AliPayService {
 	    	Map<String, String> map = new HashMap<>();
 	    	map.put("out_trade_no", outTradeNo);
 	    	map.put("out_request_no", outRequestNo);
-	    	//退款查询
 	        AlipayTradeFastpayRefundQueryRequest request = new AlipayTradeFastpayRefundQueryRequest();
 	        request.setBizContent(JSON.toJSONString(map));
-	        AlipayTradeFastpayRefundQueryResponse response = getClient().sdkExecute(request);
+	        //退款查询
+	        AlipayClient alipayClient = new DefaultAlipayClient(config.SERVER_URL, 
+					config.getAppId(), config.getPrivateKey(), config.FORMAT, 
+					config.CHARSET, config.getPublicKey(), config.getSignType());
+	        AlipayTradeFastpayRefundQueryResponse response = alipayClient.execute(request);
 	        if (response.isSuccess()) {
 	            res.setGmtRefundPay(response.getGmtRefundPay());
 	            res.setRefundStatus(response.getRefundStatus());
@@ -159,7 +165,7 @@ public class AliPayServiceImpl implements AliPayService {
 	    } catch (Exception e) {
 	    	logger.error("支付宝退款查询, 出现异常", e);
 	    }
-	    return res;
+	    return null;
 	}
 	
 	

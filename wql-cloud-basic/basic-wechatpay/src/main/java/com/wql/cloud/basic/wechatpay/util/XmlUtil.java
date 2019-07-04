@@ -61,6 +61,41 @@ public class XmlUtil {
 		logger.debug("XmlUtil.MapToXml:" + returnXml);
 		return returnXml;
 	}
+	
+	public static String mapToXml2(Map<String, Object> map, String rootStr) {
+		String returnXml=null;
+		StringBuffer sb = new StringBuffer();
+		sb.append("<").append(rootStr).append(">");
+		Iterator<Entry<String, Object>> iter = map.entrySet().iterator();
+		while (iter.hasNext()) {
+			Entry<String, Object> entry = iter.next();
+			String key = entry.getKey();
+			Object val = entry.getValue();
+			if (IsNumeric(val)) {
+				sb.append("<");
+				sb.append(key);
+				sb.append(">");
+				sb.append(val);
+				sb.append("</");
+				sb.append(key);
+				sb.append(">");
+			} else {
+				sb.append("<");
+				sb.append(key);
+				sb.append("><![CDATA[");
+				sb.append(val);
+				sb.append("]]></");
+				sb.append(key);
+				sb.append(">");
+			}
+		}
+		sb.append("</").append(rootStr).append(">");
+		returnXml = sb.toString();
+		logger.debug("XmlUtil.MapToXml:" + returnXml);
+		return returnXml;
+	}
+	
+	
 
 	/**
 	 * map转xml常用，可多层递归
@@ -182,10 +217,10 @@ public class XmlUtil {
 		return vo;
 	}
 
-	private static boolean IsNumeric(String str) {
-		if (StringUtils.isBlank(str))
+	private static boolean IsNumeric(Object str) {
+		if (StringUtils.isBlank(String.valueOf(str)))
 			return false;
-        return str.matches("\\d *");
+        return String.valueOf(str).matches("\\d *");
 	}
 
 }
