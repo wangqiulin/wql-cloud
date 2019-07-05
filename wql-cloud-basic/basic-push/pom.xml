@@ -8,20 +8,12 @@
         <artifactId>wql-cloud-basic</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-
-    <properties>
-        <protobuf-java.version>3.3.0</protobuf-java.version>
-        <flyme-push.version>1.2.8.20190114_release</flyme-push.version>
-        <xom.version>1.2.5</xom.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
             <version>1.9.13</version>
         </dependency>
-
         <!-- 个推依赖包 -->
         <dependency>
             <groupId>com.gexin.platform</groupId>
@@ -43,7 +35,6 @@
             <artifactId>gexin-rp-fastjson</artifactId>
             <version>1.0.0.1</version>
         </dependency>
-
         <!-- mipush依赖包 -->
         <dependency>
             <groupId>org.json.simple</groupId>
@@ -55,39 +46,16 @@
             <artifactId>mipush</artifactId>
             <version>2.2.19</version>
         </dependency>
-
         <!-- 魅族 -->
         <dependency>
             <groupId>xom</groupId>
             <artifactId>xom</artifactId>
-            <version>${xom.version}</version>
+            <version>1.2.5</version>
         </dependency>
         <dependency>
             <groupId>com.meizu.flyme</groupId>
             <artifactId>push-server-sdk</artifactId>
-            <version>${flyme-push.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>6.0.8.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>2.0.1.Final</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-            <version>${protobuf-java.version}</version>
+            <version>1.2.8.20190114_release</version>
         </dependency>
     </dependencies>
-
 </project>

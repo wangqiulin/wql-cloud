@@ -8,11 +8,6 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<dependencies>
-        <!-- springboot-aop包,AOP切面注解,Aspectd等相关注解 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
 		<!-- 数据源 -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -25,30 +20,18 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
-			<version>1.1.16</version>
+			<version>1.1.18</version>
 		</dependency>
-		<!-- mybatis -->
-		<!-- <dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>3.5.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-			<version>2.0.1</version>
-		</dependency> -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.0.1</version>
         </dependency>
-        
 		<!-- 集成pageHelper分页插件 -->
 		<dependency>
 		     <groupId>com.github.pagehelper</groupId>
   	         <artifactId>pagehelper-spring-boot-starter</artifactId>
-  	         <version>1.2.10</version>
+  	         <version>1.2.12</version>
 		</dependency>
 		<!-- 集成tk插件 -->
 		<dependency>
@@ -60,11 +43,6 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
-        <!-- 全局异常处理 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
 		<!-- swagger2 -->
 		<dependency>
 			<groupId>io.springfox</groupId>
