@@ -21,6 +21,8 @@ import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
 
+import com.alibaba.druid.filter.config.ConfigTools;
+
 public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar, EnvironmentAware {
 
 	private static final Logger logger = LoggerFactory.getLogger(DynamicDataSourceRegister.class);
@@ -86,12 +88,16 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 			String url = dsMap.get("url").toString();
 			String username = dsMap.get("username").toString();
 			String password = dsMap.get("password").toString();
-
+			String publicKey = dsMap.get("publicKey").toString();
+			//使用公钥解密
+			password = ConfigTools.decrypt(publicKey, password);
+			logger.info("密码：" + password);
+			
 			DataSourceBuilder factory = DataSourceBuilder.create().driverClassName(driverClassName).url(url)
 					.username(username).password(password).type(dataSourceType);
 			return factory.build();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			logger.error("========druid configuration initialization filter========", e);
 		}
 		return null;
 	}
@@ -117,6 +123,7 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 		dsMap.put("url", propertyResolver.getProperty("url"));
 		dsMap.put("username", propertyResolver.getProperty("username"));
 		dsMap.put("password", propertyResolver.getProperty("password"));
+		dsMap.put("publicKey", propertyResolver.getProperty("publicKey"));
 
 		defaultDataSource = buildDataSource(dsMap);
 
@@ -146,6 +153,7 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 			values.remove("url");
 			values.remove("username");
 			values.remove("password");
+			values.remove("publicKey");
 			dataSourcePropertyValues = new MutablePropertyValues(values);
 		}
 		dataBinder.bind(dataSourcePropertyValues);
@@ -165,5 +173,20 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 			dataBinder(ds, env);
 		}
 	}
-
+	
+	
+	/**
+     * 生成公私钥以及加密密码
+     * @param args
+     * @throws Exception
+     */
+    public static void main(String[] args) throws Exception {
+        String password = "root";
+        String[] arr = ConfigTools.genKeyPair(512);
+        System.out.println("password:" + password);
+        System.out.println("privateKey:" + arr[0]);
+        System.out.println("publicKey:" + arr[1]);
+        System.out.println("password:" + ConfigTools.encrypt(arr[0], password));
+    }
+	
 }
