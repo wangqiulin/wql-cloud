@@ -31,6 +31,14 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	@Autowired
 	private HttpServletResponse response;
 	
+//	@Autowired
+//    private DBEncryptService encryptService;
+//	/**加解密字段*/
+//    private final static DBEncryptService.Field<User>[] FIELDS = DBEncryptService.Field.of(
+//    				User::getUserPwd, User::setUserPwd, 
+//    				User::getUserName, User::setUserName
+//    				);
+	
 	@Override
 	@Transactional
 //	@GlobalTransactional
@@ -60,7 +68,8 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	@TargetDataSource(name = "read")
 	public User query(User req) {
 		Assert.notNull(req.getId(), "id为空");
-		return this.getById(req.getId());
+		User user = this.getById(req.getId());
+		return user;
 	}
 	
 	@Override

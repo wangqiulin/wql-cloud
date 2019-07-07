@@ -5,6 +5,25 @@ import java.util.List;
 import com.wql.cloud.tool.bean.BeanUtils;
 import com.wql.cloud.tool.string.StringUtils;
 
+/**
+ * 使用方法：
+ * 		@Autowired
+    	private DBEncryptService encryptService;
+    	
+    	#对象中需要加解密的字段
+    	private final static DBEncryptService.Field<User>[] FIELDS = DBEncryptService.Field.of(
+    				User::getUserPwd, User::setUserPwd, 
+    				User::getUserName, User::setUserName
+    				);
+        
+        #对对象加密  				
+ * 		User encrypt = encryptService.encrypt(user, FIELDS);
+ *      #对对象解密 
+ *		User decrypt = encryptService.decrypt(user, FIELDS);
+ * 
+ * @author wangqiulin
+ *
+ */
 public interface DBEncryptService {
 
 	/**

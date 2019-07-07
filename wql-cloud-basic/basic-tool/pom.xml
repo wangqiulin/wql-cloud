@@ -51,5 +51,11 @@
             <artifactId>commons-net</artifactId>
             <version>3.6</version>
         </dependency>
+        <!-- 汉字转拼音 -->
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.1</version>
+        </dependency>
     </dependencies>
 </project>
