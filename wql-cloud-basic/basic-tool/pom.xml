@@ -57,5 +57,16 @@
             <artifactId>pinyin4j</artifactId>
             <version>2.5.1</version>
         </dependency>
+        <!-- 生成二维码 -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>2.2</version>
+        </dependency>
     </dependencies>
 </project>
