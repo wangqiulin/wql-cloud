@@ -2,6 +2,8 @@ package ${BasePackageName}${ServicePackageName};
 
 import ${BasePackageName}${EntityPackageName}.${ClassName};
 ${InterfaceImport}
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import com.wql.cloud.basic.datasource.baseservice.BaseService;
 import java.util.List;
@@ -16,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class ${ClassName}ServiceImpl extends BaseService<${ClassName}> ${Impl} {
+
+    public final Logger logger = LoggerFactory.getLogger(this.getClass()); 
 
 	@Override
 	@Transactional

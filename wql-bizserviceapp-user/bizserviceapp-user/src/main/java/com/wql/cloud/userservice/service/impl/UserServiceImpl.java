@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,8 @@ import com.wql.cloud.userservice.service.UserService;
 @Service
 public class UserServiceImpl extends BaseService<User> implements UserService {
 
+	public final Logger logger = LoggerFactory.getLogger(this.getClass()); 
+	
 	@Autowired
 	private PayClient payClient;
 	@Autowired
