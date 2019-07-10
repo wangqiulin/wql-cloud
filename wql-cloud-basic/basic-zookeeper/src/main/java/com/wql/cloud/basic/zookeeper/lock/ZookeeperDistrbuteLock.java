@@ -21,6 +21,7 @@ public class ZookeeperDistrbuteLock extends ZookeeperAbstractLock {
 	@Override
 	public void waitLock() {
 		IZkDataListener iZkDataListener = new IZkDataListener() {
+			//节点被删除的时候 事件通知
 			public void handleDataDeleted(String dataPath) throws Exception {
 				if (countDownLatch != null) {
 					countDownLatch.countDown();
@@ -30,7 +31,9 @@ public class ZookeeperDistrbuteLock extends ZookeeperAbstractLock {
 			}
 		};
 		
-		zkClient.unsubscribeDataChanges(PATH, iZkDataListener);
+		//注册到zkClient，进行监听
+		zkClient.subscribeDataChanges(PATH, iZkDataListener);
+		
 		if (zkClient.exists(PATH)) {
 			try {
 				countDownLatch = new CountDownLatch(1);
@@ -38,7 +41,9 @@ public class ZookeeperDistrbuteLock extends ZookeeperAbstractLock {
 			} catch (Exception e) {
 			}
 		}
-
+		
+		//删除监听
+		zkClient.unsubscribeDataChanges(PATH, iZkDataListener);
 	}
 
 }
