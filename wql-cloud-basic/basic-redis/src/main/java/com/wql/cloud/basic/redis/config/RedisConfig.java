@@ -32,65 +32,60 @@ public class RedisConfig extends CachingConfigurerSupport {
 	/**
 	 * 自定义默认缓存key生成策略: 类名+方法名+参数名
 	 */
-    @Bean
-    public KeyGenerator keyGenerator() {
-        return new KeyGenerator() {
-            @Override
-            public Object generate(Object target, Method method, Object... params) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("cache_data:");
-                sb.append(target.getClass().getName()).append(".");
-                sb.append(method.getName());
-                /*if(params == null || params.length == 0) {
-                	sb.append(method.getName());
-                } else {
-                	sb.append(method.getName()).append(".");
-                	for (Object obj : params) {
-                        sb.append(obj.toString());
-                    }
-                }*/
-                return sb.toString();
-            }
-        };
-    }
- 
-    /**
-     * 设置RedisCacheManager
-     * 使用cache注解管理redis缓存
-     *
-     * @return
-     */
-    @Bean
-    @SuppressWarnings("rawtypes")
-    public CacheManager cacheManager(RedisTemplate redisTemplate) {
-        RedisCacheManager rcm = new RedisCacheManager(redisTemplate);
-        //设置缓存过期时间, 30天有效期
-        rcm.setDefaultExpiration(60*60*24*30);//秒
-        return rcm;
-    }
+	@Bean
+	public KeyGenerator keyGenerator() {
+		return new KeyGenerator() {
+			@Override
+			public Object generate(Object target, Method method, Object... params) {
+				StringBuilder sb = new StringBuilder();
+				sb.append("cache_data:");
+				sb.append(target.getClass().getName()).append(".");
+				sb.append(method.getName());
+				/*
+				 * if(params == null || params.length == 0) { sb.append(method.getName()); }
+				 * else { sb.append(method.getName()).append("."); for (Object obj : params) {
+				 * sb.append(obj.toString()); } }
+				 */
+				return sb.toString();
+			}
+		};
+	}
 
+	/**
+	 * 设置RedisCacheManager 使用cache注解管理redis缓存
+	 *
+	 * @return
+	 */
+	@Bean
+	@SuppressWarnings("rawtypes")
+	public CacheManager cacheManager(RedisTemplate redisTemplate) {
+		RedisCacheManager rcm = new RedisCacheManager(redisTemplate);
+		// 设置缓存过期时间, 30天有效期
+		rcm.setDefaultExpiration(60 * 60 * 24 * 30);// 秒
+		return rcm;
+	}
 
 	@Bean
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
-        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
-        ObjectMapper om = new ObjectMapper();
-        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-        jackson2JsonRedisSerializer.setObjectMapper(om);
-        
-        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
-        StringRedisTemplate template = new StringRedisTemplate(factory);
-        // redis 开启事务 如果开启事务，则redis不会主动释放连接，需要手动释放
-        template.setEnableTransactionSupport(false);
-        // hash 使用jdk 的序列化
-        template.setHashKeySerializer(new StringRedisSerializer());
-        template.setHashValueSerializer(genericJackson2JsonRedisSerializer);
-        // keySerializer 对key的默认序列化器。默认值是StringSerializer
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(genericJackson2JsonRedisSerializer);
-        template.afterPropertiesSet();
-        return template;
-    }
+	public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
+		Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
+		ObjectMapper om = new ObjectMapper();
+		om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+		om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+		jackson2JsonRedisSerializer.setObjectMapper(om);
+
+		GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
+		StringRedisTemplate template = new StringRedisTemplate(factory);
+		// redis 开启事务 如果开启事务，则redis不会主动释放连接，需要手动释放
+		template.setEnableTransactionSupport(false);
+		// hash 使用jdk 的序列化
+		template.setHashKeySerializer(new StringRedisSerializer());
+		template.setHashValueSerializer(genericJackson2JsonRedisSerializer);
+		// keySerializer 对key的默认序列化器。默认值是StringSerializer
+		template.setKeySerializer(new StringRedisSerializer());
+		template.setValueSerializer(genericJackson2JsonRedisSerializer);
+		template.afterPropertiesSet();
+		return template;
+	}
 
 }
