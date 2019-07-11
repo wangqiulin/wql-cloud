@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -236,6 +237,7 @@ public abstract class BaseService<T extends BaseDO> {
     
     //=================新增===================//
     
+    @Deprecated
     public Integer save(T record) {
     	record.setId(null);
     	record.setCreateDate(new Date());
@@ -265,6 +267,7 @@ public abstract class BaseService<T extends BaseDO> {
     
     //=================更新===================//
     
+    @Deprecated
     public Integer updateById(T record) {
     	record.setUpdateDate(new Date());
         return this.mapper.updateByPrimaryKey(record);
@@ -275,6 +278,7 @@ public abstract class BaseService<T extends BaseDO> {
         return this.mapper.updateByPrimaryKeySelective(record);
     }
 
+    @Deprecated
     public Integer updateByExample(T record, Example example) {
     	record.setUpdateDate(new Date());
         return this.mapper.updateByExample(record, example);
@@ -285,6 +289,24 @@ public abstract class BaseService<T extends BaseDO> {
         return this.mapper.updateByExampleSelective(record, example);
     }
 
+    
+    /**
+     * 数据更新，存在乐观锁控制
+     * 
+     * @param record
+     * @param example
+     * @return
+     */
+    public Integer updateSelectiveByVersion(T record, Example example) {
+    	Assert.isNull(record.getVersion(), "版本号不能为空");
+    	//版本号作为条件
+    	example.and().andEqualTo("version", record.getVersion());
+    	//通用更新字段
+    	record.setUpdateDate(new Date());
+    	record.setVersion(record.getVersion() + 1);
+        return this.mapper.updateByExampleSelective(record, example);
+    }
+    
     
     //=================删除===================//
     

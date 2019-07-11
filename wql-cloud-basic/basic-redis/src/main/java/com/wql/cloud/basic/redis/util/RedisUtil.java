@@ -17,6 +17,33 @@ public class RedisUtil {
 	@Resource(name = "redisTemplate")
 	private RedisTemplate<String, Object> redisTemplate;
 
+	
+	public void tx(String key) {
+		//开启事务
+		redisTemplate.setEnableTransactionSupport(true);
+		
+		//监听key
+		redisTemplate.watch(key);
+		
+		//标志事务开始
+		redisTemplate.multi();
+		
+		//一系列操作......
+		
+		//事务提交
+		redisTemplate.exec();
+		
+		//事务回滚
+		redisTemplate.discard();
+		
+		//数据发生变化的话,取消监听
+		redisTemplate.unwatch();
+	}
+	
+	
+	
+	
+	
 	// -------------------设置功能---------------------//
 	/** 永久设置 */
 	public void set(String key, String value) {

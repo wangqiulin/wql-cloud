@@ -35,8 +35,13 @@ public abstract class BaseDO implements Serializable{
 	@JsonFormat(pattern = DATE_FORMAT, timezone = "GMT+8")
 	private Date updateDate;
 
+	//版本号，用于乐观锁
 	@JsonIgnore
-	private Integer dataFlag;  //数据标志: 0无效, 1有效
+	private Integer version;  
+	
+	//数据标志: 0无效, 1有效
+	@JsonIgnore
+	private Integer dataFlag;  
 	
 	@Transient
 	public Integer page;
@@ -66,6 +71,14 @@ public abstract class BaseDO implements Serializable{
 
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 	public Integer getDataFlag() {
