@@ -81,17 +81,17 @@
         </dependency>
         <dependency>
             <groupId>com.wql.cloud</groupId>
-            <artifactId>basic-mq</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.wql.cloud</groupId>
             <artifactId>basic-zookeeper</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.wql.cloud</groupId>
             <artifactId>basic-redis</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.wql.cloud</groupId>
+            <artifactId>basic-seata</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         

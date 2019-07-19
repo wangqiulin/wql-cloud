@@ -11,12 +11,20 @@ import com.wql.cloud.basic.alipay.result.QueryRefundOrderResult;
 public interface AliPayService {
 
     /**
-     * 统一下单接口
+     * 统一下单接口-app
      * 
      * @param CreateOrderModel
      * @return
      */
-	String createOrder(CreateOrderModel createOrderModel);
+	String createOrderForApp(CreateOrderModel createOrderModel);
+	
+	 /**
+     * 统一下单接口-H5
+     * 
+     * @param CreateOrderModel
+     * @return
+     */
+	String createOrderForH5(CreateOrderModel createOrderModel);
 
     /**
      * 查询支付订单结果

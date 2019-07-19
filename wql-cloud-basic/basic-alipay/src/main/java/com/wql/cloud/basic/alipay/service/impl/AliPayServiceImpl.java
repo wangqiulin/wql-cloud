@@ -25,15 +25,18 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.domain.AlipayTradeQueryModel;
 import com.alipay.api.domain.AlipayTradeRefundModel;
+import com.alipay.api.domain.AlipayTradeWapPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.request.AlipayTradeFastpayRefundQueryRequest;
 import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.alipay.api.response.AlipayTradeFastpayRefundQueryResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
+import com.alipay.api.response.AlipayTradeWapPayResponse;
 import com.wql.cloud.basic.alipay.config.AliPayConfig;
 import com.wql.cloud.basic.alipay.model.CreateOrderModel;
 import com.wql.cloud.basic.alipay.model.RefundOrderModel;
@@ -48,7 +51,9 @@ public class AliPayServiceImpl implements AliPayService {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	// 销售产品码，商家和支付宝签约的产品码
-	private static final String QUICK_MSECURITY_PAY = "QUICK_MSECURITY_PAY";
+	private static final String QUICK_MSECURITY_PAY = "QUICK_MSECURITY_PAY"; //app
+	private static final String QUICK_WAP_PAY = "QUICK_WAP_PAY"; //H5
+
 	private static final String TRADE_SUCCESS = "TRADE_SUCCESS";
 	private static final String WAIT_BUYER_PAY = "WAIT_BUYER_PAY";
 	private static final String TRADE_CLOSED = "TRADE_CLOSED";
@@ -61,7 +66,7 @@ public class AliPayServiceImpl implements AliPayService {
 	 * Android需要编码， IOS编码后需要再处理下
 	 */
 	@Override
-	public String createOrder(CreateOrderModel createOrderModel) {
+	public String createOrderForApp(CreateOrderModel createOrderModel) {
 		String orderStr = null;
 		try {
 			// 设置参数
@@ -79,13 +84,41 @@ public class AliPayServiceImpl implements AliPayService {
 			orderStr = response.getBody();
 			orderStr = URLEncoder.encode(orderStr, "utf-8");
 		} catch (AlipayApiException e) {
-			logger.error("支付宝下单异常", e);
+			logger.error("支付宝APP下单异常", e);
 		} catch (UnsupportedEncodingException e) {
-			logger.error("支付宝下单-URLEncoder编码异常", e);
+			logger.error("支付宝APP下单-URLEncoder编码异常", e);
 		}
 		return orderStr;
 	}
 
+	
+	@Override
+	public String createOrderForH5(CreateOrderModel createOrderModel) {
+		String orderStr = null;
+		try {
+			// 设置参数
+			AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
+			model.setOutTradeNo(createOrderModel.getOutTradeNo());
+			model.setTotalAmount(createOrderModel.getTotalAmount());
+			model.setSubject(createOrderModel.getBody());
+			model.setTimeoutExpress(createOrderModel.getTimeoutExpress());
+			model.setProductCode(QUICK_WAP_PAY);
+			// 发起预下单请求
+			AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
+			request.setBizModel(model);
+			request.setNotifyUrl(config.getPayNotifyUrl());
+			if(StringUtils.isNotBlank(createOrderModel.getReturnUrl())) {
+				request.setReturnUrl(createOrderModel.getReturnUrl());
+			}
+			AlipayTradeWapPayResponse response = getClient().pageExecute(request);
+			orderStr = response.getBody(); //返回的是一个form表单格式数据
+		} catch (AlipayApiException e) {
+			logger.error("支付宝H5下单异常", e);
+		}
+		return orderStr;
+	}
+	
+	
 	@Override
 	public QueryOrderResult queryOrderByTradeNo(String outTradeNo) {
 		try {

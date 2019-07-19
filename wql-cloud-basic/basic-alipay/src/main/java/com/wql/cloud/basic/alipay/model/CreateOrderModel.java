@@ -23,6 +23,11 @@ public class CreateOrderModel {
 	 * 	1h: 表示1小时
 	 */
 	private String timeoutExpress;
+	
+	/**
+	 * 支付宝H5返回地址
+	 */
+	private String returnUrl;
 
 	public String getOutTradeNo() {
 		return outTradeNo;
@@ -54,6 +59,14 @@ public class CreateOrderModel {
 
 	public void setTimeoutExpress(String timeoutExpress) {
 		this.timeoutExpress = timeoutExpress;
+	}
+
+	public String getReturnUrl() {
+		return returnUrl;
+	}
+
+	public void setReturnUrl(String returnUrl) {
+		this.returnUrl = returnUrl;
 	}
 	
 }

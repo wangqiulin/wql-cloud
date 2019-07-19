@@ -242,6 +242,7 @@ public abstract class BaseService<T extends BaseDO> {
     	record.setId(null);
     	record.setCreateDate(new Date());
     	record.setUpdateDate(record.getCreateDate());
+    	record.setVersion(0);
     	record.setDataFlag(1);
         return this.mapper.insert(record);
     }
@@ -250,6 +251,7 @@ public abstract class BaseService<T extends BaseDO> {
     	record.setId(null);
     	record.setCreateDate(new Date());
     	record.setUpdateDate(record.getCreateDate());
+    	record.setVersion(0);
     	record.setDataFlag(1);
         return this.mapper.insertSelective(record);
     }
@@ -260,6 +262,7 @@ public abstract class BaseService<T extends BaseDO> {
     		record.setId(null);
         	record.setCreateDate(date);
         	record.setUpdateDate(date);
+        	record.setVersion(0);
         	record.setDataFlag(1);
 		}
         return this.mapper.insertList(recordList);

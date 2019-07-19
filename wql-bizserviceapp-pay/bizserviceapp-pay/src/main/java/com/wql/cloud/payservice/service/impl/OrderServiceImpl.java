@@ -2,8 +2,6 @@ package com.wql.cloud.payservice.service.impl;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -12,22 +10,20 @@ import com.wql.cloud.basic.datasource.baseservice.BaseService;
 import com.wql.cloud.basic.datasource.dynamic.TargetDataSource;
 import com.wql.cloud.payservice.pojo.domain.Order;
 import com.wql.cloud.payservice.service.OrderService;
-import com.xxl.mq.client.consumer.IMqConsumer;
-import com.xxl.mq.client.consumer.MqResult;
-import com.xxl.mq.client.consumer.annotation.MqConsumer;
+
+import io.seata.core.context.RootContext;
 
 /**
  * Author wangqiulin
  * Date  2019-04-13
  */
 @Service
-@MqConsumer(topic = "topic_1")
-public class OrderServiceImpl extends BaseService<Order> implements OrderService, IMqConsumer {
+//@MqConsumer(topic = "topic_1")
+public class OrderServiceImpl extends BaseService<Order> implements OrderService { //, IMqConsumer
 
-	private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
-	
 	@Override
 	public Integer save(Order order) {
+		System.out.println("=========================="+RootContext.getXID());
 		return this.saveSelective(order);
 	}
 
@@ -61,10 +57,10 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
 		return this.pageListByRecord(order.getPage(), order.getPageSize(), order);
 	}
 
-	@Override
-	public MqResult consume(String data) throws Exception {
-		logger.info("==========================> mq : " + data);
-		return MqResult.SUCCESS;
-	}
+//	@Override
+//	public MqResult consume(String data) throws Exception {
+//		logger.info("==========================> mq : " + data);
+//		return MqResult.SUCCESS;
+//	}
 	
 }
