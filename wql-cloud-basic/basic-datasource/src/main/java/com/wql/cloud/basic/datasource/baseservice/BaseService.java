@@ -189,7 +189,7 @@ public abstract class BaseService<T extends BaseDO> {
      * @param example
      * @return
      */
-    public PageInfo<T> queryPageListByExampleWithoutCount(Integer page, Integer rows, Example example) {
+    public PageInfo<T> pageListByExampleWithoutCount(Integer page, Integer rows, Example example) {
     	page = (page == null || page <= 0) ? PAGE : page;
     	rows = (rows == null || rows <= 0) ? ROWS : rows;
     	return pageListByExample(page, rows, example, false);
