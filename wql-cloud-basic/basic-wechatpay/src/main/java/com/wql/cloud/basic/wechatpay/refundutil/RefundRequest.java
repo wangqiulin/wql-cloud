@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.wechatpay.refund;
+package com.wql.cloud.basic.wechatpay.refundutil;
 
 import java.io.File;
 import java.io.FileInputStream;

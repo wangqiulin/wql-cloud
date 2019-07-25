@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.wechatpay.refund;
+package com.wql.cloud.basic.wechatpay.refundutil;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;

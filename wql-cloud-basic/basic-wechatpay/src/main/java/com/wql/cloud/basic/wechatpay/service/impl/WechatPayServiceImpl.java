@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.security.KeyStore;
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,9 +33,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wql.cloud.basic.wechatpay.config.WechatPayConfig;
+import com.wql.cloud.basic.wechatpay.enums.TradeTypeEnum;
 import com.wql.cloud.basic.wechatpay.model.PlaceOrderModel;
 import com.wql.cloud.basic.wechatpay.model.RefundOrderModel;
-import com.wql.cloud.basic.wechatpay.refund.DecodeUtil;
+import com.wql.cloud.basic.wechatpay.refundutil.DecodeUtil;
 import com.wql.cloud.basic.wechatpay.result.PayNotifyResult;
 import com.wql.cloud.basic.wechatpay.result.PlaceOrderResult;
 import com.wql.cloud.basic.wechatpay.result.QueryOrderResult;
@@ -67,14 +68,15 @@ public class WechatPayServiceImpl implements WechatPayService {
 	private WechatPayConfig wechatPayConfig;
 	
 	@Override
-	public PlaceOrderResult placeOrder(PlaceOrderModel model) {
+	public PlaceOrderResult placeOrderForApp(PlaceOrderModel model) {
 		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 			/**1.组装参数*/
 			TreeMap<String, String> bizParams = new TreeMap<String, String>();
 			bizParams.put(WXPayConstant.APPID, wechatPayConfig.getAppId());
 		    bizParams.put(WXPayConstant.MCH_ID, wechatPayConfig.getMchId());
 		    bizParams.put(WXPayConstant.TOTAL_FEE, String.valueOf(model.getTotalFee().multiply(new BigDecimal(100)))); // 整数，单位为分
-		    bizParams.put(WXPayConstant.TRADE_TYPE, model.getTradeTypeEnum().getTradeType());
+		    bizParams.put(WXPayConstant.TRADE_TYPE, TradeTypeEnum.APP.getTradeType()); //App支付
 			bizParams.put(WXPayConstant.SPBILL_CREATE_IP, model.getCreateIp());
 			bizParams.put(WXPayConstant.BODY, model.getBody());
 			bizParams.put(WXPayConstant.OUT_TRADE_NO, model.getOutTradeNo());
@@ -82,10 +84,8 @@ public class WechatPayServiceImpl implements WechatPayService {
 			bizParams.put(WXPayConstant.FEE_TYPE, "CNY");
 			bizParams.put(WXPayConstant.DEVICE_INFO, "WEB");
 			bizParams.put(WXPayConstant.NOTIFY_URL, wechatPayConfig.getPayNotifyUrl());
-			//TODO 失效时间, 默认30分钟
-			Date now = new Date();
-			bizParams.put(WXPayConstant.TIME_START, DateUtil.transferDateToString(now, DateUtil.DATE_FORMAT_2));
-			bizParams.put(WXPayConstant.TIME_EXPIRE, DateUtil.getDateStr(now, Calendar.MINUTE, WXPayConstant.TIME_OUT, DateUtil.DATE_FORMAT_2));
+			bizParams.put(WXPayConstant.TIME_START, sdf.format(model.getTimeStart()));
+			bizParams.put(WXPayConstant.TIME_EXPIRE, sdf.format(model.getTimeExpire()));
 			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wechatPayConfig.getPrivateKey()));  
 			
 			/**2.发起请求*/
@@ -108,12 +108,54 @@ public class WechatPayServiceImpl implements WechatPayService {
 			returnMap.put(WXPayConstant.noncestr, UUIDUtil.getShortUuid());
 			returnMap.put(WXPayConstant.timestamp, DateUtil.getTimeMillis(10));
 			returnMap.put(WXPayConstant.SIGN, SignUtil.sign(returnMap, wechatPayConfig.getPrivateKey()));
-			return new PlaceOrderResult(true, "微信下单成功", returnMap);
+			return new PlaceOrderResult(true, "微信App支付-下单成功", returnMap);
 		} catch (Exception e) {
-			logger.error("微信支付-下单，出现异常", e);
+			logger.error("微信App支付-下单，出现异常", e);
 		}
-		return new PlaceOrderResult(false, "微信下单异常");
+		return new PlaceOrderResult(false, "微信App下单异常");
 	}
+	
+	
+	@Override
+	public PlaceOrderResult placeOrderForH5(PlaceOrderModel model) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+			/**1.组装参数*/
+			TreeMap<String, String> bizParams = new TreeMap<String, String>();
+			bizParams.put(WXPayConstant.APPID, wechatPayConfig.getAppId());
+		    bizParams.put(WXPayConstant.MCH_ID, wechatPayConfig.getMchId());
+		    bizParams.put(WXPayConstant.TOTAL_FEE, String.valueOf(model.getTotalFee().multiply(new BigDecimal(100)))); // 整数，单位为分
+		    bizParams.put(WXPayConstant.TRADE_TYPE, TradeTypeEnum.MWEB.getTradeType()); //H5支付
+			bizParams.put(WXPayConstant.SPBILL_CREATE_IP, model.getCreateIp());
+			bizParams.put(WXPayConstant.BODY, model.getBody());
+			bizParams.put(WXPayConstant.OUT_TRADE_NO, model.getOutTradeNo());
+			bizParams.put(WXPayConstant.NONCE_STR, UUIDUtil.getShortUuid()); 
+			bizParams.put(WXPayConstant.FEE_TYPE, "CNY");
+			bizParams.put(WXPayConstant.DEVICE_INFO, "WEB");
+			bizParams.put(WXPayConstant.NOTIFY_URL, wechatPayConfig.getPayNotifyUrl());
+			bizParams.put(WXPayConstant.TIME_START, sdf.format(model.getTimeStart()));
+			bizParams.put(WXPayConstant.TIME_EXPIRE, sdf.format(model.getTimeExpire()));
+			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wechatPayConfig.getPrivateKey()));  
+			
+			/**2.发起请求*/
+			String reqXml = XmlUtil.mapToXml(bizParams, WXPayConstant.XML_ROOT);
+			String respXml = HttpUtil.doPost(wechatPayConfig.PLACE_ORDER_URL, reqXml, true);
+			Map<String, String> respMap = MapUtil.objMap2StrMap(XmlUtil.xml2map(respXml));
+			if(!WXPayConstant.SUCCESS_CODE.equals(respMap.get(WXPayConstant.RETURN_CODE))){
+				return new PlaceOrderResult(false, respMap.get(WXPayConstant.RETURN_MSG));
+			}
+			if (!SignUtil.checkSign(respMap, wechatPayConfig.getPrivateKey())) {
+				return new PlaceOrderResult(false, "签名校验不通过");
+			}
+			
+			/**3.下单成功*/
+			return new PlaceOrderResult(true, "微信H5支付-下单成功", respMap.get("mweb_url"));
+		} catch (Exception e) {
+			logger.error("微信H5支付-下单，出现异常", e);
+		}
+		return new PlaceOrderResult(false, "微信H5下单异常");
+	}
+	
 	
 	
 	@Override

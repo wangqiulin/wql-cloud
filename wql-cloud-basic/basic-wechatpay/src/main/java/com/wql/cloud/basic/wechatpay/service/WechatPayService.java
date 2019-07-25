@@ -10,12 +10,20 @@ import com.wql.cloud.basic.wechatpay.result.RefundNotifyResult;
 public interface WechatPayService {
 	
 	/**
-	 * 下单
+	 * 下单-App支付
 	 * 
 	 * @param model
 	 * @return
 	 */
-	PlaceOrderResult placeOrder(PlaceOrderModel model);
+	PlaceOrderResult placeOrderForApp(PlaceOrderModel model);
+	
+	/**
+	 * 下单-H5支付
+	 * 
+	 * @param model
+	 * @return
+	 */
+	PlaceOrderResult placeOrderForH5(PlaceOrderModel model);
 	
 	/**
 	 * 查询订单

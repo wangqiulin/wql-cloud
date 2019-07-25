@@ -13,7 +13,14 @@ public class PlaceOrderResult {
 	
 	private String resultMsg;
 	
-	@SuppressWarnings("unused")
+	/**
+	 * 微信H5支付，下单链接
+	 */
+	private String mwebUrl;
+	
+	/**
+	 * 微信App支付，返回内容
+	 */
 	private Map<String, String> wxPayDataMap;
 
 	public PlaceOrderResult() {
@@ -33,6 +40,13 @@ public class PlaceOrderResult {
 		this.wxPayDataMap = wxPayDataMap;
 	}
 
+	public PlaceOrderResult(Boolean resultCode, String resultMsg, String mwebUrl) {
+		super();
+		this.resultCode = resultCode;
+		this.resultMsg = resultMsg;
+		this.mwebUrl = mwebUrl;
+	}
+	
 	public Boolean getResultCode() {
 		return resultCode;
 	}
@@ -47,6 +61,22 @@ public class PlaceOrderResult {
 
 	public void setResultMsg(String resultMsg) {
 		this.resultMsg = resultMsg;
+	}
+
+	public String getMwebUrl() {
+		return mwebUrl;
+	}
+
+	public void setMwebUrl(String mwebUrl) {
+		this.mwebUrl = mwebUrl;
+	}
+
+	public Map<String, String> getWxPayDataMap() {
+		return wxPayDataMap;
+	}
+
+	public void setWxPayDataMap(Map<String, String> wxPayDataMap) {
+		this.wxPayDataMap = wxPayDataMap;
 	}
 
 }
