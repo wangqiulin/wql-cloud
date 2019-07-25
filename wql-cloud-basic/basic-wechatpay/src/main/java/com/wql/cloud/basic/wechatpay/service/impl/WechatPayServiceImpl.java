@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServletRequest;
@@ -42,12 +43,10 @@ import com.wql.cloud.basic.wechatpay.result.PlaceOrderResult;
 import com.wql.cloud.basic.wechatpay.result.QueryOrderResult;
 import com.wql.cloud.basic.wechatpay.result.RefundNotifyResult;
 import com.wql.cloud.basic.wechatpay.service.WechatPayService;
-import com.wql.cloud.basic.wechatpay.util.DateUtil;
 import com.wql.cloud.basic.wechatpay.util.HttpUtil;
 import com.wql.cloud.basic.wechatpay.util.MapUtil;
 import com.wql.cloud.basic.wechatpay.util.SignUtil;
 import com.wql.cloud.basic.wechatpay.util.StreamUtils;
-import com.wql.cloud.basic.wechatpay.util.UUIDUtil;
 import com.wql.cloud.basic.wechatpay.util.WXPayConstant;
 import com.wql.cloud.basic.wechatpay.util.WXPayUtil;
 import com.wql.cloud.basic.wechatpay.util.XmlUtil;
@@ -80,7 +79,7 @@ public class WechatPayServiceImpl implements WechatPayService {
 			bizParams.put(WXPayConstant.SPBILL_CREATE_IP, model.getCreateIp());
 			bizParams.put(WXPayConstant.BODY, model.getBody());
 			bizParams.put(WXPayConstant.OUT_TRADE_NO, model.getOutTradeNo());
-			bizParams.put(WXPayConstant.NONCE_STR, UUIDUtil.getShortUuid()); 
+			bizParams.put(WXPayConstant.NONCE_STR, UUID.randomUUID().toString().replaceAll("-", "")); 
 			bizParams.put(WXPayConstant.FEE_TYPE, "CNY");
 			bizParams.put(WXPayConstant.DEVICE_INFO, "WEB");
 			bizParams.put(WXPayConstant.NOTIFY_URL, wechatPayConfig.getPayNotifyUrl());
@@ -105,8 +104,8 @@ public class WechatPayServiceImpl implements WechatPayService {
 			returnMap.put(WXPayConstant.PARTNERID, wechatPayConfig.getMchId());
 			returnMap.put(WXPayConstant.PREPAYID, respMap.get("prepay_id"));
 			returnMap.put(WXPayConstant.PACKAGE_KEY, "Sign=WXPay");
-			returnMap.put(WXPayConstant.noncestr, UUIDUtil.getShortUuid());
-			returnMap.put(WXPayConstant.timestamp, DateUtil.getTimeMillis(10));
+			returnMap.put(WXPayConstant.noncestr, UUID.randomUUID().toString().replaceAll("-", ""));
+			returnMap.put(WXPayConstant.timestamp, String.valueOf(System.currentTimeMillis()).substring(0, 10));
 			returnMap.put(WXPayConstant.SIGN, SignUtil.sign(returnMap, wechatPayConfig.getPrivateKey()));
 			return new PlaceOrderResult(true, "微信App支付-下单成功", returnMap);
 		} catch (Exception e) {
@@ -129,7 +128,7 @@ public class WechatPayServiceImpl implements WechatPayService {
 			bizParams.put(WXPayConstant.SPBILL_CREATE_IP, model.getCreateIp());
 			bizParams.put(WXPayConstant.BODY, model.getBody());
 			bizParams.put(WXPayConstant.OUT_TRADE_NO, model.getOutTradeNo());
-			bizParams.put(WXPayConstant.NONCE_STR, UUIDUtil.getShortUuid()); 
+			bizParams.put(WXPayConstant.NONCE_STR, UUID.randomUUID().toString().replaceAll("-", "")); 
 			bizParams.put(WXPayConstant.FEE_TYPE, "CNY");
 			bizParams.put(WXPayConstant.DEVICE_INFO, "WEB");
 			bizParams.put(WXPayConstant.NOTIFY_URL, wechatPayConfig.getPayNotifyUrl());
@@ -166,7 +165,7 @@ public class WechatPayServiceImpl implements WechatPayService {
   	        bizParams.put(WXPayConstant.APPID, wechatPayConfig.getAppId());
   	        bizParams.put(WXPayConstant.MCH_ID, wechatPayConfig.getMchId());
   	        bizParams.put(WXPayConstant.OUT_TRADE_NO, outTradeNo);
-  	        bizParams.put(WXPayConstant.NONCE_STR, UUIDUtil.getShortUuid());
+  	        bizParams.put(WXPayConstant.NONCE_STR, UUID.randomUUID().toString().replaceAll("-", ""));
   			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wechatPayConfig.getPrivateKey()));
   			
   			/**2.发起请求，微信支付查询*/
@@ -182,7 +181,7 @@ public class WechatPayServiceImpl implements WechatPayService {
 				String tradeState = respMap.get("trade_state");
 			    switch (tradeState) {
 			        case SUCCESS:
-			        	Date payDate = DateUtil.parseDate(respMap.get("time_end"), "yyyyMMddHHmmss");
+			        	Date payDate = DateUtils.parseDate(respMap.get("time_end"), "yyyyMMddHHmmss");
 			        	return new QueryOrderResult("支付成功", tradeState, payDate);
 			        case NOTPAY:
 			        	return new QueryOrderResult("未支付", tradeState);
@@ -212,7 +211,7 @@ public class WechatPayServiceImpl implements WechatPayService {
             TreeMap<String, Object> bizParams = new TreeMap<String, Object>();
             bizParams.put(WXPayConstant.APPID, wechatPayConfig.getAppId());
 		    bizParams.put(WXPayConstant.MCH_ID, wechatPayConfig.getMchId());
-		    bizParams.put(WXPayConstant.NONCE_STR, UUIDUtil.getShortUuid());
+		    bizParams.put(WXPayConstant.NONCE_STR, UUID.randomUUID().toString().replaceAll("-", ""));
 			bizParams.put("out_trade_no", refundOrderModel.getOutTradeNo());
 		    bizParams.put("out_refund_no", refundOrderModel.getOutRefundNo()); // 我们自己设定的退款申请号，约束为UK
 		    long totalFee = refundOrderModel.getTotalFee().multiply(BigDecimal.TEN).multiply(BigDecimal.TEN).longValue();
@@ -291,7 +290,7 @@ public class WechatPayServiceImpl implements WechatPayService {
   	        bizParams.put(WXPayConstant.APPID, wechatPayConfig.getAppId());
   	        bizParams.put(WXPayConstant.MCH_ID, wechatPayConfig.getMchId());
   	        bizParams.put(WXPayConstant.OUT_TRADE_NO, outTradeNo);
-  	        bizParams.put(WXPayConstant.NONCE_STR, UUIDUtil.getShortUuid());
+  	        bizParams.put(WXPayConstant.NONCE_STR, UUID.randomUUID().toString().replaceAll("-", ""));
   			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wechatPayConfig.getPrivateKey()));
   			
   			/**2.发起请求，微信支付查询*/
@@ -312,7 +311,7 @@ public class WechatPayServiceImpl implements WechatPayService {
 				String refundStatus = respMap.get("refund_status_"+n);
 			    switch (refundStatus) {
 			        case SUCCESS:
-			        	Date payDate = DateUtil.parseDate(respMap.get("refund_success_time_"+n), "yyyyMMddHHmmss");
+			        	Date payDate = DateUtils.parseDate(respMap.get("refund_success_time_"+n), "yyyyMMddHHmmss");
 			        	return new QueryOrderResult("退款成功", refundStatus, payDate);
 			        case "REFUNDCLOSE":
 			        	return new QueryOrderResult("退款关闭", refundStatus);
@@ -405,5 +404,9 @@ public class WechatPayServiceImpl implements WechatPayService {
         return xmlStr;
     }
 	
+    
+    //==============================================================//
+    
+    
 	
 }

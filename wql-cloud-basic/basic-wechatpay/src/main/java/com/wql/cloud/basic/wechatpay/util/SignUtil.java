@@ -82,8 +82,6 @@ public class SignUtil {
 		}
 		String wxSign = params.remove(WXPayConstant.SIGN);
 		String respSign = sign(params, key);
-		System.out.println(wxSign);
-		System.out.println(respSign);
 		return wxSign.equals(respSign);
 	}
 

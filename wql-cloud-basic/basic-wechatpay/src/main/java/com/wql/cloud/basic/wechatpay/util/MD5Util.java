@@ -29,58 +29,6 @@ public class MD5Util {
 			return null;
 		}
 	}
-
-	/**
-	 * 加盐MD5
-	 */
-//	public static String saltMD5(String str) {
-//		String salt = genSalt();
-//		str = MD5(str + salt);
-//		char[] cs = new char[48];
-//		for (int i = 0; i < 48; i += 3) {
-//			cs[i] = str.charAt(i / 3 * 2);
-//			char c = salt.charAt(i / 3);
-//			cs[i + 1] = c;
-//			cs[i + 2] = str.charAt(i / 3 * 2 + 1);
-//		}
-//		return new String(cs);
-//	}
-//
-//	private static String genSalt() {
-//		Random r = new Random();
-//		StringBuilder sb = new StringBuilder(16);
-//		sb.append(r.nextInt(99999999)).append(r.nextInt(99999999));
-//		int len = sb.length();
-//		if (len < 16) {
-//			for (int i = 0; i < 16 - len; i++) {
-//				sb.append("0");
-//			}
-//		}
-//		String salt = sb.toString();
-//		return salt;
-//	}
-//
-//	/**
-//	 * 校验
-//	 */
-//	public static boolean saltMD5Verify(String password, String md5) {
-//		boolean result;
-//		try {
-//			char[] cs1 = new char[32];
-//			char[] cs2 = new char[16];
-//			for (int i = 0; i < 48; i += 3) {
-//				cs1[i / 3 * 2] = md5.charAt(i);
-//				cs1[i / 3 * 2 + 1] = md5.charAt(i + 2);
-//				cs2[i / 3] = md5.charAt(i + 1);
-//			}
-//			String salt = new String(cs2);
-//			result = MD5(password + salt).equals(new String(cs1));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return false;
-//		}
-//		return result;
-//	}
 	
 	/**
      * 十六进制下数字到字符的映射数组

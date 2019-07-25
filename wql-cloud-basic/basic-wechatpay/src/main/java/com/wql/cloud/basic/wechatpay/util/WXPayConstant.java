@@ -49,9 +49,6 @@ public interface WXPayConstant {
 	public static final String TIME_END = "time_end";
 	public static final String XML_ROOT = "xml";
 	public static final String REFUND_ID = "refund_id";
-	public static final Integer TIME_OUT = 30;// 微信订单超时时间，单位：分钟
-	
 	public static final String noncestr = "noncestr";
 	public static final String timestamp = "timestamp";
-	
 }
