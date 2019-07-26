@@ -79,10 +79,10 @@
             <artifactId>basic-job</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>com.wql.cloud</groupId>
             <artifactId>basic-seata</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+        </dependency> -->
     </dependencies>
 </project>

@@ -52,6 +52,8 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSONObject;
+
 public class HttpUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(HttpUtil.class);
@@ -72,7 +74,7 @@ public class HttpUtil {
 		URI uri = generateURL(url, params);
 		HttpGet get = new HttpGet(uri);
 		get.setConfig(requestConfig);
-		logger.info("HttpUtil.doPost-请求URL: " + uri +";请求参数:"+JsonUtil.buildNonNullBinder().toJson(params));
+		logger.info("HttpUtil.doPost-请求URL: " + uri +";请求参数:"+ JSONObject.toJSONString(params));
 		long start = new Date().getTime();
 		String res = execute(get);
 		logger.info("HTTP Response context: \n" + res);

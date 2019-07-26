@@ -17,8 +17,6 @@ import com.wql.cloud.payservice.pojo.domain.Order;
 import com.wql.cloud.userservice.pojo.domain.User;
 import com.wql.cloud.userservice.service.UserService;
 
-import io.seata.spring.annotation.GlobalTransactional;
-
 
 /**
  * 分布式锁： @DistributedLock(lockName="lock:test", tryLock=true)
@@ -36,15 +34,13 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	
 	@Override
 	@Transactional
-	@GlobalTransactional
+//	@GlobalTransactional
 	public Integer save(User req) {
 		Order order = new Order();
 		order.setOrderNo("test");
 		order.setGoodsName("测试分布式事务");
 		payClient.save(order);
-		
 		int i = 1/0;
-		
 		return this.saveSelective(req);
 	}
 

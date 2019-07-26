@@ -11,8 +11,6 @@ import com.wql.cloud.basic.datasource.dynamic.TargetDataSource;
 import com.wql.cloud.payservice.pojo.domain.Order;
 import com.wql.cloud.payservice.service.OrderService;
 
-import io.seata.core.context.RootContext;
-
 /**
  * Author wangqiulin
  * Date  2019-04-13
@@ -23,7 +21,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
 
 	@Override
 	public Integer save(Order order) {
-		System.out.println("=========================="+RootContext.getXID());
+//		System.out.println("=========================="+RootContext.getXID());
 		return this.saveSelective(order);
 	}
 
