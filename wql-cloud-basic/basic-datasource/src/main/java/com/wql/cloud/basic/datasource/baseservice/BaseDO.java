@@ -27,7 +27,7 @@ public abstract class BaseDO implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 
 	@JsonFormat(pattern = DATE_FORMAT, timezone = "GMT+8")
 	private Date createDate;
@@ -37,7 +37,7 @@ public abstract class BaseDO implements Serializable{
 
 	//版本号，用于乐观锁
 	@JsonIgnore
-	private Integer version;  
+	private Long version;  
 	
 	//数据标志: 0无效, 1有效
 	@JsonIgnore
@@ -49,11 +49,11 @@ public abstract class BaseDO implements Serializable{
 	@Transient
 	public Integer pageSize;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -73,11 +73,11 @@ public abstract class BaseDO implements Serializable{
 		this.updateDate = updateDate;
 	}
 
-	public Integer getVersion() {
+	public Long getVersion() {
 		return version;
 	}
 
-	public void setVersion(Integer version) {
+	public void setVersion(Long version) {
 		this.version = version;
 	}
 

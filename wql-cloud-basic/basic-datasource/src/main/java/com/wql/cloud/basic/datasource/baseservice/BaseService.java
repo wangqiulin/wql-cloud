@@ -242,7 +242,7 @@ public abstract class BaseService<T extends BaseDO> {
     	record.setId(null);
     	record.setCreateDate(new Date());
     	record.setUpdateDate(record.getCreateDate());
-    	record.setVersion(0);
+    	record.setVersion(0L);
     	record.setDataFlag(1);
         return this.mapper.insert(record);
     }
@@ -251,18 +251,18 @@ public abstract class BaseService<T extends BaseDO> {
     	record.setId(null);
     	record.setCreateDate(new Date());
     	record.setUpdateDate(record.getCreateDate());
-    	record.setVersion(0);
+    	record.setVersion(0L);
     	record.setDataFlag(1);
         return this.mapper.insertSelective(record);
     }
     
-    public Integer batchSaveList(List<T> recordList) {
+    public Integer insertList(List<T> recordList) {
     	Date date = new Date();
     	for (T record : recordList) {
     		record.setId(null);
         	record.setCreateDate(date);
         	record.setUpdateDate(date);
-        	record.setVersion(0);
+        	record.setVersion(0L);
         	record.setDataFlag(1);
 		}
         return this.mapper.insertList(recordList);
@@ -292,6 +292,16 @@ public abstract class BaseService<T extends BaseDO> {
         return this.mapper.updateByExampleSelective(record, example);
     }
 
+    /**
+     * 批量修改
+     * 
+     * @param recordList
+     * @return
+     */
+    public int updateBatchByPrimaryKeySelective(List<T> recordList) {
+    	return this.mapper.updateBatchByPrimaryKeySelective(recordList);
+    }
+    
     
     /**
      * 数据更新，存在乐观锁控制
