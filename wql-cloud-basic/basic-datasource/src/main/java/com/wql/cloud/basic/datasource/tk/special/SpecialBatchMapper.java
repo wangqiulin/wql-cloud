@@ -26,11 +26,12 @@ public interface SpecialBatchMapper<T> {
 	
 	
 	/**
+	 * 根据id批量更新：https://blog.csdn.net/sunct/article/details/90146681
      * 根据Example条件批量更新实体`record`包含的不是null的属性值
      *
      * @return
      */
-    @UpdateProvider(type = BatchExampleProvider.class, method = "dynamicSQL")
+    @UpdateProvider(type = SpecialBatchProvider.class, method = "updateBatchByPrimaryKeySelective")
     int updateBatchByPrimaryKeySelective(List<? extends T> recordList);
 	
 }
