@@ -1,9 +1,8 @@
 package com.wql.cloud.basic.redis.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
@@ -16,89 +15,90 @@ public class RedisUtil {
 
 	@Resource(name = "redisTemplate")
 	private RedisTemplate<String, Object> redisTemplate;
-
-	
-	public void tx(String key) {
-		//开启事务
-		redisTemplate.setEnableTransactionSupport(true);
-		
-		//监听key
-		redisTemplate.watch(key);
-		
-		//标志事务开始
-		redisTemplate.multi();
-		
-		//一系列操作......
-		
-		//事务提交
-		redisTemplate.exec();
-		
-		//事务回滚
-		redisTemplate.discard();
-		
-		//数据发生变化的话,取消监听
-		redisTemplate.unwatch();
-	}
-	
-	
-	
-	
 	
 	// -------------------设置功能---------------------//
-	/** 永久设置 */
+	/**
+	 * 永久设置
+	 * 
+	 * @param key
+	 * @param value
+	 */
 	public void set(String key, String value) {
 		redisTemplate.opsForValue().set(key, value);
 	}
 
-	/** 永久设置,json格式保存 */
-	public void setJson(String key, String value) {
-		redisTemplate.opsForValue().set(key, value);
-	}
-
-	/** 带有效时间的设置, 时间单位为秒 */
+	/**
+	 * 带有效时间的设置, 时间单位为秒
+	 * 
+	 * @param key
+	 * @param value
+	 * @param seconds
+	 */
 	public void setWithExByS(String key, String value, long seconds) {
 		redisTemplate.opsForValue().set(key, value, seconds, TimeUnit.SECONDS);
 	}
 
-	/** 带有效时间的设置, 时间单位为毫秒 */
+	/**
+	 * 带有效时间的设置, 时间单位为毫秒
+	 * 
+	 * @param key
+	 * @param value
+	 * @param milliseconds
+	 */
 	public void setWithExByMS(String key, String value, long milliseconds) {
 		redisTemplate.opsForValue().set(key, value, milliseconds, TimeUnit.MILLISECONDS);
 	}
 
-	/** 设置hash结构值 */
+	/**
+	 * 设置hash结构值
+	 * 
+	 * @param key
+	 * @param hashKey
+	 * @param value
+	 */
 	public void hashSet(String key, String hashKey, Object value) {
 		redisTemplate.opsForHash().put(key, hashKey, value);
 	}
 
+	/**
+	 * 设置map值
+	 * 
+	 * @param key
+	 * @param dataMap
+	 */
 	public void setAllMap(String key, Map<Object, Object> dataMap) {
 		redisTemplate.opsForHash().putAll(key, dataMap);
 	}
 
-	/** 在hashKey已经存在的情况下, putIfAbsent下不会进入修改value */
+	/**
+	 * 在hashKey已经存在的情况下, putIfAbsent下不会进入修改value
+	 * 
+	 * @param key
+	 * @param hashKey
+	 * @param value
+	 */
 	public void hashSetIfAbsent(String key, String hashKey, Object value) {
 		redisTemplate.opsForHash().putIfAbsent(key, hashKey, value);
 	}
 
-	/** 设置当天才有效的值 */
-	@SuppressWarnings("static-access")
-	public boolean setWithCurrentDay(String key, String value) {
-		try {
-			// 两个日期之间的差(毫秒值之差)
-			String format = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-			String currentLastTime = format + " 23:59:59";
-			long between = this.between(new Date(), this.transString2Date(currentLastTime));
-			redisTemplate.opsForValue().set(key, value, between, TimeUnit.MILLISECONDS);
-		} catch (Exception e) {
-			return false;
-		}
-		return true;
-	}
-
 	// -------------------获取功能---------------------//
+	
+	/**
+	 * 根据key，获取值
+	 * 
+	 * @param key
+	 * @return
+	 */
 	public Object get(String key) {
 		return redisTemplate.opsForValue().get(key);
 	}
 
+	/**
+	 * 根据key，获取值
+	 * 
+	 * @param key
+	 * @return
+	 */
 	public String getStr(String key) {
 		return (String) redisTemplate.opsForValue().get(key);
 	}
@@ -124,40 +124,102 @@ public class RedisUtil {
         return redisTemplate.boundListOps(key).size();
     }
 	
+	
+	/**
+	 * 获取剩余有效时间
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public long getExpireByKey(String key) {
+		return redisTemplate.opsForValue().getOperations().getExpire(key);
+	}
+	
 	// -------------------删除功能---------------------//
 
+	/**
+	 * 指定key删除
+	 * 
+	 * @param key
+	 */
+	public void remove(String key) {
+		redisTemplate.delete(key);
+	}
+	
+	/**
+	 * 指定批量key删除
+	 * 
+	 * @param keys
+	 */
+	public void remove(List<String> keys) {
+		redisTemplate.delete(keys);
+	}
+	
+	/**
+	 * 前置模糊匹配删除
+	 * 
+	 * @param prexKey
+	 */
+	public void removeByPrex(String prexKey) {
+		Set<String> keys = redisTemplate.keys(prexKey + "*");
+		redisTemplate.delete(keys);
+	}
+	
+	/**
+	 * 后置模糊匹配删除
+	 * 
+	 * @param suffixKey
+	 */
+	public void removeBySuffix(String suffixKey) {
+		Set<String> keys = redisTemplate.keys("*" + suffixKey);
+		redisTemplate.delete(keys);
+	}
+	
 	/** hash结构数据删除, 返回删除成功的个数 */
 	public Long hashDel(String key, Object... hashKeys) {
 		return redisTemplate.opsForHash().delete(key, hashKeys);
 	}
 
+	
 	// -------------------自增长和自增减---------------------//
-	/** 按1自增 */
+	
+	/**
+	 * 按1自增
+	 * 
+	 * @param key
+	 * @return
+	 */
 	public long incr(String key) {
 		return redisTemplate.opsForValue().increment(key, 1);
 	}
 
-	/** 自增 或 自减 */
+	/**
+	 * 自增 或 自减
+	 * 
+	 * @param key
+	 * @param byNum 正数，自增；  负数，自减
+	 * @return
+	 */
 	public long incrByNum(String key, Integer byNum) {
 		return redisTemplate.opsForValue().increment(key, byNum);
 	}
 
-	// -------------------获取剩余有效时间---------------------//
-	/** 获取剩余有效时间 */
-	public long getExpireByKey(String key) {
-		return redisTemplate.opsForValue().getOperations().getExpire(key);
-	}
 
-	// =======================================================//
-
-	public static long between(Date date1, Date date2) {
-		return Math.abs(date2.getTime() - date1.getTime());
-	}
-
-	public static Date transString2Date(String dataStr) throws Exception {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date date = sdf.parse(dataStr);
-		return date;
-	}
+//	public void tx(String key) {
+//		//开启事务
+//		redisTemplate.setEnableTransactionSupport(true);
+//		//监听key
+//		redisTemplate.watch(key);
+//		//标志事务开始
+//		redisTemplate.multi();
+//		//一系列操作......
+//		//事务提交
+//		redisTemplate.exec();
+//		//事务回滚
+//		redisTemplate.discard();
+//		//数据发生变化的话,取消监听
+//		redisTemplate.unwatch();
+//	}
+	
 
 }
