@@ -17,10 +17,11 @@ public interface SpecialBatchMapper<T> {
 
 	/**
 	 * 批量插入数据库，所有字段都插入，包括主键
+	 * keyProperty是你POJO实体类与数据库主键映射的那个字段。
 	 *
 	 * @return
 	 */
-	@Options(useGeneratedKeys = true, keyProperty = "id")
+	@Options(useGeneratedKeys = true, keyProperty = "id") 
 	@InsertProvider(type = SpecialBatchProvider.class, method = "batchInsertList")
 	int batchInsertList(List<T> list);
 	
