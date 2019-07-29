@@ -80,6 +80,18 @@ public class RedisUtil {
 	public void hashSetIfAbsent(String key, String hashKey, Object value) {
 		redisTemplate.opsForHash().putIfAbsent(key, hashKey, value);
 	}
+	
+	/**
+	 * 设置失效日期
+	 * 
+	 * @param key
+	 * @param timeout
+	 * @param timeUnit
+	 * @return
+	 */
+	public Boolean expire(String key, Integer timeout, TimeUnit timeUnit) {
+		return redisTemplate.expire(key, timeout, timeUnit);
+	}
 
 	// -------------------获取功能---------------------//
 	

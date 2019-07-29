@@ -62,7 +62,6 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		return user;
 	}
 	
-	
 	@Override
 	@TargetDataSource(name = "read")
 	public List<User> queryList(User req) {
