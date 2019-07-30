@@ -11,6 +11,8 @@ import com.wql.cloud.basic.datasource.dynamic.TargetDataSource;
 import com.wql.cloud.payservice.pojo.domain.Order;
 import com.wql.cloud.payservice.service.OrderService;
 
+import tk.mybatis.mapper.entity.Example;
+
 /**
  * Author wangqiulin
  * Date  2019-04-13
@@ -52,7 +54,10 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
 	@Override
 	@TargetDataSource(name = "read")
 	public PageInfo<Order> queryPageList(Order order) {
-		return this.pageListByRecord(order.getPage(), order.getPageSize(), order);
+		Example example = new Example(Order.class);
+		example.createCriteria().andBetween("createDate", order.getBeginTime(), order.getEndTime());
+		return this.pageListByExample(order.getPage(), order.getPageSize(), example);
+		//return this.pageListByRecord(order.getPage(), order.getPageSize(), order);
 	}
 
 //	@Override
