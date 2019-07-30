@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.seata.constant;
+package com.wql.cloud.basic.datasource.seata;
 
 public class SeataConstant {
 

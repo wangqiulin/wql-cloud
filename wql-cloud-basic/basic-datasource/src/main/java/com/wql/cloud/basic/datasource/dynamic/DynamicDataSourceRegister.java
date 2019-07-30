@@ -91,11 +91,20 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 			String publicKey = dsMap.get("publicKey").toString();
 			//使用公钥解密
 			password = ConfigTools.decrypt(publicKey, password);
-			logger.info("密码：" + password);
-			
-			DataSourceBuilder factory = DataSourceBuilder.create().driverClassName(driverClassName).url(url)
-					.username(username).password(password).type(dataSourceType);
+			if(logger.isDebugEnabled()) {
+				logger.debug("db-密码：" + password);
+			}
+			DataSourceBuilder factory = DataSourceBuilder.create()
+					.driverClassName(driverClassName)
+					.url(url)
+					.username(username)
+					.password(password)
+					.type(dataSourceType);
 			return factory.build();
+			
+			//seata分布式事务回滚，配置数据源
+			//return new DataSourceProxy(factory.build()); 
+			
 		} catch (Exception e) {
 			logger.error("========druid configuration initialization filter========", e);
 		}
@@ -124,9 +133,7 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 		dsMap.put("username", propertyResolver.getProperty("username"));
 		dsMap.put("password", propertyResolver.getProperty("password"));
 		dsMap.put("publicKey", propertyResolver.getProperty("publicKey"));
-
 		defaultDataSource = buildDataSource(dsMap);
-
 		dataBinder(defaultDataSource, env);
 	}
 
