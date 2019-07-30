@@ -48,7 +48,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>3.1.1</version>
+					<version>2.6</version>
 					<configuration>
 						<argLine>-Xms256M -Xmx1024M -XX:PermSize=512M
 							-XX:MaxPermSize=1024M -Dfile.encoding=UTF-8</argLine>
