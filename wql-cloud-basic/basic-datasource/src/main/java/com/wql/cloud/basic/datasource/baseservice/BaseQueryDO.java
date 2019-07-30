@@ -30,14 +30,14 @@ public abstract class BaseQueryDO implements Serializable{
 	private static final String YYYYMMDDHHMMSS = "yyyy-MM-dd HH:mm:ss";
 	
 	/**
-	 * 分页参数-页码，默认第1页（非实体类字段，返回时忽略）
+	 * 分页参数-页码
 	 */
 	@Transient
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public Integer page;
 
 	/**
-	 * 分页参数-每页条数，默认10条（非实体类字段，返回时忽略）
+	 * 分页参数-每页条数
 	 */
 	@Transient
 	@JsonInclude(JsonInclude.Include.NON_NULL)
