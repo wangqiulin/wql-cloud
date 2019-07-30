@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 /**
  * 查询类的基类
  * jackson实体转json时 为NULL不参加序列化的汇总： https://www.cnblogs.com/weiapro/archive/2017/10/11/7653443.html
+ * @JsonFormat与@DateTimeFormat注解的使用： https://blog.csdn.net/eeeeasy/article/details/81201819
  * 
  * @Transient：非实体类字段
  * @JsonIgnore：请求和返回时都忽略该字段
