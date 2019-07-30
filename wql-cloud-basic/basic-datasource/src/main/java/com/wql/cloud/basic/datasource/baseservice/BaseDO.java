@@ -6,26 +6,20 @@ import java.util.Date;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
+ * 每个表的基类
  * 
- * @Transient 非实体类字段
- * @JsonIgnore 请求和返回时都忽略该字段
- * @JsonIgnoreProperties({ "字段1", "字段2" }) 请求时不忽略字段，返回时忽略该字段
- * 
- * jackson实体转json时 为NULL不参加序列化的汇总： https://www.cnblogs.com/weiapro/archive/2017/10/11/7653443.html
+ * @JsonIgnore: 请求和返回时都忽略该字段
+ * @JsonFormat: 后台到前台的时间格式的转换
  * 
  * @author wangqiulin
  *
  */
-public abstract class BaseDO implements Serializable{
+public abstract class BaseDO extends BaseQueryDO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -61,38 +55,6 @@ public abstract class BaseDO implements Serializable{
 	 */
 	@JsonIgnore
 	private Integer dataFlag;  
-	
-	/**
-	 * 分页参数-页码，默认第1页（非实体类字段，返回时忽略）
-	 */
-	@Transient
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public Integer page;
-
-	/**
-	 * 分页参数-每页条数，默认10条（非实体类字段，返回时忽略）
-	 */
-	@Transient
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public Integer pageSize;
-
-	/**
-	 * 查询起始时间
-	 */
-	@Transient
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	@DateTimeFormat(pattern = YYYYMMDDHHMMSS)
-	@JsonFormat(pattern = YYYYMMDDHHMMSS, timezone = "GMT+8")
-	public Date beginTime;
-	
-	/**
-	 * 查询截止时间
-	 */
-	@Transient
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	@DateTimeFormat(pattern = YYYYMMDDHHMMSS)
-	@JsonFormat(pattern = YYYYMMDDHHMMSS, timezone = "GMT+8")
-	public Date endTime;
 	
 	public Long getId() {
 		return id;
@@ -134,36 +96,4 @@ public abstract class BaseDO implements Serializable{
 		this.dataFlag = dataFlag;
 	}
 
-	public Integer getPage() {
-		return page;
-	}
-
-	public void setPage(Integer page) {
-		this.page = page;
-	}
-
-	public Integer getPageSize() {
-		return pageSize;
-	}
-
-	public void setPageSize(Integer pageSize) {
-		this.pageSize = pageSize;
-	}
-
-	public Date getBeginTime() {
-		return beginTime;
-	}
-
-	public void setBeginTime(Date beginTime) {
-		this.beginTime = beginTime;
-	}
-
-	public Date getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
-	}
-	
 }
