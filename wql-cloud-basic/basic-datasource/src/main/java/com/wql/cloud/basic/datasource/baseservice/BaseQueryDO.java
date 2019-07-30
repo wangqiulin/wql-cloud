@@ -10,6 +10,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * 查询类的基类
  * jackson实体转json时 为NULL不参加序列化的汇总： https://www.cnblogs.com/weiapro/archive/2017/10/11/7653443.html
@@ -23,38 +26,31 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @author wangqiulin
  *
  */
+@ApiModel("查询对象")
 public abstract class BaseQueryDO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
 	private static final String YYYYMMDDHHMMSS = "yyyy-MM-dd HH:mm:ss";
 	
-	/**
-	 * 分页参数-页码
-	 */
+	@ApiModelProperty("分页参数-页码")
 	@Transient
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public Integer page;
 
-	/**
-	 * 分页参数-每页条数
-	 */
+	@ApiModelProperty("分页参数-每页条数")
 	@Transient
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public Integer pageSize;
 
-	/**
-	 * 查询起始时间
-	 */
+	@ApiModelProperty("查询起始时间")
 	@Transient
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@DateTimeFormat(pattern = YYYYMMDDHHMMSS)
 	@JsonFormat(pattern = YYYYMMDDHHMMSS, timezone = "GMT+8")
 	public Date beginTime;
 	
-	/**
-	 * 查询截止时间
-	 */
+	@ApiModelProperty("查询截止时间")
 	@Transient
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@DateTimeFormat(pattern = YYYYMMDDHHMMSS)

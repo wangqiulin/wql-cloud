@@ -7,8 +7,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 每个表的基类
@@ -19,40 +24,33 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @author wangqiulin
  *
  */
+@ApiModel("数据库表对应实体类的基类")
 public abstract class BaseDO extends BaseQueryDO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
 	private static final String YYYYMMDDHHMMSS = "yyyy-MM-dd HH:mm:ss";
 	
-	/**
-	 * 主键自增
-	 */
+	@ApiModelProperty("主键自增")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	/**
-	 * 创建时间
-	 */
+	@ApiModelProperty("数据创建时间")
+	@DateTimeFormat(pattern = YYYYMMDDHHMMSS)
 	@JsonFormat(pattern = YYYYMMDDHHMMSS, timezone = "GMT+8")
 	private Date createDate;
 
-	/**
-	 * 更新时间
-	 */
+	@ApiModelProperty("数据更新时间")
+	@DateTimeFormat(pattern = YYYYMMDDHHMMSS)
 	@JsonFormat(pattern = YYYYMMDDHHMMSS, timezone = "GMT+8")
 	private Date updateDate;
 
-	/**
-	 * 版本号，用于乐观锁
-	 */
+	@ApiModelProperty("版本号，用于乐观锁")
 	@JsonIgnore
 	private Long version;  
 	
-	/**
-	 * 数据标志: 0无效, 1有效
-	 */
+	@ApiModelProperty("数据标志: 0无效, 1有效")
 	@JsonIgnore
 	private Integer dataFlag;  
 	
