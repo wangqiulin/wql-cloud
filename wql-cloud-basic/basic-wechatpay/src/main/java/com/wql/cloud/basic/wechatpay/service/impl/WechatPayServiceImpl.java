@@ -64,7 +64,7 @@ public class WechatPayServiceImpl implements WechatPayService {
 	public static final String PAYERROR = "PAYERROR";
 	
 	@Autowired
-	private WechatPayConfig wechatPayConfig;
+	private WechatPayConfig wxPayConfig;
 	
 	@Override
 	public PlaceOrderResult placeOrderForApp(PlaceOrderModel model) {
@@ -72,41 +72,41 @@ public class WechatPayServiceImpl implements WechatPayService {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 			/**1.组装参数*/
 			TreeMap<String, String> bizParams = new TreeMap<String, String>();
-			bizParams.put(WXPayConstant.APPID, wechatPayConfig.getAppId());
-		    bizParams.put(WXPayConstant.MCH_ID, wechatPayConfig.getMchId());
+			bizParams.put(WXPayConstant.APPID, wxPayConfig.getAppId());
+		    bizParams.put(WXPayConstant.MCH_ID, wxPayConfig.getMchId());
+		    bizParams.put(WXPayConstant.OUT_TRADE_NO, model.getOutTradeNo());
+			bizParams.put(WXPayConstant.NONCE_STR, UUID.randomUUID().toString().replaceAll("-", "")); 
 		    bizParams.put(WXPayConstant.TOTAL_FEE, String.valueOf(model.getTotalFee().multiply(new BigDecimal(100)))); // 整数，单位为分
 		    bizParams.put(WXPayConstant.TRADE_TYPE, TradeTypeEnum.APP.getTradeType()); //App支付
 			bizParams.put(WXPayConstant.SPBILL_CREATE_IP, model.getCreateIp());
 			bizParams.put(WXPayConstant.BODY, model.getBody());
-			bizParams.put(WXPayConstant.OUT_TRADE_NO, model.getOutTradeNo());
-			bizParams.put(WXPayConstant.NONCE_STR, UUID.randomUUID().toString().replaceAll("-", "")); 
 			bizParams.put(WXPayConstant.FEE_TYPE, "CNY");
 			bizParams.put(WXPayConstant.DEVICE_INFO, "WEB");
-			bizParams.put(WXPayConstant.NOTIFY_URL, wechatPayConfig.getPayNotifyUrl());
+			bizParams.put(WXPayConstant.NOTIFY_URL, wxPayConfig.getPayNotifyUrl());
 			bizParams.put(WXPayConstant.TIME_START, sdf.format(model.getTimeStart()));
 			bizParams.put(WXPayConstant.TIME_EXPIRE, sdf.format(model.getTimeExpire()));
-			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wechatPayConfig.getPrivateKey()));  
+			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wxPayConfig.getPrivateKey()));  
 			
 			/**2.发起请求*/
 			String reqXml = XmlUtil.mapToXml(bizParams, WXPayConstant.XML_ROOT);
-			String respXml = HttpUtil.doPost(wechatPayConfig.PLACE_ORDER_URL, reqXml, true);
+			String respXml = HttpUtil.doPost(wxPayConfig.PLACE_ORDER_URL, reqXml, true);
 			Map<String, String> respMap = MapUtil.objMap2StrMap(XmlUtil.xml2map(respXml));
 			if(!WXPayConstant.SUCCESS_CODE.equals(respMap.get(WXPayConstant.RETURN_CODE))){
 				return new PlaceOrderResult(false, respMap.get(WXPayConstant.RETURN_MSG));
 			}
-			if (!SignUtil.checkSign(respMap, wechatPayConfig.getPrivateKey())) {
+			if (!SignUtil.checkSign(respMap, wxPayConfig.getPrivateKey())) {
 				return new PlaceOrderResult(false, "签名校验不通过");
 			}
 			
 			/**3.下单成功*/
 			Map<String, String> returnMap = new HashMap<String, String>();
-			returnMap.put(WXPayConstant.APPID, wechatPayConfig.getAppId());
-			returnMap.put(WXPayConstant.PARTNERID, wechatPayConfig.getMchId());
+			returnMap.put(WXPayConstant.APPID, wxPayConfig.getAppId());
+			returnMap.put(WXPayConstant.PARTNERID, wxPayConfig.getMchId());
 			returnMap.put(WXPayConstant.PREPAYID, respMap.get("prepay_id"));
 			returnMap.put(WXPayConstant.PACKAGE_KEY, "Sign=WXPay");
 			returnMap.put(WXPayConstant.noncestr, UUID.randomUUID().toString().replaceAll("-", ""));
 			returnMap.put(WXPayConstant.timestamp, String.valueOf(System.currentTimeMillis()).substring(0, 10));
-			returnMap.put(WXPayConstant.SIGN, SignUtil.sign(returnMap, wechatPayConfig.getPrivateKey()));
+			returnMap.put(WXPayConstant.SIGN, SignUtil.sign(returnMap, wxPayConfig.getPrivateKey()));
 			return new PlaceOrderResult(true, "微信App支付-下单成功", returnMap);
 		} catch (Exception e) {
 			logger.error("微信App支付-下单，出现异常", e);
@@ -121,29 +121,29 @@ public class WechatPayServiceImpl implements WechatPayService {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 			/**1.组装参数*/
 			TreeMap<String, String> bizParams = new TreeMap<String, String>();
-			bizParams.put(WXPayConstant.APPID, wechatPayConfig.getAppId());
-		    bizParams.put(WXPayConstant.MCH_ID, wechatPayConfig.getMchId());
+			bizParams.put(WXPayConstant.APPID, wxPayConfig.getAppId());
+		    bizParams.put(WXPayConstant.MCH_ID, wxPayConfig.getMchId());
+		    bizParams.put(WXPayConstant.OUT_TRADE_NO, model.getOutTradeNo());
+			bizParams.put(WXPayConstant.NONCE_STR, UUID.randomUUID().toString().replaceAll("-", "")); 
 		    bizParams.put(WXPayConstant.TOTAL_FEE, String.valueOf(model.getTotalFee().multiply(new BigDecimal(100)))); // 整数，单位为分
 		    bizParams.put(WXPayConstant.TRADE_TYPE, TradeTypeEnum.MWEB.getTradeType()); //H5支付
 			bizParams.put(WXPayConstant.SPBILL_CREATE_IP, model.getCreateIp());
 			bizParams.put(WXPayConstant.BODY, model.getBody());
-			bizParams.put(WXPayConstant.OUT_TRADE_NO, model.getOutTradeNo());
-			bizParams.put(WXPayConstant.NONCE_STR, UUID.randomUUID().toString().replaceAll("-", "")); 
 			bizParams.put(WXPayConstant.FEE_TYPE, "CNY");
 			bizParams.put(WXPayConstant.DEVICE_INFO, "WEB");
-			bizParams.put(WXPayConstant.NOTIFY_URL, wechatPayConfig.getPayNotifyUrl());
+			bizParams.put(WXPayConstant.NOTIFY_URL, wxPayConfig.getPayNotifyUrl());
 			bizParams.put(WXPayConstant.TIME_START, sdf.format(model.getTimeStart()));
 			bizParams.put(WXPayConstant.TIME_EXPIRE, sdf.format(model.getTimeExpire()));
-			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wechatPayConfig.getPrivateKey()));  
+			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wxPayConfig.getPrivateKey()));  
 			
 			/**2.发起请求*/
 			String reqXml = XmlUtil.mapToXml(bizParams, WXPayConstant.XML_ROOT);
-			String respXml = HttpUtil.doPost(wechatPayConfig.PLACE_ORDER_URL, reqXml, true);
+			String respXml = HttpUtil.doPost(wxPayConfig.PLACE_ORDER_URL, reqXml, true);
 			Map<String, String> respMap = MapUtil.objMap2StrMap(XmlUtil.xml2map(respXml));
 			if(!WXPayConstant.SUCCESS_CODE.equals(respMap.get(WXPayConstant.RETURN_CODE))){
 				return new PlaceOrderResult(false, respMap.get(WXPayConstant.RETURN_MSG));
 			}
-			if (!SignUtil.checkSign(respMap, wechatPayConfig.getPrivateKey())) {
+			if (!SignUtil.checkSign(respMap, wxPayConfig.getPrivateKey())) {
 				return new PlaceOrderResult(false, "签名校验不通过");
 			}
 			
@@ -156,17 +156,16 @@ public class WechatPayServiceImpl implements WechatPayService {
 	}
 	
 	
-	
 	@Override
 	public QueryOrderResult queryOrderByTradeNo(String outTradeNo) {
   		try {
   			/**1.组装参数*/
   			HashMap<String, String> bizParams = new HashMap<String, String>();
-  	        bizParams.put(WXPayConstant.APPID, wechatPayConfig.getAppId());
-  	        bizParams.put(WXPayConstant.MCH_ID, wechatPayConfig.getMchId());
+  	        bizParams.put(WXPayConstant.APPID, wxPayConfig.getAppId());
+  	        bizParams.put(WXPayConstant.MCH_ID, wxPayConfig.getMchId());
   	        bizParams.put(WXPayConstant.OUT_TRADE_NO, outTradeNo);
   	        bizParams.put(WXPayConstant.NONCE_STR, UUID.randomUUID().toString().replaceAll("-", ""));
-  			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wechatPayConfig.getPrivateKey()));
+  			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wxPayConfig.getPrivateKey()));
   			
   			/**2.发起请求，微信支付查询*/
   			String reqXml = XmlUtil.mapToXml(bizParams, WXPayConstant.XML_ROOT);
@@ -198,7 +197,7 @@ public class WechatPayServiceImpl implements WechatPayService {
   		} catch (Exception e) {
   			logger.error("查询微信支付结果异常", e);
   		}
-  		return new QueryOrderResult("未知", "unknow");
+  		return new QueryOrderResult("未知", "UNKONW");
 	}
 	
 	
@@ -209,32 +208,32 @@ public class WechatPayServiceImpl implements WechatPayService {
         try {
         	/**1.组合业务参数（xml格式）*/
             TreeMap<String, Object> bizParams = new TreeMap<String, Object>();
-            bizParams.put(WXPayConstant.APPID, wechatPayConfig.getAppId());
-		    bizParams.put(WXPayConstant.MCH_ID, wechatPayConfig.getMchId());
+            bizParams.put(WXPayConstant.APPID, wxPayConfig.getAppId());
+		    bizParams.put(WXPayConstant.MCH_ID, wxPayConfig.getMchId());
 		    bizParams.put(WXPayConstant.NONCE_STR, UUID.randomUUID().toString().replaceAll("-", ""));
-			bizParams.put("out_trade_no", refundOrderModel.getOutTradeNo());
-		    bizParams.put("out_refund_no", refundOrderModel.getOutRefundNo()); // 我们自己设定的退款申请号，约束为UK
+			bizParams.put(WXPayConstant.OUT_TRADE_NO, refundOrderModel.getOutTradeNo());
+		    bizParams.put(WXPayConstant.OUT_REFUND_NO, refundOrderModel.getOutRefundNo()); // 我们自己设定的退款申请号，约束为UK
 		    long totalFee = refundOrderModel.getTotalFee().multiply(BigDecimal.TEN).multiply(BigDecimal.TEN).longValue();
 		    long refundFee = refundOrderModel.getRefundFee().multiply(BigDecimal.TEN).multiply(BigDecimal.TEN).longValue();
-		    bizParams.put("total_fee", totalFee); // 单位为分
-		    bizParams.put("refund_fee", refundFee); // 单位为分
-		    bizParams.put("op_user_id", wechatPayConfig.getMchId());
-		    bizParams.put(WXPayConstant.SIGN, SignUtil.sign2(bizParams, wechatPayConfig.getPrivateKey())); 
+		    bizParams.put(WXPayConstant.TOTAL_FEE, totalFee); // 单位为分
+		    bizParams.put(WXPayConstant.REFUND_FEE, refundFee); // 单位为分
+		    bizParams.put(WXPayConstant.OP_USER_ID, wxPayConfig.getMchId());
+		    bizParams.put(WXPayConstant.SIGN, SignUtil.sign2(bizParams, wxPayConfig.getPrivateKey())); 
 			String reqXml = XmlUtil.mapToXml2(bizParams, WXPayConstant.XML_ROOT);
 			
 			/**2.发起请求*/
 			//加载证书，进行https加密传输
 			KeyStore keyStore = KeyStore.getInstance("PKCS12");
-			FileInputStream instream = new FileInputStream(new File(wechatPayConfig.getCertLocalPath()));// 放退款证书的路径
+			FileInputStream instream = new FileInputStream(new File(wxPayConfig.getCertLocalPath()));// 放退款证书的路径
 			try {
 				//加载证书密码，默认为商户ID
-				keyStore.load(instream, wechatPayConfig.getMchId().toCharArray());
+				keyStore.load(instream, wxPayConfig.getMchId().toCharArray());
 			} finally {
 				instream.close();
 			}
 			// Trust own CA and all self-signed certs
 			SSLContext sslcontext = SSLContexts.custom()
-					.loadKeyMaterial(keyStore, wechatPayConfig.getMchId().toCharArray())  //加载证书密码，默认为商户ID
+					.loadKeyMaterial(keyStore, wxPayConfig.getMchId().toCharArray())  //加载证书密码，默认为商户ID
 					.build();
 			// Allow TLSv1 protocol only
 			SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
@@ -245,7 +244,7 @@ public class WechatPayServiceImpl implements WechatPayService {
 			
 			CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
 			try {
-				HttpPost httpPost = new HttpPost(wechatPayConfig.REFUND_ORDER_URL);// 退款接口
+				HttpPost httpPost = new HttpPost(wxPayConfig.REFUND_ORDER_URL);// 退款接口
 				StringEntity reqEntity = new StringEntity(reqXml);
 				// 设置类型
 				reqEntity.setContentType("application/x-www-form-urlencoded");
@@ -287,11 +286,11 @@ public class WechatPayServiceImpl implements WechatPayService {
 		try {
   			/**1.组装参数*/
   			HashMap<String, String> bizParams = new HashMap<String, String>();
-  	        bizParams.put(WXPayConstant.APPID, wechatPayConfig.getAppId());
-  	        bizParams.put(WXPayConstant.MCH_ID, wechatPayConfig.getMchId());
+  	        bizParams.put(WXPayConstant.APPID, wxPayConfig.getAppId());
+  	        bizParams.put(WXPayConstant.MCH_ID, wxPayConfig.getMchId());
   	        bizParams.put(WXPayConstant.OUT_TRADE_NO, outTradeNo);
   	        bizParams.put(WXPayConstant.NONCE_STR, UUID.randomUUID().toString().replaceAll("-", ""));
-  			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wechatPayConfig.getPrivateKey()));
+  			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wxPayConfig.getPrivateKey()));
   			
   			/**2.发起请求，微信支付查询*/
   			String reqXml = XmlUtil.mapToXml(bizParams, WXPayConstant.XML_ROOT);
@@ -322,6 +321,8 @@ public class WechatPayServiceImpl implements WechatPayService {
 			        default:
 			            break;
 			    }
+			} else {
+				return new QueryOrderResult("退款失败", "fail");
 			}
   		} catch (Exception e) {
   			logger.error("查询微信退款结果异常", e);
@@ -333,7 +334,7 @@ public class WechatPayServiceImpl implements WechatPayService {
 	@Override
 	public PayNotifyResult paySuccessNotify(String xmlStr) {
 		try {
-			boolean signatureValid = WXPayUtil.isSignatureValid(xmlStr, wechatPayConfig.getPrivateKey());
+			boolean signatureValid = WXPayUtil.isSignatureValid(xmlStr, wxPayConfig.getPrivateKey());
 			if(!signatureValid) {
 				logger.warn("微信支付回调，验签失败");
 				return null;
@@ -358,20 +359,20 @@ public class WechatPayServiceImpl implements WechatPayService {
 		}
 		return null;
 	}
-
 	
 	
 	@Override
 	public RefundNotifyResult refundNotify(String xmlStr) {
 		try {
 			Map<String, Object> xml2map = XmlUtil.xml2map(xmlStr);
-			if("SUCCESS".equals(xml2map.get("return_code"))){
+			if(SUCCESS.equals(xml2map.get("return_code"))){
 				//获得加密信息 （req_info）
                 String passMap = DecodeUtil.decryptData(String.valueOf(xml2map.get("req_info")));
                 //拿到解密信息
                 Map<String, Object> decodeMap = XmlUtil.xml2map(passMap);
-                logger.info("退款-微信回调返回，拿到解密后：" + decodeMap);
-                
+                if(logger.isDebugEnabled()) {
+                	logger.debug("退款-微信回调，解密后内容：" + decodeMap);
+                }
                 //响应对象
                 RefundNotifyResult notify = new RefundNotifyResult();
             	notify.setOutRefundNo(String.valueOf(decodeMap.get("out_refund_no")));
@@ -405,8 +406,4 @@ public class WechatPayServiceImpl implements WechatPayService {
     }
 	
     
-    //==============================================================//
-    
-    
-	
 }

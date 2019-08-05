@@ -9,35 +9,40 @@ import java.util.Date;
  */
 public class QueryOrderResult {
 	
-	private String resultMsg;
-
+	/**
+	 * 交易状态：
+	 * 	SUCCESS： 支付成功
+	 *  NOTPAY： 未支付
+	 *  CLOSED： 已关闭
+	 *  USERPAYING：支付中
+	 *  PAYERROR：支付失败
+	 *  UNKONW: 未知
+	 */
 	private String tradeState;
-	
-	private Date payedTime;
+
+	/**
+	 * 支付结果描述
+	 */
+	private String resultMsg;
 	
 	/**
-	 * 微信系统为每一笔支付交易分配的订单号，通过这个订单号可以标识这笔交易，它由支付订单API支付成功时返回的数据里面获取到。
-	 * 调用申请退款接口，建议优先使用
+	 * 支付完成时间
 	 */
-	private String transactionId;
-
+	private Date payedTime;
+	
 	public QueryOrderResult() {
-		super();
 	}
 
 	public QueryOrderResult(String resultMsg) {
-		super();
 		this.resultMsg = resultMsg;
 	}
 
 	public QueryOrderResult(String resultMsg, String tradeState) {
-		super();
 		this.resultMsg = resultMsg;
 		this.tradeState = tradeState;
 	}
 
 	public QueryOrderResult(String resultMsg, String tradeState, Date payedTime) {
-		super();
 		this.resultMsg = resultMsg;
 		this.tradeState = tradeState;
 		this.payedTime = payedTime;
@@ -65,14 +70,6 @@ public class QueryOrderResult {
 
 	public void setPayedTime(Date payedTime) {
 		this.payedTime = payedTime;
-	}
-
-	public String getTransactionId() {
-		return transactionId;
-	}
-
-	public void setTransactionId(String transactionId) {
-		this.transactionId = transactionId;
 	}
 
 }

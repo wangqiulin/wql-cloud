@@ -58,6 +58,8 @@ public class AliPayServiceImpl implements AliPayService {
 	private static final String WAIT_BUYER_PAY = "WAIT_BUYER_PAY";
 	private static final String TRADE_CLOSED = "TRADE_CLOSED";
 	private static final String TRADE_FINISHED = "TRADE_FINISHED";
+	private static final String TRADE_FAIL = "TRADE_FAIL";
+	private static final String TRADE_UNKNOW = "TRADE_UNKNOW";
 
 	@Autowired
 	private AliPayConfig config;
@@ -124,28 +126,34 @@ public class AliPayServiceImpl implements AliPayService {
 		try {
 			AlipayTradeQueryModel model = new AlipayTradeQueryModel();
 			model.setOutTradeNo(outTradeNo);
-			AlipayTradeQueryResponse queryResponse = execAliPayClient(model, new AlipayTradeQueryRequest());
-			if (queryResponse != null && queryResponse.isSuccess()) {
-				String tradeStatus = queryResponse.getTradeStatus();
-				switch (tradeStatus) {
-					case TRADE_SUCCESS:
-						return new QueryOrderResult("支付成功", tradeStatus, queryResponse.getSendPayDate());
-					case WAIT_BUYER_PAY:
-						return new QueryOrderResult("待支付", tradeStatus);
-					case TRADE_CLOSED:
-						return new QueryOrderResult("未付款交易超时关闭，或支付完成后全额退款", tradeStatus);
-					case TRADE_FINISHED:
-						return new QueryOrderResult("交易结束，不可退款", tradeStatus);
-					default:
-						break;
+			AlipayTradeQueryResponse resp = execAliPayClient(model, new AlipayTradeQueryRequest());
+			if (resp != null) {
+				if(resp.isSuccess()) {
+					String tradeStatus = resp.getTradeStatus();
+					switch (tradeStatus) {
+						case TRADE_SUCCESS:
+							return new QueryOrderResult("支付成功", tradeStatus, resp.getSendPayDate());
+						case WAIT_BUYER_PAY:
+							return new QueryOrderResult("待支付", tradeStatus);
+						case TRADE_CLOSED:
+							return new QueryOrderResult("未付款交易超时关闭，或支付完成后全额退款", tradeStatus);
+						case TRADE_FINISHED:
+							return new QueryOrderResult("交易结束，不可退款", tradeStatus);
+						default:
+							break;
+					}
+				} else {
+					String msg = resp.getSubCode() + "-" + resp.getSubMsg();
+					return new QueryOrderResult(msg, TRADE_FAIL);
 				}
 			}
 		} catch (Exception e) {
 			logger.error("支付宝支付，查询支付结果异常", e);
 		}
-		return new QueryOrderResult("未知", "unknow");
+		return new QueryOrderResult("交易结果未知", TRADE_UNKNOW);
 	}
 
+	
 	@Override
 	public String refundOrder(RefundOrderModel refundOrderModel) {
 		String strResponse = null;

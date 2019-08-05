@@ -12,23 +12,23 @@ public interface WechatPayService {
 	/**
 	 * 下单-App支付
 	 * 
-	 * @param model
+	 * @param placeOrderModel
 	 * @return
 	 */
-	PlaceOrderResult placeOrderForApp(PlaceOrderModel model);
+	PlaceOrderResult placeOrderForApp(PlaceOrderModel placeOrderModel);
 	
 	/**
 	 * 下单-H5支付
 	 * 
-	 * @param model
+	 * @param placeOrderModel
 	 * @return
 	 */
-	PlaceOrderResult placeOrderForH5(PlaceOrderModel model);
+	PlaceOrderResult placeOrderForH5(PlaceOrderModel placeOrderModel);
 	
 	/**
 	 * 查询订单
 	 * 
-	 * @param model
+	 * @param outTradeNo
 	 * @return
 	 */
 	QueryOrderResult queryOrderByTradeNo(String outTradeNo);
@@ -36,7 +36,7 @@ public interface WechatPayService {
 	/**
 	 * 退款请求
 	 * 
-	 * @param RefundOrderModel
+	 * @param refundOrderModel
 	 * @return
 	 */
 	String refundOrder(RefundOrderModel refundOrderModel);

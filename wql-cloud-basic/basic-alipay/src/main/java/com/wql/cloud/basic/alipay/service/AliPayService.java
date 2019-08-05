@@ -13,7 +13,7 @@ public interface AliPayService {
     /**
      * 统一下单接口-app
      * 
-     * @param CreateOrderModel
+     * @param createOrderModel
      * @return
      */
 	String createOrderForApp(CreateOrderModel createOrderModel);
@@ -21,7 +21,16 @@ public interface AliPayService {
 	 /**
      * 统一下单接口-H5
      * 
-     * @param CreateOrderModel
+     * 	vue移动端h5调用支付宝支付接口： 
+     * 		https://blog.csdn.net/weixin_39361971/article/details/83186341
+     * 
+     * 	重点关键代码：
+     *  	const div = document.createElement('div')
+            div.innerHTML = form //此处form就是后台返回接收到的数据
+            document.body.appendChild(div)
+            document.forms[0].submit()
+     * 
+     * @param createOrderModel
      * @return
      */
 	String createOrderForH5(CreateOrderModel createOrderModel);
@@ -37,7 +46,7 @@ public interface AliPayService {
 	/**
 	 * 退款请求
 	 * 
-	 * @param RefundOrderModel
+	 * @param refundOrderModel
 	 * @return
 	 */
 	String refundOrder(RefundOrderModel refundOrderModel);
@@ -54,7 +63,7 @@ public interface AliPayService {
 	/**
 	 * 支付回调校验（校验成功返回对象，失败返回null）
 	 * 
-	 * @param model
+	 * @param dataMap
 	 * @return
 	 */
 	PayNotifyResult paySuccessNotify(Map<String, String> dataMap);
