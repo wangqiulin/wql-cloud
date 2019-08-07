@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.mail.bean;
+package com.wql.cloud.tool.email;
 
 import java.io.Serializable;
 

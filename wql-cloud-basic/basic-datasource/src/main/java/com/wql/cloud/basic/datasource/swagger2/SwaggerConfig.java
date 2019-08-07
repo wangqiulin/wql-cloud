@@ -21,19 +21,23 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
+ * 在生产环境下，我们需要关闭swagger配置，避免暴露接口的这种危险行为。
+ *	禁用方法1：使用注解@Profile({"dev","test"}) 表示在开发或测试环境开启，而在生产关闭。（推荐使用）
+	禁用方法2：使用注解@ConditionalOnProperty(name = "swagger.enable", havingValue = "true") 
+			   然后在测试配置或者开发配置中 添加 swagger.enable = true 即可开启，生产环境不填则默认关闭Swagger.
  *
  * @author wangqiulin
  * @date 2018年5月12日
  */
 @Configuration
 @EnableSwagger2
-@ConditionalOnExpression("${swagger.enabled:true}")
+@ConditionalOnExpression("${swagger.enabled:false}")
 public class SwaggerConfig {
 
 	@Value("${swagger.controller.location:}")
 	private String controllerLocation;
 	
-	@Value("${swagger.enabled:true}") 
+	@Value("${swagger.enabled:false}") 
 	private Boolean enabled;
 	
 	@Lazy

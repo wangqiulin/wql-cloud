@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.mail.util;
+package com.wql.cloud.tool.email;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -15,8 +15,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-
-import com.wql.cloud.basic.mail.bean.MailBean;
 
 @Component
 public class SendEmailUtil {

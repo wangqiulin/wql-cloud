@@ -23,7 +23,6 @@
         <module>basic-cat</module>
         <module>basic-wechatpay</module>
         <module>basic-alipay</module>
-        <module>basic-mail</module>
         <module>basic-mq</module>
         <module>basic-sso</module>
         <module>basic-oss</module>
