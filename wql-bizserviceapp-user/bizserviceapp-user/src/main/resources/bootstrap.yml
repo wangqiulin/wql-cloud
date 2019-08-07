@@ -3,6 +3,12 @@ spring:
     name: bizserviceapp-user
   profiles:
     active: dev
+  #解决启动虚拟机后, 注入eureka时ip的问题  
+  cloud:
+    inetutils:
+      ignoredInterfaces: ['VMware.*']
+      #preferredNetworks: ['172.16']
+      use-only-site-local-interfaces: true  
   kafka:
     # kafka服务器地址(可以多个)
     bootstrap-servers: 192.168.1.90:9092,192.168.1.91:9092,192.168.1.92:9092

@@ -3,9 +3,17 @@ spring:
     name: bizserviceapp-pay
   profiles:
     active: dev
-    
+  cloud:
+    inetutils:
+      ignoredInterfaces: ['VMware.*']
+      #preferredNetworks: ['172.16']
+      use-only-site-local-interfaces: true
+          
 server: 
   port: 6002
+
+#解决本地多网卡时，注入到eureka时ip变化的问题  
+spring.cloud.inetutils.preferred-networks: 192.168.1.
 
 eureka: 
   instance:
