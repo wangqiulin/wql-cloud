@@ -15,7 +15,6 @@
         <module>basic-redis</module>
         <module>basic-datasource</module>
         <module>basic-redisson</module>
-        <module>basic-jwt</module>
         <module>basic-job</module>
         <module>basic-config</module>
         <module>basic-elasticsearch</module>

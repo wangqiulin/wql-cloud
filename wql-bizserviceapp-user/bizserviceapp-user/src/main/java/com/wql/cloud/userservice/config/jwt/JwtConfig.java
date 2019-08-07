@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.jwt.config;
+package com.wql.cloud.userservice.config.jwt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,6 @@ import java.util.List;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.wql.cloud.basic.jwt.filter.JwtFilter;
 
 
 /**
@@ -23,10 +21,9 @@ public class JwtConfig {
 	public FilterRegistrationBean jwtFilter() {
 		final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
 		registrationBean.setFilter(new JwtFilter());
-		
 		// 添加需要拦截的url
 		List<String> urlPatterns = new ArrayList<String>();
-		urlPatterns.add("/*");
+		urlPatterns.add("/api/*");
 		registrationBean.addUrlPatterns(urlPatterns.toArray(new String[urlPatterns.size()]));
 		return registrationBean;
 	}
