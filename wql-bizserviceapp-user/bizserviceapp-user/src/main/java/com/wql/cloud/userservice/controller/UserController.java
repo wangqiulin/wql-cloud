@@ -33,10 +33,17 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@ApiOperation(value = "新增")
-	@PostMapping("/user/save")
-	public DataResponse<Void> save(@RequestBody User req) {
-		return userService.save(req) == 1 ? DataResponse.success() : DataResponse.failure();
+	@ApiOperation(value = "注册")
+	@PostMapping("/user/register")
+	public DataResponse<String> register(@RequestBody User req) {
+		return DataResponse.success(userService.register(req));
+	}
+	
+	
+	@ApiOperation(value = "登录")
+	@PostMapping("/user/login")
+	public DataResponse<String> login(@RequestBody User req) {
+		return DataResponse.success(userService.login(req));
 	}
 	
 	

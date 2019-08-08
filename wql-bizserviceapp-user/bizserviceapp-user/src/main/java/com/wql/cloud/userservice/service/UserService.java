@@ -13,12 +13,20 @@ import com.wql.cloud.userservice.pojo.domain.User;
 public interface UserService {
 	
 	/**
-	 * 新增
+	 * 注册
 	 * 
-	 * @param user
+	 * @param req
 	 * @return
 	 */
-	Integer save(User user);
+	String register(User req);
+	
+	/**
+	 * 登录
+	 * 
+	 * @param req
+	 * @return
+	 */
+	String login(User req);
 
 	/**
 	 * 修改

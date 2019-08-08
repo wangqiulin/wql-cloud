@@ -13,8 +13,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JwtUtil {
-
+	
+	/**jwt密钥*/
 	private static final String JWT_SECERT = "fjwerirt!#4$*%$54u823rtntgmertqern4qt";
+	
+	/**签发者*/
+	private static final String ISSUER = "wql";
 	
 	/**
      * 签发JWT
@@ -32,7 +36,7 @@ public class JwtUtil {
         JwtBuilder builder = Jwts.builder()
                 .setId(id)
                 .setSubject(subject)   // 主题
-                .setIssuer("user")     // 签发者
+                .setIssuer(ISSUER)     // 签发者
                 .setIssuedAt(now)      // 签发时间
                 .signWith(signatureAlgorithm, secretKey); // 签名算法以及密匙
         if (ttlMillis >= 0) {

@@ -1,7 +1,13 @@
 package com.wql.cloud.userservice.config.jwt;
 
+import java.util.Enumeration;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import feign.RequestInterceptor;
 
@@ -23,17 +29,34 @@ import feign.RequestInterceptor;
 @Component
 public class JwtFeignInterceptor implements RequestInterceptor {
 
-	private static final String TOKEN_KEY = "Authorization";
+	private static final String TOKEN_HEADER = "Authorization";
 
 	@Override
 	public void apply(feign.RequestTemplate template) {
-		if (!template.headers().containsKey(TOKEN_KEY)) {
-			// TODO 获取登录成功表示的token
-			String currentToken = null;
-			if (StringUtils.isNotBlank(currentToken)) {
-				template.header(TOKEN_KEY, currentToken);
-			}
+		String token = getHeaders(getHttpServletRequest()).get(TOKEN_HEADER);
+		if (StringUtils.isNotBlank(token)) {
+			template.header(TOKEN_HEADER, token);
 		}
 	}
+	
+	
+	private javax.servlet.http.HttpServletRequest getHttpServletRequest() {
+        try {
+            return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
+    private Map<String, String> getHeaders(javax.servlet.http.HttpServletRequest request) {
+        Map<String, String> map = new LinkedHashMap<>();
+        Enumeration<String> enumeration = request.getHeaderNames();
+        while (enumeration.hasMoreElements()) {
+            String key = enumeration.nextElement();
+            String value = request.getHeader(key);
+            map.put(key, value);
+        }
+        return map;
+    }
+	
 }

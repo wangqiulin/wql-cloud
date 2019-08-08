@@ -23,7 +23,7 @@ public class JwtConfig {
 		registrationBean.setFilter(new JwtFilter());
 		// 添加需要拦截的url
 		List<String> urlPatterns = new ArrayList<String>();
-		urlPatterns.add("/api/*");
+		urlPatterns.add("/*");
 		registrationBean.addUrlPatterns(urlPatterns.toArray(new String[urlPatterns.size()]));
 		return registrationBean;
 	}

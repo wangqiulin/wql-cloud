@@ -1,8 +1,12 @@
 package com.wql.cloud.userservice.config.jwt;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -14,11 +18,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wql.cloud.tool.jwt.CheckResult;
 import com.wql.cloud.tool.jwt.JwtUtil;
+import com.wql.cloud.userservice.service.UserService;
 
 import io.jsonwebtoken.Claims;
 
@@ -30,6 +36,9 @@ public class JwtFilter implements Filter {
 
 	private static final String OPTIONS = "OPTIONS";
 
+	@Autowired
+	private UserService userService;
+	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, filterConfig.getServletContext());
@@ -40,8 +49,7 @@ public class JwtFilter implements Filter {
 	}
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		if (OPTIONS.equals(httpRequest.getMethod())) {
@@ -55,41 +63,30 @@ public class JwtFilter implements Filter {
 			chain.doFilter(httpRequest, httpResponse);
 			return;
 		}
-		
+		//返回结果
 		Map<String, String> resultMap = new HashMap<String, String>();
+		//登录后携带的token
+		String token = httpRequest.getHeader("Authorization");
+		if (StringUtils.isBlank(token)) {
+			resultMap.put("msg", "请登录");
+			resultMap.put("code", "1000");
+		} else {
+			CheckResult checkResult = JwtUtil.validateJWT(token);
+			if(checkResult.getSuccess()) {
+				Claims claims = checkResult.getClaims();
+				//TODO 根据userId, 查询该用户的权限，以及接口是否需要登录等权限
+				
+				String userId = claims.getId();
+				String userContent = claims.getSubject();
+				chain.doFilter(request, response);
+				return;
+			} else {
+				resultMap.put("msg", "登录失效");
+				resultMap.put("code", "1001");
+			}
+		}
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json;charset=utf-8");
-		
-		String auth = httpRequest.getHeader("Authorization");
-		if (StringUtils.isNoneBlank(auth) && auth.length() > 7) {
-			String HeadStr = auth.substring(0, 6).toLowerCase();
-			if (HeadStr.compareTo("bearer") == 0) {
-				//从header中获取token内容
-				String token = auth.substring(7, auth.length());
-				
-				CheckResult checkResult = JwtUtil.validateJWT(token);
-				if(checkResult.getSuccess()) {
-					Claims claims = checkResult.getClaims();
-					if (claims != null) {
-						//TODO 判断该用户是否合法
-						String userId = claims.getId();
-						String userContent = claims.getSubject();
-						
-						chain.doFilter(request, response);
-						return;
-					}
-				} else {
-					resultMap.put("code", "1001");
-					resultMap.put("msg", "登录失效");
-				}
-			} else {
-				resultMap.put("code", "1000");
-				resultMap.put("msg", "请登录");
-			}
-		} else {
-			resultMap.put("code", "1000");
-			resultMap.put("msg", "请登录");
-		}
 		ObjectMapper mapper = new ObjectMapper();
 		httpResponse.getWriter().write(mapper.writeValueAsString(resultMap));
 	}
@@ -101,14 +98,18 @@ public class JwtFilter implements Filter {
 	 * @return
 	 */
 	private boolean isInclude(String url) {
-		///swagger-ui.html,  /info,  /webjars,  /v2,  /swagger-resources
-//		for (String patternUrl : jwtPatternUrl.getUrlPatterns()) {
-//			Pattern p = Pattern.compile(patternUrl);
-//			Matcher m = p.matcher(url);
-//			if (m.find()) {
-//				return true;
-//			}
-//		}
+		//TODO 可以从redis中获取资源是否需要登录
+		//放行的url
+		List<String> urlList = Arrays.asList("/swagger-ui.html", "/info", "/webjars", "/v2", "/swagger-resources", 
+				"/user/register", "/user/login"
+		);
+		for (String patternUrl : urlList) {
+			Pattern p = Pattern.compile(patternUrl);
+			Matcher m = p.matcher(url);
+			if (m.find()) {
+				return true;
+			}
+		}
 		return false;
 	}
 
