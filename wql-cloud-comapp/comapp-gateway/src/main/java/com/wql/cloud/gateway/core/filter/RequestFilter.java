@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
+import org.springframework.stereotype.Component;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
@@ -18,6 +19,7 @@ import com.wql.cloud.gateway.utils.JsonUtil;
 /**
  * 请求过滤器
  */
+@Component
 public class RequestFilter extends ZuulFilter {
 
 	/**
@@ -51,7 +53,6 @@ public class RequestFilter extends ZuulFilter {
 	@Override
 	public Object run() {
 		RequestContext ctx = RequestContext.getCurrentContext();
-
 		// 设置编码
 		ctx.getResponse().setContentType("text/html;charset=UTF-8");
 		// 设置过滤器工厂
@@ -78,7 +79,7 @@ public class RequestFilter extends ZuulFilter {
 			ctx.setSendZuulResponse(false);
 			ctx.setResponseStatusCode(401);
 			fr.setCode(FilterResponseEnum.FAIL.getCode());
-			fr.setMessage("请求过滤验证异常:" + e);
+			fr.setMessage("请求过滤验证异常:" + e.getMessage());
 			ctx.setResponseBody(JsonUtil.filterResponseToJSON(fr).toJSONString());
 			ctx.set("isSuccess", FilterResponseEnum.FAIL.getCode());
 		}

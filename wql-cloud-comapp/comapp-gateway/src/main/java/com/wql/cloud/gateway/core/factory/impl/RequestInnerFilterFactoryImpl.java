@@ -35,50 +35,34 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 	@Autowired
 	private GatewayProperty gatewayProperty;
 	
-	/**
-	 * apiKey与内部过滤器映射关系集合
-	 */
+	/**apiKey与内部过滤器映射关系集合 */
 	private Map<String, List<InnerFilter>> apiReqFilterLocalMap = new HashMap<String, List<InnerFilter>>(1000);
 
-	/**
-	 * api工厂
-	 */
+	/**api工厂 */
 	@Autowired
-	private ApiFactory routeFactory;
+	private ApiFactory apiFactory;
 
-	/**
-	 * 黑名单过滤器
-	 */
+	/**黑名单过滤器 */
 	@Resource(name = "blackListFilter")
 	private BlackListFilter blackListFilter;
 
-	/**
-	 * 白名单过滤器
-	 */
+	/**白名单过滤器 */
 	@Resource(name = "whiteListFilter")
 	private WhiteListFilter whiteListFilter;
 
-	/**
-	 * 请求参数过滤器
-	 */
+	/**请求参数过滤器 */
 	@Resource(name = "paramFilter")
 	private ParamFilter paramFilter;
 
-	/**
-	 * 商户api权限过滤器
-	 */
+	/**商户api权限过滤器 */
 	@Resource(name = "merchantPermissionFilter")
 	private MerchantPermissionFilter merchantPermissionFilter;
 
-	/**
-	 * 数据解密过滤器
-	 */
+	/**数据解密过滤器 */
 	@Resource(name = "decryptFilter")
 	private DecryptFilter decryptFilter;
 
-	/**
-	 * 数据签名过滤器
-	 */
+	/**数据签名过滤器 */
 	@Resource(name = "signCheckFilter")
 	private SignCheckFilter signCheckFilter;
 
@@ -101,7 +85,7 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 		}
 
 		// 加载请求参数过滤器
-		innerList.add(paramFilter);
+		//innerList.add(paramFilter);
 
 		// 获取api相关过滤器列表
 		List<InnerFilter> apiInnerList = apiReqFilterLocalMap.get(apiKey);
@@ -110,9 +94,9 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 		}
 
 		// 合并过滤器列表
-		for (InnerFilter innerFilter : apiInnerList) {
-			innerList.add(innerFilter);
-		}
+//		for (InnerFilter innerFilter : apiInnerList) {
+//			innerList.add(innerFilter);
+//		}
 		return innerList;
 	}
 
@@ -124,7 +108,7 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 	 */
 	private List<InnerFilter> getCache(String apiKey) {
 		// 获取路由信息
-		ApiModel api = routeFactory.getApi(apiKey);
+		ApiModel api = apiFactory.getApi(apiKey);
 		// 设置过滤器列表
 		List<InnerFilter> innerList = new ArrayList<>();
 

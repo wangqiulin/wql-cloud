@@ -6,7 +6,7 @@ public class GatewayConstants {
     public static final String SYSTEM_API = "system:api:";
     
     /** blacklist **/
-    public static final String SYSTEM_BLACK_LIST = "system:gateway:blacklist";
+    public static final String SYSTEM_BLACK_LIST = "system:blacklist";
     
     /** merchant **/
     public static final String SYSTEM_MERCHANT = "system:merchant:";

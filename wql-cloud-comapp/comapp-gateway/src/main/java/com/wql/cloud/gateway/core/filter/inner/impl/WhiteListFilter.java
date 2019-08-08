@@ -80,7 +80,6 @@ public class WhiteListFilter implements InnerFilter {
 			fr.setCode(FilterResponseEnum.FAIL.getCode());
 			fr.setMessage("白名单校验异常:" + e);
 		}
-
 		return fr;
 	}
 

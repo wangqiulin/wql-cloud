@@ -40,10 +40,8 @@ public class MerchantPermissionFilter implements InnerFilter {
 		FilterResponse fr = new FilterResponse();
 		try {
 			JSONObject json = JsonUtil.getJSONObject(ctx.getRequest());
-
 			// 获取商户号
 			String merchantCode = json.getString("merchantCode");
-			// 获取商户号
 			String apiKey = json.getString("apiKey");
 			// 获取商户信息
 			Merchant merchant = merchantFactory.getMerchant(merchantCode);

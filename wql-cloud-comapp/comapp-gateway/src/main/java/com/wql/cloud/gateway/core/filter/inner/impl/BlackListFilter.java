@@ -53,7 +53,6 @@ public class BlackListFilter implements InnerFilter {
 			fr.setCode(FilterResponseEnum.FAIL.getCode());
 			fr.setMessage("黑名单校验异常:" + e);
 		}
-
 		return fr;
 	}
 

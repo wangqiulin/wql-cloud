@@ -27,26 +27,18 @@ public class ResponseInnerFilterFactoryImpl implements FilterFactory {
 
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	/**
-	 * apiKey与响应内部过滤器映射关系集合
-	 */
+	/** apiKey与响应内部过滤器映射关系集合 */
 	private Map<String, List<InnerFilter>> apiResFilterLocalMap = new HashMap<String, List<InnerFilter>>(1000);
 
-	/**
-	 * api工厂
-	 */
+	/**api工厂 */
 	@Autowired
 	private ApiFactory apiFactory;
 
-	/**
-	 * 加密过滤器
-	 */
+	/** 加密过滤器 */
 	@Resource(name = "encryptFilter")
 	private EncryptFilter encryptFilter;
 
-	/**
-	 * 签名过滤器
-	 */
+	/** 签名过滤器 */
 	@Resource(name = "signFilter")
 	private SignFilter signFilter;
 
@@ -92,4 +84,5 @@ public class ResponseInnerFilterFactoryImpl implements FilterFactory {
 		apiResFilterLocalMap.clear();
 		logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<清空apiResFilterLocalMap中的api filter 信息<<<<<<<<<<<<<<<<<<<<<<<<end<<<<<");
 	}
+	
 }
