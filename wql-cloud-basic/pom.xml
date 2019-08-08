@@ -23,7 +23,6 @@
         <module>basic-wechatpay</module>
         <module>basic-alipay</module>
         <module>basic-mq</module>
-        <module>basic-sso</module>
         <module>basic-oss</module>
         <module>basic-push</module>
         <module>basic-zookeeper</module>
