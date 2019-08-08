@@ -21,7 +21,7 @@ public class SendEmailUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(SendEmailUtil.class);
 
-	@Autowired
+	@Autowired(required = false)
 	private JavaMailSender javaMailSender;
 
 	/**

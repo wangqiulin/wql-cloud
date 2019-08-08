@@ -43,7 +43,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		record.setUserPwd(req.getUserPwd());
 		saveSelective(record);
 		//生成token
-		String token = JwtUtil.createJWT(String.valueOf(record.getId()), record.getUserName(), 5*1000);
+		String token = JwtUtil.createJWT(String.valueOf(record.getId()), record.getUserName(), 3600*1000);
 		return token;
 	}
 	
@@ -57,7 +57,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		Assert.notNull(user, "用户不存在");
 		Assert.isTrue(StringUtils.equals(req.getUserPwd(), user.getUserPwd()), "密码错误");
 		//生成token
-		String token = JwtUtil.createJWT(String.valueOf(user.getId()), user.getUserName(), 5*1000);
+		String token = JwtUtil.createJWT(String.valueOf(user.getId()), user.getUserName(), 3600*1000);
 		return token;
 	}
 	
