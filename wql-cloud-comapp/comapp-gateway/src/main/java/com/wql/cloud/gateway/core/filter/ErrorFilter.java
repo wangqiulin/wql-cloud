@@ -55,11 +55,10 @@ public class ErrorFilter extends ZuulFilter {
 				ctx.remove("throwable");
 				// 根据具体的业务逻辑来处理
 				ctx.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
-
 				// 自定义返回信息
 				FilterResponse fr = new FilterResponse();
 				fr.setCode(FilterResponseEnum.ERROR.getCode());
-				fr.setMessage("服务器累了，请稍后重试！");
+				fr.setMessage("服务开小差！");
 				ctx.setResponseBody(JsonUtil.filterResponseToJSON(fr).toJSONString());
 			}
 		} catch (Exception ex) {
