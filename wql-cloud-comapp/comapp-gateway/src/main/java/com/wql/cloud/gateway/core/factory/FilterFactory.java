@@ -2,7 +2,7 @@ package com.wql.cloud.gateway.core.factory;
 
 import java.util.List;
 
-import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
+import com.wql.cloud.gateway.core.filter.InnerFilter;
 
 /**
  * 过滤器工厂接口

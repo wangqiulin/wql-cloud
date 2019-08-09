@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.wql.cloud.gateway.core.factory.ApiFactory;
 import com.wql.cloud.gateway.core.factory.FilterFactory;
-import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
+import com.wql.cloud.gateway.core.filter.InnerFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.EncryptFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.SignFilter;
 import com.wql.cloud.gateway.core.model.Api;

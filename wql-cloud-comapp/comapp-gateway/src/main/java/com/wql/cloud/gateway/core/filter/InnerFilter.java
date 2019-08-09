@@ -1,4 +1,4 @@
-package com.wql.cloud.gateway.core.filter.inner;
+package com.wql.cloud.gateway.core.filter;
 
 import com.netflix.zuul.context.RequestContext;
 import com.wql.cloud.gateway.core.model.FilterResponse;

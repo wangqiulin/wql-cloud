@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.wql.cloud.gateway.core.factory.ApiFactory;
 import com.wql.cloud.gateway.core.factory.FilterFactory;
-import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
+import com.wql.cloud.gateway.core.filter.InnerFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.BlackListFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.DecryptFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.MerchantPermissionFilter;
@@ -22,6 +22,7 @@ import com.wql.cloud.gateway.core.filter.inner.impl.ParamFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.SignCheckFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.WhiteListFilter;
 import com.wql.cloud.gateway.core.model.Api;
+import com.wql.cloud.tool.collect.CollectionUtils;
 
 /**
  * 内部过滤器工厂实现类
@@ -86,14 +87,14 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 		innerList.add(paramFilter);
 
 		// 获取api相关过滤器列表
-//		List<InnerFilter> apiInnerList = apiReqFilterLocalMap.get(apiKey);
-//		if (apiInnerList == null || apiInnerList.size() < 1) {
-//			apiInnerList = getCache(apiKey);
-//		}
-//		// 合并过滤器列表
-//		for (InnerFilter innerFilter : apiInnerList) {
-//			innerList.add(innerFilter);
-//		}
+		List<InnerFilter> apiInnerList = apiReqFilterLocalMap.get(apiKey);
+		if (CollectionUtils.isEmpty(apiInnerList)) {
+			apiInnerList = getCache(apiKey);
+		}
+		// 合并过滤器列表
+		for (InnerFilter innerFilter : apiInnerList) {
+			innerList.add(innerFilter);
+		}
 		return innerList;
 	}
 

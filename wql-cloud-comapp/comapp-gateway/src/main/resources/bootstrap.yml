@@ -18,6 +18,18 @@ spring:
 server: 
   port: 5002
 
+management:
+  security:
+    enabled: false
+
+security: 
+#  basic:
+#    enabled: true
+#  enable-csrf: false
+  user:
+    name: admin
+    password: admin
+
 wql: 
   eureka: 
     username: admin
@@ -25,17 +37,11 @@ wql:
       
 zuul:
   routes:
-    api-common: #公用服务   
-      path: /api-common/**
-      serviceId: bizserviceapp-common   #如果出现中文文件名，上传文件的文件名会出现失败。访问的是指直接在这个/oss，前面加上"/zuul"，ok
-    api-user:  #用户服务
-      path: /api-user/**
-      serviceId: bizserviceapp-user
-    api-pay:   #用户服务
-      path: /api-pay/**
-      serviceId: bizserviceapp-pay
+    gateway-route:
+      path: /gateway/**      serviceId: comapp-gateway    
+  ribbon-isolation-strategy: semaphore
   add-host-header: true
-  sensitive-headers: Access-Control-Allow-Origin,Access-Control-Allow-Methods
+  sensitive-headers: 
   strip-prefix: true
   ratelimit:
     # 开启限流
@@ -69,8 +75,11 @@ hystrix:
           thread:
             timeoutInMilliseconds: 60000
 ribbon:
-  ConnectTimeout: 3000
-  ReadTimeout: 60000
+  ConnectTimeout: 1000
+  ReadTimeout: 10000
+  #ribbon连接池配置
+  MaxTotalConnections: 200
+  MaxConnectionsPerHost: 50
 
 eureka: 
   instance:
