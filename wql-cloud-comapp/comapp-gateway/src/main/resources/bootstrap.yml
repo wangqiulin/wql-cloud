@@ -5,8 +5,8 @@ spring:
     active: dev
   cloud:
     # 设置偏好网段
-    inetutils:
-      preferred-networks: 127.0.0.
+#    inetutils:
+#      preferred-networks: 127.0.0.
     loadbalancer:
       retry:
         enabled: true

@@ -27,6 +27,17 @@ public class HttpUtil {
 
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	/**
+	 * post请求 不带参数
+	 * 
+	 * @param url
+	 * @return
+	 */
+	public String jsonPost(String url) {
+		return restTemplate.postForObject(url, null, String.class);
+	}
+	
 
 	/**
 	 * 表单请求
