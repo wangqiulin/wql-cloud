@@ -12,7 +12,7 @@ import com.alibaba.fastjson.JSON;
 import com.wql.cloud.basic.redis.util.RedisUtil;
 import com.wql.cloud.gateway.constants.GatewayConstants;
 import com.wql.cloud.gateway.core.factory.ApiFactory;
-import com.wql.cloud.gateway.core.model.ApiModel;
+import com.wql.cloud.gateway.core.model.Api;
 import com.wql.cloud.tool.string.JsonUtils;
 
 /**
@@ -26,7 +26,7 @@ public class ApiFactoryImpl implements ApiFactory {
 	/**
 	 * apiKey与路由映射关系集合
 	 */
-	private Map<String, ApiModel> apiLocalMap = new HashMap<String, ApiModel>(1000);
+	private Map<String, Api> apiLocalMap = new HashMap<String, Api>(1000);
 
 	@Autowired
 	private RedisUtil redisUtil;
@@ -38,8 +38,8 @@ public class ApiFactoryImpl implements ApiFactory {
 	 * @return
 	 */
 	@Override
-	public ApiModel getApi(String apiKey) {
-		ApiModel api = apiLocalMap.get(apiKey);
+	public Api getApi(String apiKey) {
+		Api api = apiLocalMap.get(apiKey);
 		if (null == api) {
 			api = getCache(apiKey);
 		}
@@ -52,11 +52,11 @@ public class ApiFactoryImpl implements ApiFactory {
 	 * @param apiKey
 	 * @return
 	 */
-	private ApiModel getCache(String apiKey) {
-		ApiModel api = new ApiModel();
+	private Api getCache(String apiKey) {
+		Api api = new Api();
 		String apiKeyJson = redisUtil.getStr(GatewayConstants.SYSTEM_API + apiKey);
 		if (apiKeyJson != null) {
-			api = JsonUtils.fromJsonString(apiKeyJson, ApiModel.class);
+			api = JsonUtils.fromJsonString(apiKeyJson, Api.class);
 			if (api != null) {
 				apiLocalMap.put(apiKey, api);
 			}

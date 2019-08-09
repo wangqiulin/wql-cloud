@@ -1,6 +1,6 @@
 package com.wql.cloud.gateway.core.factory;
 
-import com.wql.cloud.gateway.core.model.Merchant;
+import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
 
 /**
  * 商户工厂接口
@@ -12,7 +12,7 @@ public interface MerchantFactory {
 	 * @param merchantCode
 	 * @return
 	 */
-	public Merchant getMerchant(String merchantCode);
+	public MerchantCacheInfo getMerchant(String merchantCode);
 	
 	/**
 	 * 加载商户信息

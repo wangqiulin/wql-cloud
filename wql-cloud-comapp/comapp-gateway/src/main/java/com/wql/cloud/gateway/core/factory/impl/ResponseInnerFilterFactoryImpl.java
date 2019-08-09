@@ -17,7 +17,7 @@ import com.wql.cloud.gateway.core.factory.FilterFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.EncryptFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.SignFilter;
-import com.wql.cloud.gateway.core.model.ApiModel;
+import com.wql.cloud.gateway.core.model.Api;
 
 /**
  * 响应内部过滤器工厂实现类
@@ -62,7 +62,7 @@ public class ResponseInnerFilterFactoryImpl implements FilterFactory {
 	 */
 	private List<InnerFilter> getCache(String apiKey) {
 		// 获取路由信息
-		ApiModel api = apiFactory.getApi(apiKey);
+		Api api = apiFactory.getApi(apiKey);
 		// 设置过滤器列表
 		List<InnerFilter> innerList = new ArrayList<>();
 		// 判断是否做响应加密过滤

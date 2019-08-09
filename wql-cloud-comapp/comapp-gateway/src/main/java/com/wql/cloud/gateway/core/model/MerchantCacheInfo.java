@@ -6,49 +6,44 @@ import java.util.List;
 /**
  * 商户信息
  */
-public class Merchant implements Serializable{
+public class MerchantCacheInfo implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8864163455746035466L;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 商户号
 	 */
 	private String merchantCode;
-	
+
 	/**
 	 * 白名单
 	 */
 	private List<String> whiteList;
-	
+
 	/**
 	 * api权限列表
 	 */
 	private List<String> apiList;
-	
-	
+
 	/**
 	 * 商户公钥
 	 */
 	private String merchantPublicKey;
-	
+
 	/**
 	 * 商户私钥
 	 */
 	private String merchantPrivateKey;
-	
+
 	/**
-	 * 平台公钥
 	 */
 	private String platformPublicKey;
-	
+
 	/**
 	 * 平台私钥
 	 */
 	private String platformPrivateKey;
-	
+
 	public String getMerchantCode() {
 		return merchantCode;
 	}
@@ -103,5 +98,5 @@ public class Merchant implements Serializable{
 
 	public void setPlatformPrivateKey(String platformPrivateKey) {
 		this.platformPrivateKey = platformPrivateKey;
-	}	
+	}
 }

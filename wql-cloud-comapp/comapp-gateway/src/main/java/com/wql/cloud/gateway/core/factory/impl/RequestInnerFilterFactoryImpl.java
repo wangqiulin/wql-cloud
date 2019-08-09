@@ -21,8 +21,7 @@ import com.wql.cloud.gateway.core.filter.inner.impl.MerchantPermissionFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.ParamFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.SignCheckFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.WhiteListFilter;
-import com.wql.cloud.gateway.core.model.ApiModel;
-import com.wql.cloud.gateway.property.GatewayProperty;
+import com.wql.cloud.gateway.core.model.Api;
 
 /**
  * 内部过滤器工厂实现类
@@ -32,9 +31,6 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
-	private GatewayProperty gatewayProperty;
-	
 	/**apiKey与内部过滤器映射关系集合 */
 	private Map<String, List<InnerFilter>> apiReqFilterLocalMap = new HashMap<String, List<InnerFilter>>(1000);
 
@@ -75,25 +71,26 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 		List<InnerFilter> innerList = new ArrayList<InnerFilter>();
 
 		// 判断是否加载黑名单过滤器
-		if (gatewayProperty.isBlacklistSwitch) {
+		boolean blacklistSwitch = false;
+		if (blacklistSwitch) {
 			innerList.add(blackListFilter);
 		}
 
 		// 判断是否加载白名单过滤器
-		if (gatewayProperty.isWhitelistSwitch) {
+		boolean whitelistSwitch = false;
+		if (whitelistSwitch) {
 			innerList.add(whiteListFilter);
 		}
 
 		// 加载请求参数过滤器
-		//innerList.add(paramFilter);
+		innerList.add(paramFilter);
 
 		// 获取api相关过滤器列表
-		List<InnerFilter> apiInnerList = apiReqFilterLocalMap.get(apiKey);
-		if (apiInnerList == null || apiInnerList.size() < 1) {
-			apiInnerList = getCache(apiKey);
-		}
-
-		// 合并过滤器列表
+//		List<InnerFilter> apiInnerList = apiReqFilterLocalMap.get(apiKey);
+//		if (apiInnerList == null || apiInnerList.size() < 1) {
+//			apiInnerList = getCache(apiKey);
+//		}
+//		// 合并过滤器列表
 //		for (InnerFilter innerFilter : apiInnerList) {
 //			innerList.add(innerFilter);
 //		}
@@ -108,7 +105,7 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 	 */
 	private List<InnerFilter> getCache(String apiKey) {
 		// 获取路由信息
-		ApiModel api = apiFactory.getApi(apiKey);
+		Api api = apiFactory.getApi(apiKey);
 		// 设置过滤器列表
 		List<InnerFilter> innerList = new ArrayList<>();
 

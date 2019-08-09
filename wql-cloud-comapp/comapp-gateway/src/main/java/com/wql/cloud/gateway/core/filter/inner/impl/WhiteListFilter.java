@@ -15,7 +15,7 @@ import com.wql.cloud.gateway.core.enums.FilterResponseEnum;
 import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.model.FilterResponse;
-import com.wql.cloud.gateway.core.model.Merchant;
+import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
 import com.wql.cloud.gateway.utils.IPAddressUtil;
 import com.wql.cloud.gateway.utils.JsonUtil;
 
@@ -51,7 +51,7 @@ public class WhiteListFilter implements InnerFilter {
 				fr.setCode(FilterResponseEnum.FAIL.getCode());
 				fr.setMessage("merchantCode不能为空！");
 			} else {// 验证ip是否在白名单中
-				Merchant merchant = merchantFactory.getMerchant(merchantCode);
+				MerchantCacheInfo merchant = merchantFactory.getMerchant(merchantCode);
 				// 商户是否存在校验
 				if (null == merchant) {
 					logger.error("商户不存在！");

@@ -49,7 +49,7 @@ public class BlackListFactoryImpl implements BlackListFactory {
 		List<Object> list = redisUtil.getList(GatewayConstants.SYSTEM_BLACK_LIST);
 		if (CollectionUtils.isNotEmpty(list)) {
 			for (Object object : list) {
-				String ip = (String) object;
+				String ip = String.valueOf(object);
 				blackList.add(ip);
 			}
 		}

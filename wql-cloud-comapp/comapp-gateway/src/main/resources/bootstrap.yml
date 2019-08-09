@@ -14,11 +14,6 @@ spring:
     date-format: yyyy-MM-dd
     joda-date-time-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8  
-  redis:
-    host: 192.168.1.92
-    port: 6379
-    database: 0
-    password: wql
         
 server: 
   port: 5002
@@ -95,15 +90,6 @@ eureka:
   client: 
     serviceUrl: 
       defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@192.168.1.92:5000/eureka/
-
-xxl:
-  conf:
-    env: dev
-    mirrorfile: /application/logs/conf/comapp-gateway.properties
-    admin:
-      address: http://192.168.1.92:7081/xxl-conf-admin
-    access: 
-      token:     
       
 ---
 spring: 
@@ -112,13 +98,3 @@ eureka:
   client: 
     serviceUrl: 
       defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@192.168.1.92:5000/eureka/  
-
-xxl:
-  conf:
-    env: pro
-    mirrorfile: /application/logs/conf/comapp-gateway.properties
-    admin:
-      address: http://192.168.1.92:7081/xxl-conf-admin
-    access: 
-      token:        
-                

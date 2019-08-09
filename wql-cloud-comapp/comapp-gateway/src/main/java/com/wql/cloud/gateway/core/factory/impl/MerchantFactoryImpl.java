@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import com.wql.cloud.basic.redis.util.RedisUtil;
 import com.wql.cloud.gateway.constants.GatewayConstants;
 import com.wql.cloud.gateway.core.factory.MerchantFactory;
-import com.wql.cloud.gateway.core.model.Merchant;
+import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
 import com.wql.cloud.tool.string.JsonUtils;
 
 /**
@@ -26,7 +26,7 @@ public class MerchantFactoryImpl implements MerchantFactory {
 	/**
 	 * 商户本地内存map
 	 */
-	private Map<String, Merchant> merchantLocalMap = new HashMap<String, Merchant>();
+	private Map<String, MerchantCacheInfo> merchantLocalMap = new HashMap<String, MerchantCacheInfo>();
 
 	@Autowired
 	private RedisUtil redisUtil;
@@ -35,8 +35,8 @@ public class MerchantFactoryImpl implements MerchantFactory {
 	 * 获取商户信息 优先读取本地内存,读取不到再读取redis信息,再加载到本地内存中
 	 */
 	@Override
-	public Merchant getMerchant(String merchantCode) {
-		Merchant merchant = merchantLocalMap.get(merchantCode);
+	public MerchantCacheInfo getMerchant(String merchantCode) {
+		MerchantCacheInfo merchant = merchantLocalMap.get(merchantCode);
 		if (merchant == null) {
 			merchant = getCache(merchantCode);
 		}
@@ -49,11 +49,11 @@ public class MerchantFactoryImpl implements MerchantFactory {
 	 * @param merchantCode
 	 * @return
 	 */
-	private Merchant getCache(String merchantCode) {
-		Merchant merchant = new Merchant();
+	private MerchantCacheInfo getCache(String merchantCode) {
+		MerchantCacheInfo merchant = new MerchantCacheInfo();
 		String merchantJson = redisUtil.getStr(GatewayConstants.SYSTEM_MERCHANT + merchantCode);
 		if (StringUtils.isNotEmpty(merchantJson)) {
-			merchant = JsonUtils.fromJsonString(merchantJson, Merchant.class);
+			merchant = JsonUtils.fromJsonString(merchantJson, MerchantCacheInfo.class);
 			if (merchant != null) {
 				merchantLocalMap.put(merchantCode, merchant);
 			}
@@ -63,8 +63,8 @@ public class MerchantFactoryImpl implements MerchantFactory {
 
 	@Override
 	public void initMerchantLocalMap() {
-		logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>清空merchantLocalMap中的merchant信息>>>>>>>>>>>>>>>>>>>>>>begin>>>>>");
+		logger.info(">>>>>>>>>>>>>>清空merchantLocalMap中的merchant信息>>>>>>>>>>>>>>begin>>>>>");
 		merchantLocalMap.clear();
-		logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<清空merchantLocalMap中的merchant信息<<<<<<<<<<<<<<<<<<<<<<<<end<<<<<");
+		logger.info("<<<<<<<<<<<<<<清空merchantLocalMap中的merchant信息<<<<<<<<<<<<<<end<<<<<");
 	}
 }

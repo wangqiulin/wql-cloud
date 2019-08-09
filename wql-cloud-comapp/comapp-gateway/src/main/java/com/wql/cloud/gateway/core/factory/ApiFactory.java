@@ -1,6 +1,6 @@
 package com.wql.cloud.gateway.core.factory;
 
-import com.wql.cloud.gateway.core.model.ApiModel;
+import com.wql.cloud.gateway.core.model.Api;
 
 /**
  * api工厂
@@ -13,7 +13,7 @@ public interface ApiFactory {
 	 * @param apiKey
 	 * @return
 	 */
-	public ApiModel getApi(String apiKey);
+	public Api getApi(String apiKey);
 
 	/**
 	 * 初始化apiLocalMap

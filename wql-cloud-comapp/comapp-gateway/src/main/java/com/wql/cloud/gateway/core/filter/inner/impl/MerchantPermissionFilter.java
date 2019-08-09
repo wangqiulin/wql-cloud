@@ -15,7 +15,7 @@ import com.wql.cloud.gateway.core.enums.FilterResponseEnum;
 import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.model.FilterResponse;
-import com.wql.cloud.gateway.core.model.Merchant;
+import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
 import com.wql.cloud.gateway.utils.JsonUtil;
 
 /**
@@ -44,7 +44,7 @@ public class MerchantPermissionFilter implements InnerFilter {
 			String merchantCode = json.getString("merchantCode");
 			String apiKey = json.getString("apiKey");
 			// 获取商户信息
-			Merchant merchant = merchantFactory.getMerchant(merchantCode);
+			MerchantCacheInfo merchant = merchantFactory.getMerchant(merchantCode);
 			if (null == merchant) {
 				fr.setCode(FilterResponseEnum.FAIL.getCode());
 				fr.setMessage("商户信息不存在");

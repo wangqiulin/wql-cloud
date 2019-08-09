@@ -11,7 +11,7 @@ import com.wql.cloud.gateway.core.enums.FilterResponseEnum;
 import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.model.FilterResponse;
-import com.wql.cloud.gateway.core.model.Merchant;
+import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
 import com.wql.cloud.gateway.utils.JsonUtil;
 import com.wql.cloud.tool.base64.Base64Utils;
 import com.wql.cloud.tool.rsa.RSAUtils;
@@ -55,7 +55,7 @@ public class EncryptFilter implements InnerFilter {
 			}
 
 			// 获取商户信息
-			Merchant merchant = merchantFactory.getMerchant(merchantCode);
+			MerchantCacheInfo merchant = merchantFactory.getMerchant(merchantCode);
 			// 商户公钥数据加密
 			byte[] encryptData = RSAUtils.encryptByPublicKey(data.getBytes(), merchant.getMerchantPublicKey());
 

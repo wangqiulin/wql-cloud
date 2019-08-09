@@ -12,7 +12,7 @@ import com.wql.cloud.gateway.core.enums.FilterResponseEnum;
 import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.model.FilterResponse;
-import com.wql.cloud.gateway.core.model.Merchant;
+import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
 import com.wql.cloud.gateway.utils.JsonUtil;
 import com.wql.cloud.tool.base64.Base64Utils;
 import com.wql.cloud.tool.rsa.RSAUtils;
@@ -56,7 +56,7 @@ public class SignFilter implements InnerFilter {
 			}
 
 			// 获取商户信息
-			Merchant merchant = merchantFactory.getMerchant(merchantCode);
+			MerchantCacheInfo merchant = merchantFactory.getMerchant(merchantCode);
 
 			// 网站私钥数据签名
 			String sign = "";

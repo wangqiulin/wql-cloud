@@ -1,6 +1,6 @@
 package com.wql.cloud.gateway.core.filter.inner.impl;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import com.netflix.zuul.context.RequestContext;
 import com.wql.cloud.gateway.core.enums.FilterResponseEnum;
 import com.wql.cloud.gateway.core.factory.ApiFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
-import com.wql.cloud.gateway.core.model.ApiModel;
+import com.wql.cloud.gateway.core.model.Api;
 import com.wql.cloud.gateway.core.model.FilterResponse;
 import com.wql.cloud.gateway.utils.JsonUtil;
 
@@ -51,7 +51,7 @@ public class ParamFilter implements InnerFilter {
 			}
 
 			// 获取api信息
-			ApiModel api = apiFactory.getApi(apiKey);
+			Api api = apiFactory.getApi(apiKey);
 			logger.info("api------>" + JSON.toJSON(api));
 			if (null == api) {
 				logger.error("api is null");
@@ -62,14 +62,13 @@ public class ParamFilter implements InnerFilter {
 
 			// 验证路由信息是否存在
 			boolean routeFlag = false;
-			Integer routeMode = api.getRouteMode();
+			Integer routeMode = api.getApiRouteMode();
 			if (null == routeMode) {
 				routeFlag = true;
 			} else {
-				if (routeMode == 0
-						&& (StringUtils.isEmpty(api.getRouteServiceId()) || StringUtils.isEmpty(api.getRoutePath()))) {
+				if (routeMode == 0 && !StringUtils.isNoneBlank(api.getApiRouteServiceid(), api.getApiRoutePath())) {
 					routeFlag = true;
-				} else if (routeMode == 1 && StringUtils.isEmpty(api.getRoutePath())) {
+				} else if (routeMode == 1 && StringUtils.isEmpty(api.getApiRoutePath())) {
 					routeFlag = true;
 				}
 			}

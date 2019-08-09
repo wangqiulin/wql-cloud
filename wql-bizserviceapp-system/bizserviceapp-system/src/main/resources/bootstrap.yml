@@ -1,0 +1,87 @@
+spring:
+  application:
+    name: bizserviceapp-system
+  profiles:
+    active: dev
+  #解决启动虚拟机后, 注入eureka时ip的问题  
+  cloud:
+    inetutils:
+      ignoredInterfaces: ['VMware.*']
+      #preferredNetworks: ['172.16']
+      use-only-site-local-interfaces: true  
+
+server: 
+  port: 6003
+  
+#解决本地多网卡时，注入到eureka时ip变化的问题  
+spring.cloud.inetutils.preferred-networks: 192.168.1.
+
+eureka: 
+  instance:
+    preferIpAddress: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    lease-renewal-interval-in-seconds: 10  #续约更新时间间隔（默认30秒）
+    lease-expiration-duration-in-seconds: 90  #续约到期时间（默认90秒）
+  client: 
+    registerWithEureka: true
+    fetchRegistry: true
+    registryFetchIntervalSeconds: 10   # 服务列表缓存更新时间
+
+ribbon: 
+  ReadTimeout: 10000  #请求处理的超时时间
+  ConnectTimeout: 1000  #请求连接的超时时间
+
+#信号量模式
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 5000  #Hystrix的超时时间改为5秒
+            
+#feign.hystrix.enabled: false 索性禁用feign的hystrix。该做法除非一些特殊场景，不推荐使用
+#fegin调用打印日志
+logging:
+  level:
+    com.wql.cloud.client: DEBUG
+
+wql: 
+  eureka: 
+    username: admin
+    password: admin 
+
+---
+spring: 
+  profiles: dev
+#  cloud: 
+#    config:
+#      discovery:
+#        enabled: true
+#        serviceId: comapp-config
+#      name: bizserviceapp-system
+#      profile: dev
+#      label: master
+  
+eureka: 
+  client: 
+    serviceUrl: 
+      defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@192.168.1.92:5000/eureka/
+
+---
+spring: 
+  profiles: prod
+#  cloud: 
+#    config:
+#      discovery:
+#        enabled: true
+#        serviceId: comapp-config
+#      name: bizserviceapp-system
+#      profile: prod
+#      label: master
+  
+eureka: 
+  client: 
+    serviceUrl: 
+      defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@192.168.1.92:5000/eureka/  

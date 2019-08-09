@@ -2,9 +2,9 @@ package com.wql.cloud.gateway.core.model;
 
 import java.io.Serializable;
 
-public class ApiModel implements Serializable {
+public class Api implements Serializable {
 
-	private static final long serialVersionUID = 1572655864586427854L;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * apiKey
@@ -19,17 +19,17 @@ public class ApiModel implements Serializable {
 	/**
 	 * 路由方式 0 ribbon 1 http
 	 */
-	private Integer routeMode;
+	private Integer apiRouteMode;
 
 	/**
 	 * 服务ID(ribbon时使用)
 	 */
-	private String routeServiceId;
+	private String apiRouteServiceid;
 
 	/**
 	 * 请求路径
 	 */
-	private String routePath;
+	private String apiRoutePath;
 
 	/**
 	 * api权限 0公共 1登陆 2角色 3商户
@@ -72,28 +72,28 @@ public class ApiModel implements Serializable {
 		this.apiName = apiName;
 	}
 
-	public Integer getRouteMode() {
-		return routeMode;
+	public Integer getApiRouteMode() {
+		return apiRouteMode;
 	}
 
-	public void setRouteMode(Integer routeMode) {
-		this.routeMode = routeMode;
+	public void setApiRouteMode(Integer apiRouteMode) {
+		this.apiRouteMode = apiRouteMode;
 	}
 
-	public String getRouteServiceId() {
-		return routeServiceId;
+	public String getApiRouteServiceid() {
+		return apiRouteServiceid;
 	}
 
-	public void setRouteServiceId(String routeServiceId) {
-		this.routeServiceId = routeServiceId;
+	public void setApiRouteServiceid(String apiRouteServiceid) {
+		this.apiRouteServiceid = apiRouteServiceid;
 	}
 
-	public String getRoutePath() {
-		return routePath;
+	public String getApiRoutePath() {
+		return apiRoutePath;
 	}
 
-	public void setRoutePath(String routePath) {
-		this.routePath = routePath;
+	public void setApiRoutePath(String apiRoutePath) {
+		this.apiRoutePath = apiRoutePath;
 	}
 
 	public Integer getApiPermission() {
