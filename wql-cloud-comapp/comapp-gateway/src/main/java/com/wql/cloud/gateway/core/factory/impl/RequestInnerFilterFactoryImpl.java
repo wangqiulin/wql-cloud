@@ -23,6 +23,7 @@ import com.wql.cloud.gateway.core.filter.inner.impl.ParamFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.SignCheckFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.WhiteListFilter;
 import com.wql.cloud.gateway.core.model.Api;
+import com.wql.cloud.gateway.property.GatewayProperty;
 
 /**
  * 内部过滤器工厂实现类
@@ -63,6 +64,9 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 	@Resource(name = "signCheckFilter")
 	private SignCheckFilter signCheckFilter;
 
+	@Autowired
+	private GatewayProperty gatewayProperty;
+	
 	/**
 	 * 读取过滤器列表
 	 */
@@ -72,14 +76,12 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 		List<InnerFilter> innerList = new ArrayList<InnerFilter>();
 
 		// 判断是否加载黑名单过滤器
-		boolean blacklistSwitch = false;
-		if (blacklistSwitch) {
+		if (gatewayProperty.getBlacklistSwitch()) {
 			innerList.add(blackListFilter);
 		}
 
 		// 判断是否加载白名单过滤器
-		boolean whitelistSwitch = false;
-		if (whitelistSwitch) {
+		if (gatewayProperty.getWhiteipSwitch()) {
 			innerList.add(whiteListFilter);
 		}
 
