@@ -84,7 +84,7 @@ public @interface DistributedLock {
      * 最长等待时间。
      * 该字段只有当tryLock()返回true才有效。
      */
-    long waitTime() default 30L;
+    long waitTime() default 10L;
     
     /**
      * 锁超时时间。

@@ -1,6 +1,5 @@
 package com.wql.cloud.userservice.service.impl;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,12 +12,9 @@ import org.springframework.util.Assert;
 import com.github.pagehelper.PageInfo;
 import com.wql.cloud.basic.datasource.baseservice.BaseService;
 import com.wql.cloud.basic.datasource.dynamic.TargetDataSource;
-import com.wql.cloud.tool.jwt.CheckResult;
 import com.wql.cloud.tool.jwt.JwtUtil;
 import com.wql.cloud.userservice.pojo.domain.User;
 import com.wql.cloud.userservice.service.UserService;
-
-import io.jsonwebtoken.Claims;
 
 
 /**
@@ -31,6 +27,7 @@ import io.jsonwebtoken.Claims;
 public class UserServiceImpl extends BaseService<User> implements UserService {
 
 	public final Logger logger = LoggerFactory.getLogger(this.getClass()); 
+	
 	
 	@Override
 	@Transactional
@@ -77,20 +74,6 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	@TargetDataSource(name = "read")
 	public User query(User req) {
 		Assert.notNull(req.getId(), "id为空");
-		String token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzIiwic3ViIjoi546L56eL5p6XIiwiaXNzIjoidXNlciIsImlhdCI6MTU2NTI1MDc3MSwiZXhwIjoxNTY1MzM3MTcxfQ.yfCoqt1EVGURYilIU5YsOmAeuNimUrZMpAQafN7809Q";
-		CheckResult checkResult = JwtUtil.validateJWT(token);
-		if(checkResult.getSuccess()) {
-			Claims claims = checkResult.getClaims();
-			String id2 = claims.getId();
-			String subject = claims.getSubject();
-			Date expiration = claims.getExpiration();
-			Date issuedAt = claims.getIssuedAt();
-			String issuer = claims.getIssuer();
-			System.out.println("==============");
-			
-		} else {
-			
-		}
 		User user = this.getById(req.getId());
 		return user;
 	}
