@@ -3,11 +3,11 @@ package com.wql.cloud.gateway.core.factory.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.wql.cloud.basic.redis.util.RedisUtil;
 import com.wql.cloud.gateway.constants.GatewayConstants;
@@ -47,7 +47,7 @@ public class BlackListFactoryImpl implements BlackListFactory {
 		blackList.clear();
 		// 加载blacklist
 		List<Object> list = redisUtil.getList(GatewayConstants.SYSTEM_BLACK_LIST);
-		if (CollectionUtils.isNotEmpty(list)) {
+		if (!CollectionUtils.isEmpty(list)) {
 			for (Object object : list) {
 				String ip = String.valueOf(object);
 				blackList.add(ip);

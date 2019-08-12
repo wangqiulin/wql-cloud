@@ -23,7 +23,7 @@ import com.wql.cloud.gateway.core.factory.ApiFactory;
 import com.wql.cloud.gateway.core.model.Api;
 import com.wql.cloud.gateway.core.model.FilterResponse;
 import com.wql.cloud.gateway.property.GatewayProperty;
-import com.wql.cloud.gateway.utils.JsonUtil;
+import com.wql.cloud.gateway.utils.DealJsonDataUtil;
 
 /**
  * 分发请求到各个服务的过滤器
@@ -75,7 +75,7 @@ public class PreConfigFilter extends ZuulFilter {
 		
 		if(!pass) {
 			// 获取apikey
-			JSONObject json = JsonUtil.getRequestJSONObject(ctx);
+			JSONObject json = DealJsonDataUtil.getRequestJSONObject(ctx);
 			String apiKey = json.getString("apiKey");
 			logger.info("apiKey------>" + apiKey);
 			// 验证参数apiKey是否存在
@@ -86,7 +86,7 @@ public class PreConfigFilter extends ZuulFilter {
 				ctx.setResponseStatusCode(401);
 				fr.setCode(FilterResponseEnum.FAIL.getCode());
 				fr.setMessage("apiKey is null");
-				ctx.setResponseBody(JsonUtil.filterResponseToJSON(fr).toJSONString());
+				ctx.setResponseBody(DealJsonDataUtil.filterResponseToJSON(fr).toJSONString());
 				ctx.set("isSuccess", FilterResponseEnum.FAIL.getCode());
 				return null;
 			}
@@ -101,7 +101,7 @@ public class PreConfigFilter extends ZuulFilter {
 				ctx.setResponseStatusCode(401);
 				fr.setCode(FilterResponseEnum.FAIL.getCode());
 				fr.setMessage("api is null");
-				ctx.setResponseBody(JsonUtil.filterResponseToJSON(fr).toJSONString());
+				ctx.setResponseBody(DealJsonDataUtil.filterResponseToJSON(fr).toJSONString());
 				ctx.set("isSuccess", FilterResponseEnum.FAIL.getCode());
 				return null;
 			}
@@ -124,7 +124,7 @@ public class PreConfigFilter extends ZuulFilter {
 				ctx.setResponseStatusCode(401);
 				fr.setCode(FilterResponseEnum.FAIL.getCode());
 				fr.setMessage("routeMode is not valid");
-				ctx.setResponseBody(JsonUtil.filterResponseToJSON(fr).toJSONString());
+				ctx.setResponseBody(DealJsonDataUtil.filterResponseToJSON(fr).toJSONString());
 				ctx.set("isSuccess", FilterResponseEnum.FAIL.getCode());
 				return null;
 			}

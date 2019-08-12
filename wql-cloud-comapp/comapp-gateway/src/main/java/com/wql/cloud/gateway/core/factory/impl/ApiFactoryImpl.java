@@ -13,7 +13,7 @@ import com.wql.cloud.basic.redis.util.RedisUtil;
 import com.wql.cloud.gateway.constants.GatewayConstants;
 import com.wql.cloud.gateway.core.factory.ApiFactory;
 import com.wql.cloud.gateway.core.model.Api;
-import com.wql.cloud.tool.string.JsonUtils;
+import com.wql.cloud.gateway.utils.JsonUtils;
 
 /**
  * 路由工厂实现类

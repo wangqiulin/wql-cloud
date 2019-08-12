@@ -2,12 +2,12 @@ package com.wql.cloud.gateway.core.filter.inner.impl;
 
 import java.util.List;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.netflix.zuul.context.RequestContext;
@@ -17,7 +17,7 @@ import com.wql.cloud.gateway.core.filter.InnerFilter;
 import com.wql.cloud.gateway.core.model.FilterResponse;
 import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
 import com.wql.cloud.gateway.utils.IPAddressUtil;
-import com.wql.cloud.gateway.utils.JsonUtil;
+import com.wql.cloud.gateway.utils.DealJsonDataUtil;
 
 /**
  * 白名单过滤器
@@ -43,7 +43,7 @@ public class WhiteListFilter implements InnerFilter {
 			// 获取请求的ip地址
 			String ipAddress = IPAddressUtil.getIPAddress(ctx.getRequest());
 
-			JSONObject json = JsonUtil.getRequestJSONObject(ctx);
+			JSONObject json = DealJsonDataUtil.getRequestJSONObject(ctx);
 			// 获取商户号
 			String merchantCode = json.getString("merchantCode");
 			if (StringUtils.isEmpty(merchantCode)) {

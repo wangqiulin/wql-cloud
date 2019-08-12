@@ -17,7 +17,7 @@ import com.wql.cloud.gateway.core.factory.FilterFactory;
 import com.wql.cloud.gateway.core.manage.FilterManager;
 import com.wql.cloud.gateway.core.model.FilterResponse;
 import com.wql.cloud.gateway.property.GatewayProperty;
-import com.wql.cloud.gateway.utils.JsonUtil;
+import com.wql.cloud.gateway.utils.DealJsonDataUtil;
 
 /**
  * 请求过滤器
@@ -93,7 +93,7 @@ public class RequestFilter extends ZuulFilter {
 				logger.error("请求过滤器验证未通过,错误信息:" + fr.getMessage());
 				ctx.setSendZuulResponse(false);
 				ctx.setResponseStatusCode(401);
-				ctx.setResponseBody(JsonUtil.filterResponseToJSON(fr).toJSONString());
+				ctx.setResponseBody(DealJsonDataUtil.filterResponseToJSON(fr).toJSONString());
 				ctx.set("isSuccess", FilterResponseEnum.FAIL.getCode());
 				return null;
 			} else {
@@ -107,7 +107,7 @@ public class RequestFilter extends ZuulFilter {
 			ctx.setResponseStatusCode(401);
 			fr.setCode(FilterResponseEnum.FAIL.getCode());
 			fr.setMessage("请求过滤验证异常:" + e.getMessage());
-			ctx.setResponseBody(JsonUtil.filterResponseToJSON(fr).toJSONString());
+			ctx.setResponseBody(DealJsonDataUtil.filterResponseToJSON(fr).toJSONString());
 			ctx.set("isSuccess", FilterResponseEnum.FAIL.getCode());
 		}
 		return null;

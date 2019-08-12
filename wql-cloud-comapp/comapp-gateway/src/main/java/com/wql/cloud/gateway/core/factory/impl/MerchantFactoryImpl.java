@@ -13,7 +13,7 @@ import com.wql.cloud.basic.redis.util.RedisUtil;
 import com.wql.cloud.gateway.constants.GatewayConstants;
 import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
-import com.wql.cloud.tool.string.JsonUtils;
+import com.wql.cloud.gateway.utils.JsonUtils;
 
 /**
  * 商户工厂实现类

@@ -16,7 +16,7 @@ import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.filter.InnerFilter;
 import com.wql.cloud.gateway.core.model.FilterResponse;
 import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
-import com.wql.cloud.gateway.utils.JsonUtil;
+import com.wql.cloud.gateway.utils.DealJsonDataUtil;
 
 /**
  * 商户api权限过滤器
@@ -39,7 +39,7 @@ public class MerchantPermissionFilter implements InnerFilter {
 	public FilterResponse run(RequestContext ctx) {
 		FilterResponse fr = new FilterResponse();
 		try {
-			JSONObject json = JsonUtil.getJSONObject(ctx.getRequest());
+			JSONObject json = DealJsonDataUtil.getJSONObject(ctx.getRequest());
 			// 获取商户号
 			String merchantCode = json.getString("merchantCode");
 			String apiKey = json.getString("apiKey");

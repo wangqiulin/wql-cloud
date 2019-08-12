@@ -13,7 +13,7 @@ import com.wql.cloud.gateway.core.factory.FilterFactory;
 import com.wql.cloud.gateway.core.filter.InnerFilter;
 import com.wql.cloud.gateway.core.manage.FilterManager;
 import com.wql.cloud.gateway.core.model.FilterResponse;
-import com.wql.cloud.gateway.utils.JsonUtil;
+import com.wql.cloud.gateway.utils.DealJsonDataUtil;
 
 /**
  * 过滤规则管理类
@@ -49,7 +49,7 @@ public class FilterManagerImpl implements FilterManager {
 	@Override
 	public FilterResponse doFilter(RequestContext ctx) {
 		// 获取apiKey
-		JSONObject json = JsonUtil.getRequestJSONObject(ctx);
+		JSONObject json = DealJsonDataUtil.getRequestJSONObject(ctx);
 		String apiKey = json.getString("apiKey");
 		
 		// 返回结果

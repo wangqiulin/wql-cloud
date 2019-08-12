@@ -22,7 +22,7 @@ import com.wql.cloud.systemservice.pojo.domain.merchant.MerchantWhitelist;
 import com.wql.cloud.systemservice.pojo.res.MerchantCacheInfo;
 import com.wql.cloud.systemservice.service.merchant.MerchantService;
 import com.wql.cloud.tool.collect.CollectionUtils;
-import com.wql.cloud.tool.string.JsonUtils;
+import com.wql.cloud.tool.json.JsonUtils;
 
 @Service
 public class MerchantServiceImpl implements MerchantService {

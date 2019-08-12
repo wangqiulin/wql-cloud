@@ -13,9 +13,9 @@ import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.filter.InnerFilter;
 import com.wql.cloud.gateway.core.model.FilterResponse;
 import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
-import com.wql.cloud.gateway.utils.JsonUtil;
-import com.wql.cloud.tool.base64.Base64Utils;
-import com.wql.cloud.tool.rsa.RSAUtils;
+import com.wql.cloud.gateway.utils.Base64Utils;
+import com.wql.cloud.gateway.utils.DealJsonDataUtil;
+import com.wql.cloud.gateway.utils.RSAUtils;
 
 /**
  * 签名过滤器
@@ -38,13 +38,13 @@ public class SignFilter implements InnerFilter {
 	public FilterResponse run(RequestContext ctx) {
 		FilterResponse fr = new FilterResponse();
 		try {
-			JSONObject json = JsonUtil.getRequestJSONObject(ctx);
+			JSONObject json = DealJsonDataUtil.getRequestJSONObject(ctx);
 
 			// 获取商户号
 			String merchantCode = json.getString("merchantCode");
 
 			// 创建响应json数据
-			JSONObject responseJson = JsonUtil.getResponseJSONObject(ctx);
+			JSONObject responseJson = DealJsonDataUtil.getResponseJSONObject(ctx);
 
 			// 获取响应报文数据
 			String data = responseJson.getString("data");

@@ -13,7 +13,7 @@ import com.wql.cloud.systemservice.mapper.blacklist.BlacklistMapper;
 import com.wql.cloud.systemservice.pojo.domain.blacklist.Blacklist;
 import com.wql.cloud.systemservice.service.blacklist.BlacklistService;
 import com.wql.cloud.tool.collect.CollectionUtils;
-import com.wql.cloud.tool.string.JsonUtils;
+import com.wql.cloud.tool.json.JsonUtils;
 
 @Service
 public class BlacklistServiceImpl implements BlacklistService {

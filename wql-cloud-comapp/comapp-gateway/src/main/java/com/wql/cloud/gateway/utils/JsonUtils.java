@@ -1,4 +1,4 @@
-package com.wql.cloud.tool.string;
+package com.wql.cloud.gateway.utils;
 
 import java.io.IOException;
 import java.util.TimeZone;

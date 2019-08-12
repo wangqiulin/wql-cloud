@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.wql.cloud.gateway.core.factory.ApiFactory;
 import com.wql.cloud.gateway.core.factory.FilterFactory;
@@ -22,7 +23,6 @@ import com.wql.cloud.gateway.core.filter.inner.impl.ParamFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.SignCheckFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.WhiteListFilter;
 import com.wql.cloud.gateway.core.model.Api;
-import com.wql.cloud.tool.collect.CollectionUtils;
 
 /**
  * 内部过滤器工厂实现类

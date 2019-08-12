@@ -18,12 +18,12 @@ import com.wql.cloud.gateway.core.model.FilterResponse;
 /**
  * JSON工具类
  */
-public class JsonUtil {
+public class DealJsonDataUtil {
 
 	/**
 	 * 日志
 	 */
-	public static final Logger logger = LoggerFactory.getLogger(JsonUtil.class);
+	public static final Logger logger = LoggerFactory.getLogger(DealJsonDataUtil.class);
 
 	/**
 	 * 从request请求中获取json数据
@@ -42,7 +42,7 @@ public class JsonUtil {
 			}
 			jsonObject = JSONObject.parseObject(responseStrBuilder.toString());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("getJSONObject解析异常:" + e);
 		}
 		return jsonObject;
 	}
@@ -69,7 +69,6 @@ public class JsonUtil {
 			// 设置到共享空间
 			ctx.set("requestJson", jsonObject);
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("getRequestJSONObject解析异常:" + e);
 		}
 		return jsonObject;
@@ -94,7 +93,6 @@ public class JsonUtil {
 
 			jsonObject = JSONObject.parseObject(responseBody);
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("getResponseJSONObject解析异常:" + e);
 		}
 		return jsonObject;

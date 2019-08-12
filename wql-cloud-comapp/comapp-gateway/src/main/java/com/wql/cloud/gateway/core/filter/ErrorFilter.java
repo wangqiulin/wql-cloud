@@ -11,7 +11,7 @@ import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import com.wql.cloud.gateway.core.enums.FilterResponseEnum;
 import com.wql.cloud.gateway.core.model.FilterResponse;
-import com.wql.cloud.gateway.utils.JsonUtil;
+import com.wql.cloud.gateway.utils.DealJsonDataUtil;
 
 /**
  * 全局错误处理
@@ -59,7 +59,7 @@ public class ErrorFilter extends ZuulFilter {
 				FilterResponse fr = new FilterResponse();
 				fr.setCode(FilterResponseEnum.ERROR.getCode());
 				fr.setMessage("服务开小差！");
-				ctx.setResponseBody(JsonUtil.filterResponseToJSON(fr).toJSONString());
+				ctx.setResponseBody(DealJsonDataUtil.filterResponseToJSON(fr).toJSONString());
 			}
 		} catch (Exception ex) {
 			log.error("Exception filtering in custom error filter", ex);

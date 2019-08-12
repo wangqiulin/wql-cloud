@@ -14,7 +14,7 @@ import com.wql.cloud.gateway.core.enums.FilterResponseEnum;
 import com.wql.cloud.gateway.core.factory.FilterFactory;
 import com.wql.cloud.gateway.core.manage.impl.FilterManagerImpl;
 import com.wql.cloud.gateway.core.model.FilterResponse;
-import com.wql.cloud.gateway.utils.JsonUtil;
+import com.wql.cloud.gateway.utils.DealJsonDataUtil;
 
 /**
  * 响应过滤器
@@ -63,7 +63,7 @@ public class ResponseFilter extends ZuulFilter {
 			logger.error("响应过滤器验证未通过,错误信息:" + fr.getMessage());
 			ctx.setSendZuulResponse(false);
 			ctx.setResponseStatusCode(401);
-			ctx.setResponseBody(JsonUtil.filterResponseToJSON(fr).toJSONString());
+			ctx.setResponseBody(DealJsonDataUtil.filterResponseToJSON(fr).toJSONString());
 			ctx.set("isSuccess", FilterResponseEnum.FAIL.getCode());
 		} else {
 			ctx.setSendZuulResponse(true);
