@@ -35,6 +35,8 @@ spring:
     
 server: 
   port: 6001
+  #服务间相互调用, 可能会报 java.lang.IllegalArgumentException: Request header is too large
+  max-http-header-size: 10000000
   
 #解决本地多网卡时，注入到eureka时ip变化的问题  
 spring.cloud.inetutils.preferred-networks: 192.168.1.

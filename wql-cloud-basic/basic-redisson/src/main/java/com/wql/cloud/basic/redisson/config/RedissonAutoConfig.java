@@ -14,9 +14,6 @@ import org.springframework.context.annotation.Configuration;
 
 import com.wql.cloud.basic.redisson.distributeLock.DistributedLockTemplate;
 import com.wql.cloud.basic.redisson.distributeLock.SingleDistributedLockTemplate;
-import com.wql.cloud.basic.redisson.lock.DistributedLocker;
-import com.wql.cloud.basic.redisson.lock.RedissonDistributedLocker;
-import com.wql.cloud.basic.redisson.lock.RedissonLockUtil;
 
 /**
  * https://blog.csdn.net/zilong_zilong/article/details/78252037
@@ -113,20 +110,9 @@ public class RedissonAutoConfig {
 //		return client;
 //	}
 	
-
-	@Bean
-	DistributedLocker distributedLocker(RedissonClient redissonClient) {
-		DistributedLocker locker = new RedissonDistributedLocker();
-		((RedissonDistributedLocker) locker).setRedissonClient(redissonClient);
-		RedissonLockUtil.setLocker(locker);
-		return locker;
-	}
-	
-	
 	@Bean
 	DistributedLockTemplate distributedLockTemplate(RedissonClient redissonClient) {
 	    return new SingleDistributedLockTemplate(redissonClient);
 	}
-	
 
 }
