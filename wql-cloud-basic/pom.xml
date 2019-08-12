@@ -12,20 +12,18 @@
         <version>1.5.21.RELEASE</version>
     </parent>
     <modules>
-        <module>basic-redis</module>
         <module>basic-datasource</module>
-        <module>basic-redisson</module>
-        <module>basic-job</module>
-        <module>basic-config</module>
-        <module>basic-elasticsearch</module>
         <module>basic-tool</module>
-        <module>basic-cat</module>
-        <module>basic-wechatpay</module>
-        <module>basic-alipay</module>
+        <module>basic-job</module>
+        <module>basic-redis</module>
+        <module>basic-pay</module>
         <module>basic-mq</module>
         <module>basic-oss</module>
+        <module>basic-elasticsearch</module>
         <module>basic-push</module>
+        <module>basic-config</module>
         <module>basic-zookeeper</module>
+        <module>basic-cat</module>
     </modules>
     <dependencyManagement>
         <dependencies>
