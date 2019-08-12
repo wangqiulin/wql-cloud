@@ -10,6 +10,6 @@ public class BaseConstant {
 	/**
 	 * 返回消息
 	 */
-	public static final String MSG = "msg";
+	public static final String MSG = "message";
 	
 }

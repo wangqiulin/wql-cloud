@@ -23,7 +23,7 @@ public class DataResponse<T> implements Serializable {
 	/**
 	 * 响应描述
 	 */
-	private String msg;
+	private String message;
 
 	/**
 	 * 返回数据
@@ -35,24 +35,24 @@ public class DataResponse<T> implements Serializable {
 
 	public DataResponse(BusinessEnum busEnum) {
 		this.code = busEnum.getCode();
-		this.msg = busEnum.getMsg();
+		this.message = busEnum.getMessage();
 	}
 
 	public DataResponse(BusinessEnum busEnum, T data) {
 		this.code = busEnum.getCode();
-		this.msg = busEnum.getMsg();
+		this.message = busEnum.getMessage();
 		this.data = data;
 	}
 
-	public DataResponse(String code, String msg, T data) {
+	public DataResponse(String code, String message, T data) {
 		this.code = code;
-		this.msg = msg;
+		this.message = message;
 		this.data = data;
 	}
 
-	public DataResponse(String code, String msg) {
+	public DataResponse(String code, String message) {
 		this.code = code;
-		this.msg = msg;
+		this.message = message;
 	}
 	
 	public String getCode() {
@@ -63,12 +63,12 @@ public class DataResponse<T> implements Serializable {
 		this.code = code;
 	}
 
-	public String getMsg() {
-		return msg;
+	public String getmessage() {
+		return message;
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
+	public void setmessage(String message) {
+		this.message = message;
 	}
 
 	public T getData() {

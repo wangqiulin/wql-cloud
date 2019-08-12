@@ -11,11 +11,11 @@ public enum BusinessEnum {
 	/**
 	 * 系统级别
 	 */
-	SUCCESS("0000", "处理成功"),
-	FAIL("1000", "处理失败"), 
+	SUCCESS("success", "处理成功"),
+	FAIL("failure", "处理失败"), 
+	SYSTEM_FAIL("error", "服务开小差,请稍后重试"), 
 	PARAM_FAIL("1001", "参数异常"), 
 	USER_NOT_LOGIN("1002", "请登录"),
-	SYSTEM_FAIL("1003", "服务器累了，请稍后重试"), 
 	
 	/**
 	 * 业务级别
@@ -29,11 +29,11 @@ public enum BusinessEnum {
 	
 	private String code;
 	
-	private String msg;
+	private String message;
 
-	private BusinessEnum(String code, String msg) {
+	private BusinessEnum(String code, String message) {
 		this.code = code;
-		this.msg = msg;
+		this.message = message;
 	}
 
 	public String getCode() {
@@ -44,12 +44,12 @@ public enum BusinessEnum {
 		this.code = code;
 	}
 
-	public String getMsg() {
-		return msg;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	
