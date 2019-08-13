@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,7 @@ import com.wql.cloud.basic.redisson.distributelock.DistributedLockTemplate;
 @Aspect
 @Order(-99)  // 保证该AOP在@Transactional之前执行
 @Component
+@ConditionalOnExpression("${spring.redisson.switch:false}")
 public class DistributedLockAspect {
 
     @Autowired

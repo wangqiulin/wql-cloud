@@ -8,7 +8,7 @@ import org.redisson.config.SingleServerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,7 +22,8 @@ import com.wql.cloud.basic.redisson.distributelock.SingleDistributedLockTemplate
  *
  */
 @Configuration
-@ConditionalOnClass(Config.class)
+//@ConditionalOnClass(Config.class)
+@ConditionalOnExpression("${spring.redisson.switch:false}")
 public class RedissonAutoConfig {
 
 	private static final Logger logger = LoggerFactory.getLogger(RedissonAutoConfig.class);
