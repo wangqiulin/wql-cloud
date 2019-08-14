@@ -11,7 +11,7 @@ import com.wql.cloud.basic.alipay.result.QueryRefundOrderResult;
 public interface AliPayService {
 
     /**
-     * 统一下单接口-app
+     * app下单接口-app
      * 
      * @param createOrderModel
      * @return
@@ -19,7 +19,7 @@ public interface AliPayService {
 	String createOrderForApp(CreateOrderModel createOrderModel);
 	
 	 /**
-     * 统一下单接口-H5
+     * 手机网站支付下单接口-H5
      * 
      * 	vue移动端h5调用支付宝支付接口： 
      * 		https://blog.csdn.net/weixin_39361971/article/details/83186341
@@ -35,6 +35,14 @@ public interface AliPayService {
      */
 	String createOrderForH5(CreateOrderModel createOrderModel);
 
+	/**
+	 * 电脑网站支付下单
+	 * 
+	 * @param createOrderModel
+	 * @return
+	 */
+	String createOrderForPC(CreateOrderModel createOrderModel);
+	
     /**
      * 查询支付订单结果
      * 
