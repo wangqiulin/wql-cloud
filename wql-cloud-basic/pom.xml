@@ -24,6 +24,7 @@
         <module>basic-config</module>
         <module>basic-zookeeper</module>
         <module>basic-cat</module>
+        <module>basic-hbase</module>
     </modules>
     <dependencyManagement>
         <dependencies>

@@ -49,11 +49,9 @@ public class ErrorExceptionHandler {
         	Throwable cause2 = cause.getCause();
             if(cause2 != null) {
             	if(cause2 instanceof IllegalArgumentException || cause2 instanceof ValidationException) {
-            		logger.error("【参数异常】", cause2);
                 	code = BusinessEnum.PARAM_FAIL.getCode();
                 	message = cause2.getMessage();
                 } else if(cause2 instanceof BusinessException) {
-                	logger.error("【业务异常】", cause2);
                 	BusinessException businessException = (BusinessException)cause2;
                 	code = businessException.getCode();
                 	message = businessException.getMessage();
