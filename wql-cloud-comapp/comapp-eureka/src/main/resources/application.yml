@@ -44,8 +44,3 @@ eureka:
   client: 
     serviceUrl: 
       defaultZone: http://${security.user.name}:${security.user.password}@${spring.cloud.client.ipAddress}:${server.port}/eureka/
-
-
-      
-      
- 

@@ -2,7 +2,7 @@
 <configuration>
     <!-- ps:尽量别用绝对路径，如果带参数不同容器路径解释可能不同,以下配置参数在pom.xml里 -->
     <!-- 日志文件输出根目录 -->
-    <property name="log.root" value="/application/"/>
+    <property name="log.root" value="/application"/>
     <!-- 模块名称， 影响日志配置名，日志文件名 -->
     <property name="log.moduleName" value="comapp-eureka"/>
     <!-- 单日志文件大小 -->
