@@ -9,20 +9,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.21.RELEASE</version>
+        <version>1.5.22.RELEASE</version>
     </parent>
-
-    <modules>
-        <module>bizserviceapp-pay</module>
-    </modules>
-
     <properties>
+        <java.version>1.8</java.version>
         <spring-cloud.version>Edgware.SR5</spring-cloud.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -30,7 +24,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -42,7 +35,9 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
+    <modules>
+        <module>bizserviceapp-pay</module>
+    </modules>
     <build>
         <pluginManagement>
             <plugins>
@@ -73,7 +68,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-
         <plugins>
             <!-- 为springboot提供maven支持 -->
             <plugin>
