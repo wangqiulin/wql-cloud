@@ -62,7 +62,7 @@ hystrix:
     default:
       execution:
         isolation:
-          strategy: SEMAPHORE
+          strategy: SEMAPHORE  #使用feign多服务间调用，传递参数配置
           thread:
             timeoutInMilliseconds: 5000  #Hystrix的超时时间改为5秒
             

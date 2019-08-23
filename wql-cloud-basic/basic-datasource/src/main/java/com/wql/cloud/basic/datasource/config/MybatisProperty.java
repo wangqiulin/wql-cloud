@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.datasource.properties;
+package com.wql.cloud.basic.datasource.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConfigurationProperties(prefix = "mybatis.mapper")
-public class MybatisProperties {
+public class MybatisProperty {
 
 	/**
 	 * 实体类路径

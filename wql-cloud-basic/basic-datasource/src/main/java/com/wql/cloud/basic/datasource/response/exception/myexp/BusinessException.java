@@ -1,4 +1,6 @@
-package com.wql.cloud.basic.datasource.response.constant;
+package com.wql.cloud.basic.datasource.response.exception.myexp;
+
+import com.wql.cloud.basic.datasource.response.constant.BusinessEnum;
 
 /**
  * 自定义异常

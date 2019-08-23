@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.datasource.response.handler;
+package com.wql.cloud.basic.datasource.response.exception.handler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.support.spring.FastJsonJsonView;
-import com.wql.cloud.basic.datasource.response.constant.BaseConstant;
 import com.wql.cloud.basic.datasource.response.constant.BusinessEnum;
-import com.wql.cloud.basic.datasource.response.constant.BusinessException;
+import com.wql.cloud.basic.datasource.response.exception.myexp.BusinessException;
 
 /**
  * 异常处理机制
@@ -26,12 +25,10 @@ import com.wql.cloud.basic.datasource.response.constant.BusinessException;
  * @date 2018年5月12日
  */ 
 @RestControllerAdvice
-//@ControllerAdvice
 public class ErrorExceptionHandler {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ErrorExceptionHandler.class);
 	
-
 	/**
 	 * 统一异常处理
 	 */
@@ -60,8 +57,8 @@ public class ErrorExceptionHandler {
                 }
             }
         }
-        attributes.put(BaseConstant.CODE, StringUtils.isBlank(code) ? BusinessEnum.FAIL.getCode() : code);
-        attributes.put(BaseConstant.MSG, StringUtils.isBlank(message) ? BusinessEnum.FAIL.getMessage() : message);
+        attributes.put("code", StringUtils.isBlank(code) ? BusinessEnum.FAIL.getCode() : code);
+        attributes.put("message", StringUtils.isBlank(message) ? BusinessEnum.FAIL.getMessage() : message);
         view.setAttributesMap(attributes);
         mv.setView(view); 
         return mv;

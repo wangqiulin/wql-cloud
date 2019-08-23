@@ -8,22 +8,11 @@ package com.wql.cloud.basic.datasource.response.constant;
  */
 public enum BusinessEnum {
 
-	/**
-	 * 系统级别
-	 */
 	SUCCESS("success", "处理成功"),
 	FAIL("failure", "处理失败"), 
-	SYSTEM_FAIL("error", "服务开小差,请稍后重试"), 
-	PARAM_FAIL("1001", "参数异常"), 
-	USER_NOT_LOGIN("1002", "请登录"),
-	
-	/**
-	 * 业务级别
-	 */
-	USER_EXIST("100000", "用户已存在"),
-	USER_NOT_EXIST("100001", "用户不存在"),
-	USER_REGISTER_FAIL("100002", "注册失败"),
-	USER_PWD_ERROR("100003", "密码错误"),
+	SYSTEM_FAIL("error", "服务开小差"), 
+	PARAM_FAIL("param_error", "参数异常"), 
+	NOT_LOGIN("no_login", "未登录"),
 	
 	;
 	
@@ -51,6 +40,5 @@ public enum BusinessEnum {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-
 	
 }

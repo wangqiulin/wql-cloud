@@ -18,8 +18,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
-import com.wql.cloud.basic.datasource.properties.MybatisProperties;
-
 /**
  * mybatis的配置
  * 
@@ -35,7 +33,7 @@ public class SessionFactoryConfig implements TransactionManagementConfigurer {
 	private DataSource dataSource;
 	
 	@Autowired
-	private MybatisProperties mybatisProperties;
+	private MybatisProperty mybatisProperty;
 	
 	@Bean(name = "sqlSessionFactory")
 	public SqlSessionFactory createSqlSessionFactory() throws Exception {
@@ -43,17 +41,17 @@ public class SessionFactoryConfig implements TransactionManagementConfigurer {
 		
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(dataSource);
-		sqlSessionFactoryBean.setTypeAliasesPackage(mybatisProperties.getDomainPackage());
+		sqlSessionFactoryBean.setTypeAliasesPackage(mybatisProperty.getDomainPackage());
 		
 		//开启驼峰匹配
 		org.apache.ibatis.session.Configuration config = new org.apache.ibatis.session.Configuration();
 		config.setMapUnderscoreToCamelCase(true);
 		sqlSessionFactoryBean.setConfiguration(config);
 		
-        if(StringUtils.isNotBlank(mybatisProperties.getXmlPackage())) {
+        if(StringUtils.isNotBlank(mybatisProperty.getXmlPackage())) {
         	//添加XML目录
             ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-            sqlSessionFactoryBean.setMapperLocations(resolver.getResources(mybatisProperties.getXmlPackage()));
+            sqlSessionFactoryBean.setMapperLocations(resolver.getResources(mybatisProperty.getXmlPackage()));
         }
         SqlSessionFactory sessionFactory = sqlSessionFactoryBean.getObject();
         logger.info("【SqlSessionFactory】---初始化成功");

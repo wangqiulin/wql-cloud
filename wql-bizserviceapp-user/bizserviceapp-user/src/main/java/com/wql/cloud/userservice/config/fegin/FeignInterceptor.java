@@ -1,8 +1,10 @@
-package com.wql.cloud.userservice.config.jwt;
+package com.wql.cloud.userservice.config.fegin;
 
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -10,6 +12,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import feign.RequestInterceptor;
+import feign.RequestTemplate;
 
 /**
  * JWT如何在Spring Cloud微服务系统中在服务相互调时传递
@@ -24,32 +27,30 @@ import feign.RequestInterceptor;
  * 2.写一个Feign的拦截器，Feign在发送网络请求之前会执行以下的拦截器
  * 
  * @author wangqiulin
- *
+ * 
  */
 @Component
-public class JwtFeignInterceptor implements RequestInterceptor {
+public class FeignInterceptor implements RequestInterceptor {
 
 	private static final String TOKEN_HEADER = "Authorization";
 
 	@Override
-	public void apply(feign.RequestTemplate template) {
-		String token = getHeaders(getHttpServletRequest()).get(TOKEN_HEADER);
+	public void apply(RequestTemplate requestTemplate) {
+		String token = getHeaders().get(TOKEN_HEADER);
 		if (StringUtils.isNotBlank(token)) {
-			template.header(TOKEN_HEADER, token);
+			requestTemplate.header(TOKEN_HEADER, token);
 		}
 	}
 	
-	
-	private javax.servlet.http.HttpServletRequest getHttpServletRequest() {
-        try {
-            return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    private Map<String, String> getHeaders(javax.servlet.http.HttpServletRequest request) {
-        Map<String, String> map = new LinkedHashMap<>();
+	/**
+	 * 获取所有header内容
+	 * @return
+	 */
+    private Map<String, String> getHeaders() {
+    	//返回map
+    	Map<String, String> map = new LinkedHashMap<>();
+    	//获取当前request
+    	HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Enumeration<String> enumeration = request.getHeaderNames();
         while (enumeration.hasMoreElements()) {
             String key = enumeration.nextElement();
