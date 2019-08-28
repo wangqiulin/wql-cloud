@@ -64,35 +64,33 @@ public abstract class BaseService<T extends BaseDO> {
 
     //=================分页查询(查询总数)===================//
     
-    public PageInfo<T> pageListByRecord(Integer page, Integer rows, T record) {
-    	page = (page == null || page <= 0) ? PAGE : page;
-    	rows = (rows == null || rows <= 0) ? ROWS : rows;
-    	PageHelper.startPage(page, rows); 
+    public PageInfo<T> pageByRecord(Integer page, Integer rows, T record) {
+    	Assert.isTrue(page != null && page > 0, "页码不能小于1");
+    	Assert.isTrue(rows != null && rows > 0, "条数不能小于1");
+    	PageHelper.startPage(page, rows, true); 
         return new PageInfo<T>(this.mapper.select(record));
     }
     
-    public PageInfo<T> pageListByExample(Integer page, Integer rows, Example example) {
-    	page = (page == null || page <= 0) ? PAGE : page;
-    	rows = (rows == null || rows <= 0) ? ROWS : rows;
-        PageHelper.startPage(page, rows);
+    public PageInfo<T> pageByExample(Integer page, Integer rows, Example example) {
+    	Assert.isTrue(page != null && page > 0, "页码不能小于1");
+    	Assert.isTrue(rows != null && rows > 0, "条数不能小于1");
+        PageHelper.startPage(page, rows, true);
         return new PageInfo<T>(this.mapper.selectByExample(example));
     }
 
     
     //=================分页查询(不查总数)===================//
     
-    public PageInfo<T> pageListByRecordWithoutCount(Integer page, Integer rows, T record) {
-    	page = (page == null || page <= 0) ? PAGE : page;
-    	rows = (rows == null || rows <= 0) ? ROWS : rows;
-    	//false表示不进行count查询
+    public PageInfo<T> pageByRecordWithoutCount(Integer page, Integer rows, T record) {
+    	Assert.isTrue(page != null && page > 0, "页码不能小于1");
+    	Assert.isTrue(rows != null && rows > 0, "条数不能小于1");
     	PageHelper.startPage(page, rows, false);  
         return new PageInfo<T>(this.mapper.select(record));
     }
     
-    public PageInfo<T> pageListByExampleWithoutCount(Integer page, Integer rows, Example example) {
-    	page = (page == null || page <= 0) ? PAGE : page;
-    	rows = (rows == null || rows <= 0) ? ROWS : rows;
-    	//false表示不进行count查询
+    public PageInfo<T> pageByExampleWithoutCount(Integer page, Integer rows, Example example) {
+    	Assert.isTrue(page != null && page > 0, "页码不能小于1");
+    	Assert.isTrue(rows != null && rows > 0, "条数不能小于1");
         PageHelper.startPage(page, rows, false);  
         return new PageInfo<T>(this.mapper.selectByExample(example));
     }
