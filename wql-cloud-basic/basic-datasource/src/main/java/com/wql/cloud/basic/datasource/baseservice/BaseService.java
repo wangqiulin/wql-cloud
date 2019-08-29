@@ -31,12 +31,12 @@ public abstract class BaseService<T extends BaseDO> {
     //=================查询一条===================//
     
     public T getById(Integer id) {
-    	Assert.notNull(id, "id不能为空");
+    	Assert.notNull(id, "id cannot be empty");
         return this.mapper.selectByPrimaryKey(id);
     }
     
     public T getById(Long id) {
-    	Assert.notNull(id, "id不能为空");
+    	Assert.notNull(id, "id cannot be empty");
         return this.mapper.selectByPrimaryKey(id);
     }
     
@@ -65,15 +65,15 @@ public abstract class BaseService<T extends BaseDO> {
     //=================分页查询(查询总数)===================//
     
     public PageInfo<T> pageByRecord(Integer page, Integer rows, T record) {
-    	Assert.isTrue(page != null && page > 0, "页码不能小于1");
-    	Assert.isTrue(rows != null && rows > 0, "条数不能小于1");
+    	Assert.isTrue(page != null && page > 0, "page should not be less than 1");
+    	Assert.isTrue(rows != null && rows > 0, "rows should not be less than 1");
     	PageHelper.startPage(page, rows, true); 
         return new PageInfo<T>(this.mapper.select(record));
     }
     
     public PageInfo<T> pageByExample(Integer page, Integer rows, Example example) {
-    	Assert.isTrue(page != null && page > 0, "页码不能小于1");
-    	Assert.isTrue(rows != null && rows > 0, "条数不能小于1");
+    	Assert.isTrue(page != null && page > 0, "page should not be less than 1");
+    	Assert.isTrue(rows != null && rows > 0, "rows should not be less than 1");
         PageHelper.startPage(page, rows, true);
         return new PageInfo<T>(this.mapper.selectByExample(example));
     }
@@ -82,15 +82,15 @@ public abstract class BaseService<T extends BaseDO> {
     //=================分页查询(不查总数)===================//
     
     public PageInfo<T> pageByRecordWithoutCount(Integer page, Integer rows, T record) {
-    	Assert.isTrue(page != null && page > 0, "页码不能小于1");
-    	Assert.isTrue(rows != null && rows > 0, "条数不能小于1");
+    	Assert.isTrue(page != null && page > 0, "page should not be less than 1");
+    	Assert.isTrue(rows != null && rows > 0, "rows should not be less than 1");
     	PageHelper.startPage(page, rows, false);  
         return new PageInfo<T>(this.mapper.select(record));
     }
     
     public PageInfo<T> pageByExampleWithoutCount(Integer page, Integer rows, Example example) {
-    	Assert.isTrue(page != null && page > 0, "页码不能小于1");
-    	Assert.isTrue(rows != null && rows > 0, "条数不能小于1");
+    	Assert.isTrue(page != null && page > 0, "page should not be less than 1");
+    	Assert.isTrue(rows != null && rows > 0, "rows should not be less than 1");
         PageHelper.startPage(page, rows, false);  
         return new PageInfo<T>(this.mapper.selectByExample(example));
     }
@@ -109,12 +109,12 @@ public abstract class BaseService<T extends BaseDO> {
     //=================根据主键，查询记录是否存在===================//	
     
     public boolean existsById(Integer id){
-    	Assert.notNull(id, "id不能为空");
+    	Assert.notNull(id, "id cannot be empty");
     	return this.mapper.existsWithPrimaryKey(id);
     }
     
     public boolean existsById(Long id){
-    	Assert.notNull(id, "id不能为空");
+    	Assert.notNull(id, "id cannot be empty");
     	return this.mapper.existsWithPrimaryKey(id);
     }
     
@@ -151,7 +151,7 @@ public abstract class BaseService<T extends BaseDO> {
      * @return
      */
     public Integer updateSelectiveByVersion(T record, Example example) {
-    	Assert.notNull(record.getVersion(), "版本号不能为空");
+    	Assert.notNull(record.getVersion(), "version cannot be empty");
     	//版本号作为条件
     	example.and().andEqualTo("version", record.getVersion());
     	//通用更新字段
@@ -166,7 +166,7 @@ public abstract class BaseService<T extends BaseDO> {
      * @return
      */
     public int updateBatchByPrimaryKeySelective(List<T> recordList) {
-    	Assert.notEmpty(recordList, "修改内容不能为空");
+    	Assert.notEmpty(recordList, "list cannot be empty");
     	return this.mapper.updateBatchByPrimaryKeySelective(recordList);
     }
     
@@ -174,12 +174,12 @@ public abstract class BaseService<T extends BaseDO> {
     //=================删除===================//
     
     public Integer removeById(Integer id) {
-    	Assert.notNull(id, "id不能为空");
+    	Assert.notNull(id, "id cannot be empty");
         return this.mapper.deleteByPrimaryKey(id);
     }
     
     public Integer removeById(Long id) {
-    	Assert.notNull(id, "id不能为空");
+    	Assert.notNull(id, "id cannot be empty");
         return this.mapper.deleteByPrimaryKey(id);
     }
 
@@ -192,7 +192,7 @@ public abstract class BaseService<T extends BaseDO> {
     }
     
     public Integer removeByIds(List<?> ids, Class<T> clazz) {
-    	Assert.notEmpty(ids, "id不能为空");
+    	Assert.notEmpty(ids, "id cannot be empty");
     	Example example = new Example(clazz);
     	example.createCriteria().andIn(ID, ids);
         return this.mapper.deleteByExample(example);
