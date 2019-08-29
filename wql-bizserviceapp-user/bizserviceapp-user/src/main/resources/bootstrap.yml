@@ -100,6 +100,12 @@ eureka:
     serviceUrl: 
       defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@192.168.1.92:5000/eureka/
 
+
+hbase:
+  conf:
+    confMaps:
+      'hbase.zookeeper.quorum' : 'cdh1:2181,cdh2:2181,cdh3:2181'
+
 ---
 spring: 
   profiles: prod
@@ -116,3 +122,11 @@ eureka:
   client: 
     serviceUrl: 
       defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@192.168.1.92:5000/eureka/  
+
+hbase:
+  config:
+    hbase.zookeeper.quorum: xxx.xxx.xxx.xxx
+    hbase.zookeeper.port: 2181
+    hbase.zookeeper.znode: /hbase
+    hbase.client.keyvalue.maxsize: 1572864000
+          
