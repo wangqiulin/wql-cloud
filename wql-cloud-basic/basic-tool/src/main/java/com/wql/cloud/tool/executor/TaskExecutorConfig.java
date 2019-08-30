@@ -49,12 +49,11 @@ public class TaskExecutorConfig {
 	/**
 	 * 自定义线程前缀名称
 	 */
-	@Value("${taskExecutor.threadNamePrefix:CustomeTaskExecutor}")
+	@Value("${taskExecutor.threadNamePrefix:MyTaskExecutor}")
 	private String threadNamePrefix;
 
 	/**
 	 * 参数配置
-	 * @return
 	 */
 	@Bean(initMethod = "initialize", destroyMethod = "destroy")
 	public ThreadPoolTaskExecutor customeTaskExecutor() {
@@ -64,8 +63,7 @@ public class TaskExecutorConfig {
 		executor.setKeepAliveSeconds(keepAliveSeconds);
 		executor.setQueueCapacity(queueCapacity);
 		executor.setThreadNamePrefix(threadNamePrefix);
-		// 线程池对拒绝任务(无线程可用)的处理策略 ThreadPoolExecutor.CallerRunsPolicy策略
-		// ,调用者的线程会执行该任务,如果执行器已关闭,则丢弃
+		// 线程池对拒绝任务(无线程可用)的处理策略 ThreadPoolExecutor.CallerRunsPolicy策略,调用者的线程会执行该任务,如果执行器已关闭,则丢弃
 		executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
 		return executor;
 	}
