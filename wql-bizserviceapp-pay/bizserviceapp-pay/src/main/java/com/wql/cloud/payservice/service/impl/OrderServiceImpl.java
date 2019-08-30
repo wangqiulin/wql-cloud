@@ -56,7 +56,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
 	public PageInfo<Order> queryPageList(Order order) {
 		Example example = new Example(Order.class);
 		example.createCriteria().andBetween("createDate", order.getBeginTime(), order.getEndTime());
-		return this.pageListByExample(order.getPage(), order.getPageSize(), example);
+		return this.pageByExample(order.getPage(), order.getPageSize(), example);
 		//return this.pageListByRecord(order.getPage(), order.getPageSize(), order);
 	}
 

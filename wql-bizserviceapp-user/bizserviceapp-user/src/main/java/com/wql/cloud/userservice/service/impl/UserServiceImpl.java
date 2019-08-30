@@ -29,7 +29,6 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
 	public final Logger logger = LoggerFactory.getLogger(this.getClass()); 
 	
-	
 	@Override
 	@Transactional
 	@DistributedLock(param="userName", tryLock=true)
@@ -83,14 +82,13 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	@Override
 	@TargetDataSource(name = "read")
 	public List<User> queryList(User req) {
-		List<User> list = this.listByRecord(req);
-		return list;
+		return this.listByRecord(req);
 	}
 
 	@Override
 	@TargetDataSource(name = "read")
 	public PageInfo<User> queryPageList(User req) {
-		return this.pageListByRecord(req.getPage(), req.getPageSize(), req);
+		return this.pageByRecord(req.getPage(), req.getPageSize(), req);
 	}
 
 }

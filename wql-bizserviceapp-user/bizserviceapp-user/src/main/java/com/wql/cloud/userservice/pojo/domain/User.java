@@ -35,4 +35,9 @@ public class User extends BaseDO implements Serializable {
 		this.userPwd = userPwd;
 	}
 
+	@Override
+	public String toString() {
+		return "User [userName=" + userName + ", userPwd=" + userPwd + "]";
+	}
+	
 }
