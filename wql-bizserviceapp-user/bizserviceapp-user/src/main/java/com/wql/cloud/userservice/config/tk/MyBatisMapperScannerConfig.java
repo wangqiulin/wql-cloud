@@ -2,8 +2,7 @@ package com.wql.cloud.userservice.config.tk;
 
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,19 +22,21 @@ import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 @AutoConfigureAfter(SessionFactoryConfig.class)
 public class MyBatisMapperScannerConfig {
 	
-	private static final Logger logger = LoggerFactory.getLogger(MyBatisMapperScannerConfig.class);
-
+	/**
+	 * mapper的路径
+	 */
+	@Value("${mybatis.mapper.mapperBasePackage:}")
+	private String basePackage;
+	
 	@Bean
     public MapperScannerConfigurer mapperScannerConfigurer() {
-		logger.info("【通用mapper】---启用");
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
-        mapperScannerConfigurer.setBasePackage("com.wql.cloud.userservice.mapper");
-        
+        mapperScannerConfigurer.setBasePackage(basePackage);
         //初始化扫描器的相关配置，这里我们要创建一个Mapper的父类
         Properties properties = new Properties();
         //这里要特别注意，不要把MyMapper放到 basePackage 中，也就是不能同其他Mapper一样被扫描到。 
-        properties.setProperty("mappers", MyMapper.class.getName());  //com.wql.cloud.basic.datasource.tk.MyMapper
+        properties.setProperty("mappers", MyMapper.class.getName());
         properties.setProperty("notEmpty", "false");
         properties.setProperty("IDENTITY", "MYSQL");
         mapperScannerConfigurer.setProperties(properties);
