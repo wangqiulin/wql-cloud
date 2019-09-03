@@ -1,11 +1,28 @@
 package com.wql.cloud.tool.executor;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
 
+/**
+ * 五种线程池的适应场景
+	newCachedThreadPool：用来创建一个可以无限扩大的线程池，适用于服务器负载较轻，执行很多短期异步任务。
+	newFixedThreadPool：创建一个固定大小的线程池，因为采用无界的阻塞队列，所以实际线程数量永远不会变化，适用于可以预测线程数量的业务中，或者服务器负载较重，对当前线程数量进行限制。
+	newSingleThreadExecutor：创建一个单线程的线程池，适用于需要保证顺序执行各个任务，并且在任意时间点，不会有多个线程是活动的场景。
+	newScheduledThreadPool：可以延时启动，定时启动的线程池，适用于需要多个后台线程执行周期任务的场景。
+	newWorkStealingPool：创建一个拥有多个任务队列的线程池，可以减少连接数，创建当前可用cpu数量的线程来并行执行，适用于大耗时的操作，可以并行来执行
+ * 
+ * @author wangqiulin
+ *
+ */
 @Component
 public class TaskExecutorService {
 
@@ -17,12 +34,29 @@ public class TaskExecutorService {
 	/**
 	 * 异步执行无返回值
 	 * 
-	 * @see
-	 * 	 execute(..) 方法用于提交不需要返回值的任务，所以无法判断任务是否被线程池执行成功。
-	 * @param task
+	 * @param runnable
 	 */
-	public void executor(Runnable task) {
-		taskExecutor.execute(task);
+	public void executor(Runnable runnable) {
+		taskExecutor.execute(runnable);
 	}
+	
+	/**
+	 * 异步执行有返回值
+	 * 
+	 * @param <V>
+	 * @param callable
+	 * @return
+	 */
+	public <V> V submit(Callable<V> callable) {
+		ExecutorService executorService = Executors.newCachedThreadPool();
+		Future<V> future = executorService.submit(callable);
+		try {
+			return future.get();
+		} catch (InterruptedException | ExecutionException e) {
+			logger.error("异常执行获取返回值异常", e);
+		}
+		return null;
+	}
+	
 	
 }
