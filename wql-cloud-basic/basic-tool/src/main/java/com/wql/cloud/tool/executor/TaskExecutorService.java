@@ -1,5 +1,7 @@
 package com.wql.cloud.tool.executor;
 
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -11,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * 五种线程池的适应场景
@@ -47,15 +52,26 @@ public class TaskExecutorService {
 	 * @param callable
 	 * @return
 	 */
-	public <V> V submit(Callable<V> callable) {
-		ExecutorService executorService = Executors.newCachedThreadPool();
-		Future<V> future = executorService.submit(callable);
-		try {
-			return future.get();
-		} catch (InterruptedException | ExecutionException e) {
-			logger.error("异常执行获取返回值异常", e);
+	public <V> ArrayList<V> submit(Callable<V> callable, int corePoolSize) {
+		//创建ExecutorService
+		ExecutorService executorService = Executors.newFixedThreadPool(corePoolSize);
+		Map<Integer,Future<V>> dataMap = Maps.newHashMap();
+		for (int i = 0; i < corePoolSize; i++) {
+			Future<V> future = executorService.submit(callable);
+			dataMap.put(i, future);
 		}
-		return null;
+		//表示不再接受新任务，但不会强行终止已经提交或者正在执行中的任务
+		executorService.shutdown(); 
+		//处理返回值
+		ArrayList<V> list = Lists.newArrayList();
+		for (int i = 0; i < corePoolSize; i++) {
+			try {
+				list.add(dataMap.get(i).get());
+			} catch (InterruptedException | ExecutionException e) {
+				logger.error("异步执行获取返回值异常", e);
+			}
+		}
+		return list;
 	}
 	
 	
