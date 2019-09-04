@@ -74,16 +74,6 @@
             <artifactId>basic-tool</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>com.wql.cloud</groupId>
-            <artifactId>basic-job</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.wql.cloud</groupId>
-            <artifactId>basic-redis</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
         <!-- soaclient -->
         <dependency>
             <groupId>com.wql.cloud</groupId>

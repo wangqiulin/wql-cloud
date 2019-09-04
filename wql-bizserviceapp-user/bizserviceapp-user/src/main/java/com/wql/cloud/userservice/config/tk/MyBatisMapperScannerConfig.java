@@ -22,17 +22,11 @@ import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 @AutoConfigureAfter(SessionFactoryConfig.class)
 public class MyBatisMapperScannerConfig {
 	
-	/**
-	 * mapper的路径
-	 */
-	@Value("${mybatis.mapper.mapperBasePackage:}")
-	private String basePackage;
-	
 	@Bean
     public MapperScannerConfigurer mapperScannerConfigurer() {
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
-        mapperScannerConfigurer.setBasePackage(basePackage);
+        mapperScannerConfigurer.setBasePackage("com.wql.cloud.userservice.mapper");
         //初始化扫描器的相关配置，这里我们要创建一个Mapper的父类
         Properties properties = new Properties();
         //这里要特别注意，不要把MyMapper放到 basePackage 中，也就是不能同其他Mapper一样被扫描到。 

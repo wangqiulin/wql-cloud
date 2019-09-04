@@ -18,15 +18,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wql.cloud.tool.jwt.CheckResult;
 import com.wql.cloud.tool.jwt.JwtUtil;
-import com.wql.cloud.userservice.service.UserService;
-
-import io.jsonwebtoken.Claims;
 
 /**
  * JWT登录认证拦截器
@@ -36,8 +32,8 @@ public class JwtFilter implements Filter {
 
 	private static final String OPTIONS = "OPTIONS";
 
-	@Autowired
-	private UserService userService;
+//	@Autowired
+//	private UserService userService;
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -73,11 +69,10 @@ public class JwtFilter implements Filter {
 		} else {
 			CheckResult checkResult = JwtUtil.validateJWT(token);
 			if(checkResult.getSuccess()) {
-				Claims claims = checkResult.getClaims();
+//				Claims claims = checkResult.getClaims();
 				//TODO 根据userId, 查询该用户的权限，以及接口是否需要登录等权限
-				
-				String userId = claims.getId();
-				String userContent = claims.getSubject();
+//				String userId = claims.getId();
+//				String userContent = claims.getSubject();
 				chain.doFilter(request, response);
 				return;
 			} else {

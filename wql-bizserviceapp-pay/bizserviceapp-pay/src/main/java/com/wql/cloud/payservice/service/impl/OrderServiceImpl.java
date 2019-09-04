@@ -27,16 +27,19 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
 		return this.saveSelective(order);
 	}
 
+	
 	@Override
 	public Integer update(Order order) {
 		return this.updateSelectiveById(order);
 	}
 
+	
 	@Override
 	public Integer delete(Order order) {
 		Assert.notNull(order.getId(), "id为空");
 		return this.removeById(order.getId());
 	}
+	
 	
 	@Override
 	@TargetDataSource(name = "read")
@@ -45,19 +48,20 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
 		return this.getById(order.getId());
 	}
 	
+	
 	@Override
 	@TargetDataSource(name = "read")
 	public List<Order> queryList(Order order) {
 		return this.listByRecord(order);
 	}
-
+	
+	
 	@Override
 	@TargetDataSource(name = "read")
 	public PageInfo<Order> queryPageList(Order order) {
 		Example example = new Example(Order.class);
 		example.createCriteria().andBetween("createDate", order.getBeginTime(), order.getEndTime());
 		return this.pageByExample(order.getPage(), order.getPageSize(), example);
-		//return this.pageListByRecord(order.getPage(), order.getPageSize(), order);
 	}
 
 //	@Override
