@@ -16,8 +16,8 @@ public class Order extends BaseDO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String orderNo;
+    
     private String goodsName;
-
 
     public Order(){
     }

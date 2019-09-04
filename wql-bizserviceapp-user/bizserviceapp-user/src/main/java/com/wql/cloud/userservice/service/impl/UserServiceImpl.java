@@ -12,7 +12,6 @@ import org.springframework.util.Assert;
 import com.github.pagehelper.PageInfo;
 import com.wql.cloud.basic.datasource.baseservice.BaseService;
 import com.wql.cloud.basic.datasource.dynamic.TargetDataSource;
-import com.wql.cloud.basic.redisson.distributelock.aop.DistributedLock;
 import com.wql.cloud.tool.jwt.JwtUtil;
 import com.wql.cloud.userservice.pojo.domain.User;
 import com.wql.cloud.userservice.service.UserService;
@@ -31,7 +30,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	
 	@Override
 	@Transactional
-	@DistributedLock(param="userName", tryLock=true)
+//	@DistributedLock(param="userName", tryLock=true)
 	public String register(User req) {
 		User record = new User();
 		record.setUserName(req.getUserName());
@@ -39,7 +38,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		Assert.isNull(user, "用户名已存在");
 		//保存
 		record.setUserPwd(req.getUserPwd());
-		saveSelective(record);
+		save(record);
 		//生成token
 		String token = JwtUtil.createJWT(String.valueOf(record.getId()), record.getUserName(), 3600*1000);
 		return token;
@@ -62,7 +61,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	
 	@Override
 	public Integer update(User req) {
-		return this.updateSelectiveById(req);
+		return this.updateById(req);
 	}
 
 	@Override

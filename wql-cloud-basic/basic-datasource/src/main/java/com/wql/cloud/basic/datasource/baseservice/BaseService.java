@@ -24,6 +24,7 @@ public abstract class BaseService<T extends BaseDO> {
     public static final Integer PAGE = 1;
     public static final Integer ROWS = 10;
     public static final String ID = "id";
+    public static final String VERSION = "version";
     
     @Autowired
     private MyMapper<T> mapper;
@@ -120,12 +121,12 @@ public abstract class BaseService<T extends BaseDO> {
     
     //=================新增===================//
     
-    public Integer saveSelective(T record) {
+    public Integer save(T record) {
     	record.setId(null);
         return this.mapper.insertSelective(record);
     }
     
-    public Integer insertList(List<T> recordList) {
+    public Integer saveList(List<T> recordList) {
     	for (T record : recordList) {
     		record.setId(null);
 		}
@@ -134,12 +135,12 @@ public abstract class BaseService<T extends BaseDO> {
     
     //=================更新===================//
     
-    public Integer updateSelectiveById(T record) {
+    public Integer updateById(T record) {
     	record.setUpdateDate(new Date());
         return this.mapper.updateByPrimaryKeySelective(record);
     }
 
-    public Integer updateSelectiveByExample(T record, Example example) {
+    public Integer updateByExample(T record, Example example) {
     	record.setUpdateDate(new Date());
         return this.mapper.updateByExampleSelective(record, example);
     }
@@ -150,10 +151,10 @@ public abstract class BaseService<T extends BaseDO> {
      * @param example
      * @return
      */
-    public Integer updateSelectiveByVersion(T record, Example example) {
+    public Integer updateByVersion(T record, Example example) {
     	Assert.notNull(record.getVersion(), "version cannot be empty");
     	//版本号作为条件
-    	example.and().andEqualTo("version", record.getVersion());
+    	example.and().andEqualTo(VERSION, record.getVersion());
     	//通用更新字段
     	record.setUpdateDate(new Date());
     	record.setVersion(record.getVersion() + 1);
@@ -165,7 +166,7 @@ public abstract class BaseService<T extends BaseDO> {
      * @param recordList
      * @return
      */
-    public int updateBatchByPrimaryKeySelective(List<T> recordList) {
+    public int updateBatchByIds(List<T> recordList) {
     	Assert.notEmpty(recordList, "list cannot be empty");
     	return this.mapper.updateBatchByPrimaryKeySelective(recordList);
     }
@@ -192,10 +193,26 @@ public abstract class BaseService<T extends BaseDO> {
     }
     
     public Integer removeByIds(List<?> ids, Class<T> clazz) {
-    	Assert.notEmpty(ids, "id cannot be empty");
+    	Assert.notEmpty(ids, "ids cannot be empty");
     	Example example = new Example(clazz);
     	example.createCriteria().andIn(ID, ids);
         return this.mapper.deleteByExample(example);
     }
+    
+    /**
+     * 根据feild字段，删除数据
+     * 
+     * @param field 删除字段
+     * @param list
+     * @param clazz
+     * @return
+     */
+    public Integer removeByFeild(String field, List<?> list, Class<T> clazz) {
+    	Assert.notEmpty(list, "list cannot be empty");
+    	Example example = new Example(clazz);
+    	example.createCriteria().andIn(field, list);
+        return this.mapper.deleteByExample(example);
+    }
+    
     
 }

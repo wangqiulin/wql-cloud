@@ -24,13 +24,13 @@ public class ${ClassName}ServiceImpl extends BaseService<${ClassName}> ${Impl} {
 	@Override
 	@Transactional
 	public Integer save(${ClassName} ${EntityName}) {
-		return this.saveSelective(${EntityName});
+		return this.save(${EntityName});
 	}
 
 	@Override
 	@Transactional
 	public Integer update(${ClassName} ${EntityName}) {
-		return this.updateSelectiveById(${EntityName});
+		return this.updateById(${EntityName});
 	}
 
 	@Override
