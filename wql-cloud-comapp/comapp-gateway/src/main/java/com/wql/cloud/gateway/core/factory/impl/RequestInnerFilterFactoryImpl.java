@@ -81,7 +81,7 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 		}
 
 		// 判断是否加载白名单过滤器
-		if (gatewayProperty.getWhiteipSwitch()) {
+		if (gatewayProperty.getWhitelistSwitch()) {
 			innerList.add(whiteListFilter);
 		}
 
