@@ -18,7 +18,7 @@ public class MicroserviceConfigController {
 	/**
 	 * 刷新配置
 	 */
-	@PostMapping("/system/refresh")
+	@PostMapping("/system/config/refresh")
 	public DataResponse<String> refresh(@RequestBody RefreshMicroserviceConfigReq req){
 		return DataResponse.success(microserviceConfigService.refresh(req));
 	}

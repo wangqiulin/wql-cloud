@@ -61,6 +61,10 @@ wql:
     username: admin
     password: admin 
 
+feign:
+  serviceId: 
+    system: bizserviceapp-system
+
 ---
 spring: 
   profiles: dev

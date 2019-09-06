@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.xml.bind.ValidationException;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -41,27 +40,48 @@ public class ErrorExceptionHandler {
         //异常分类
         String code = null;
         String message = null;
-        Throwable cause = ex.getCause();
-        if(cause != null) {
-        	Throwable cause2 = cause.getCause();
-            if(cause2 != null) {
-            	if(cause2 instanceof IllegalArgumentException || cause2 instanceof ValidationException) {
-                	code = BusinessEnum.PARAM_FAIL.getCode();
-                	message = cause2.getMessage();
-                } else if(cause2 instanceof BusinessException) {
-                	BusinessException businessException = (BusinessException)cause2;
-                	code = businessException.getCode();
-                	message = businessException.getMessage();
-                } else {
-                	logger.error("【异常信息】", ex);
-                }
-            }
-        }
-        attributes.put("code", StringUtils.isBlank(code) ? BusinessEnum.FAIL.getCode() : code);
-        attributes.put("message", StringUtils.isBlank(message) ? BusinessEnum.FAIL.getMessage() : message);
+        
+        Map<String, String> map = getExceptionMessage(ex);
+    	if(map == null) {
+    		Map<String, String> map2 = getExceptionMessage(ex.getCause());
+    		if(map2 == null) {
+    			logger.error("【异常信息】", ex);
+    			code = BusinessEnum.FAIL.getCode();
+        		message = BusinessEnum.FAIL.getMessage();
+    		} else {
+    			code = map2.getOrDefault("code", BusinessEnum.FAIL.getCode());
+        		message = map2.getOrDefault("message", BusinessEnum.FAIL.getMessage());
+        		logger.error("参数异常：" + message);
+    		}
+    	} else {
+    		code = map.getOrDefault("code", BusinessEnum.FAIL.getCode());
+    		message = map.getOrDefault("message", BusinessEnum.FAIL.getMessage());
+    		logger.error("参数异常：" + message);
+    	}
+        
+        attributes.put("code", code);
+        attributes.put("message", message);
         view.setAttributesMap(attributes);
         mv.setView(view); 
         return mv;
 	}
+	
+	
+	private Map<String, String> getExceptionMessage(Throwable e){
+		Map<String, String> map = new HashMap<>();
+		if(e instanceof IllegalArgumentException || e instanceof ValidationException) {
+        	map.put("code", BusinessEnum.PARAM_FAIL.getCode());
+        	map.put("message", e.getMessage());
+        	return map;
+        }
+    	if(e instanceof BusinessException) {
+        	BusinessException busExp = (BusinessException) e;
+        	map.put("code", busExp.getCode());
+        	map.put("message", busExp.getMessage());
+        	return map;
+        } 
+		return null;
+	}
+	
 	
 }
