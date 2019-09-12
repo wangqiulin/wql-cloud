@@ -1,24 +1,39 @@
 package com.wql.cloud.payservice.client;
 
-import java.util.List;
-
 import org.springframework.stereotype.Component;
 
 import com.wql.cloud.basic.datasource.response.constant.BusinessEnum;
 import com.wql.cloud.basic.datasource.response.constant.DataResponse;
-import com.wql.cloud.payservice.pojo.domain.PayOrder;
+import com.wql.cloud.payservice.pojo.req.CreatePayOrderReq;
+import com.wql.cloud.payservice.pojo.req.CreateRefundOrderReq;
+import com.wql.cloud.payservice.pojo.req.QueryPayOrderReq;
+import com.wql.cloud.payservice.pojo.req.QueryRefundOrderReq;
+import com.wql.cloud.payservice.pojo.res.CreatePayOrderRes;
+import com.wql.cloud.payservice.pojo.res.CreateRefundOrderRes;
+import com.wql.cloud.payservice.pojo.res.QueryPayOrderRes;
+import com.wql.cloud.payservice.pojo.res.QueryRefundOrderRes;
 
 @Component
 public class PayClientHystrix implements PayClient {
 
 	@Override
-	public DataResponse<List<PayOrder>> queryList(PayOrder req) {
+	public DataResponse<CreatePayOrderRes> createPayOrder(CreatePayOrderReq req) {
 		return new DataResponse<>(BusinessEnum.SYSTEM_FAIL);
 	}
 
 	@Override
-	public DataResponse<Void> save(PayOrder order) {
+	public DataResponse<QueryPayOrderRes> queryPayOrder(QueryPayOrderReq req) {
 		return new DataResponse<>(BusinessEnum.SYSTEM_FAIL);
-	}	
+	}
+
+	@Override
+	public DataResponse<CreateRefundOrderRes> createRefundOrder(CreateRefundOrderReq req) {
+		return new DataResponse<>(BusinessEnum.SYSTEM_FAIL);
+	}
+
+	@Override
+	public DataResponse<QueryRefundOrderRes> queryRefundOrder(QueryRefundOrderReq req) {
+		return new DataResponse<>(BusinessEnum.SYSTEM_FAIL);
+	}
 	
 }

@@ -24,13 +24,9 @@ import com.wql.cloud.basic.datasource.response.constant.DataResponse;
 import com.wql.cloud.basic.wxpay.util.StreamUtils;
 import com.wql.cloud.basic.wxpay.util.WXPayUtil;
 import com.wql.cloud.payservice.pojo.req.CreatePayOrderReq;
-import com.wql.cloud.payservice.pojo.req.CreateRefundOrderReq;
 import com.wql.cloud.payservice.pojo.req.QueryPayOrderReq;
-import com.wql.cloud.payservice.pojo.req.QueryRefundOrderReq;
 import com.wql.cloud.payservice.pojo.res.CreatePayOrderRes;
-import com.wql.cloud.payservice.pojo.res.CreateRefundOrderRes;
 import com.wql.cloud.payservice.pojo.res.QueryPayOrderRes;
-import com.wql.cloud.payservice.pojo.res.QueryRefundOrderRes;
 import com.wql.cloud.payservice.service.PayOrderService;
 
 import io.swagger.annotations.ApiOperation;
@@ -41,38 +37,23 @@ public class PayOrderController {
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());  
 
     @Autowired
-    private PayOrderService orderService;
+    private PayOrderService payOrderService;
     @Autowired
 	private HttpServletRequest request;
     @Autowired
 	private HttpServletResponse response;
     
-
 	@ApiOperation(value = "创建支付订单")
 	@PostMapping("/pay/payOrder/create")
 	public DataResponse<CreatePayOrderRes> createPayOrder(@RequestBody CreatePayOrderReq req) {
-		return DataResponse.success(orderService.createPayOrder(req));
+		return DataResponse.success(payOrderService.createPayOrder(req));
 	}
 	
 	
 	@ApiOperation(value = "查询支付订单结果")
 	@PostMapping("/pay/payOrder/query")
 	public DataResponse<QueryPayOrderRes> queryPayOrder(@RequestBody QueryPayOrderReq req) {
-		return DataResponse.success(orderService.queryPayOrder(req));
-	}
-	
-	
-	@ApiOperation(value = "创建退款订单")
-	@PostMapping("/pay/refundOrder/create")
-	public DataResponse<CreateRefundOrderRes> createRefundOrder(@RequestBody CreateRefundOrderReq req) {
-		return DataResponse.success(orderService.createRefundOrder(req));
-	}
-	
-	
-	@ApiOperation(value = "查询退款订单结果")
-	@PostMapping("/pay/refundOrder/query")
-	public DataResponse<QueryRefundOrderRes> queryRefundOrder(@RequestBody QueryRefundOrderReq req) {
-		return DataResponse.success(orderService.queryRefundOrder(req));
+		return DataResponse.success(payOrderService.queryPayOrder(req));
 	}
 	
 	
@@ -84,7 +65,7 @@ public class PayOrderController {
    		try {
    			writer = response.getWriter();
    			String data = StreamUtils.copyToString(request.getInputStream(), Charset.forName("utf-8"));
-   			orderService.payCallback("app-wxpay", data);
+   			payOrderService.payCallback("app-wxpay", data);
    			writer.print(WXPayUtil.successXml());
    			writer.flush();
    		} catch (Exception e) {
@@ -104,39 +85,11 @@ public class PayOrderController {
    		try {
    			writer = response.getWriter();
    			Map<String, String> params = convertRequestParamsToMap(request);
-   			orderService.payCallback("app-alipay", JSON.toJSONString(params));
+   			payOrderService.payCallback("app-alipay", JSON.toJSONString(params));
    			writer.print("success");
    			writer.flush();
    		} catch (Exception e) {
    			logger.error("支付宝支付结果回调处理失败: ", e);
-   		} finally {
-   			if(writer != null) {
-   				writer.close();
-   			}
-   		}
-	}
-	
-	@ApiOperation(value = "微信退款结果回调")
-	@RequestMapping(value = "/pay/wxpay/refundCallback", method = RequestMethod.POST)
-	public void wxpayRefundCallback() {
-		logger.info("--------------微信退款,开始回调--------------");
-		PrintWriter writer = null;
-   		try {
-   			writer = response.getWriter();
-   			String xml = "";
-   			try {
-   				String inputLine = "";
-                while((inputLine = request.getReader().readLine()) != null){
-                	xml += inputLine;
-                } 
-                orderService.refundCallback("app-wxpay", xml);
-   			} finally {
-                request.getReader().close();
-			}
-   			writer.print(WXPayUtil.successXml());
-   			writer.flush();
-   		} catch (Exception e) {
-   			logger.error("微信退款结果回调,处理异常: ", e);
    		} finally {
    			if(writer != null) {
    				writer.close();
