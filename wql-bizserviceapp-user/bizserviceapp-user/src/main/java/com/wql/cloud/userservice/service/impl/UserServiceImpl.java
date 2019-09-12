@@ -90,4 +90,10 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		return this.pageByRecord(req.getPage(), req.getPageSize(), req);
 	}
 
+
+	@Override
+	public String getDynamicTableName() {
+		return null;
+	}
+
 }

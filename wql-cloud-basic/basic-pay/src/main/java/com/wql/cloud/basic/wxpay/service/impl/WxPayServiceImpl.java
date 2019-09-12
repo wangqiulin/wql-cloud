@@ -217,6 +217,7 @@ public class WxPayServiceImpl implements WxPayService {
 		    long refundFee = refundOrderModel.getRefundFee().multiply(BigDecimal.TEN).multiply(BigDecimal.TEN).longValue();
 		    bizParams.put(WXPayConstant.TOTAL_FEE, totalFee); // 单位为分
 		    bizParams.put(WXPayConstant.REFUND_FEE, refundFee); // 单位为分
+		    bizParams.put(WXPayConstant.NOTIFY_URL, wxPayConfig.getRefundNotifyUrl());
 		    bizParams.put(WXPayConstant.OP_USER_ID, wxPayConfig.getMchId());
 		    bizParams.put(WXPayConstant.SIGN, SignUtil.sign2(bizParams, wxPayConfig.getPrivateKey())); 
 			String reqXml = XmlUtil.mapToXml2(bizParams, WXPayConstant.XML_ROOT);
@@ -264,7 +265,7 @@ public class WxPayServiceImpl implements WxPayService {
                 	  		return result;
                 	  	}
 						if(xmlResultMap.get("result_code") != null) {
-                		  result = xmlResultMap.get("result_code")+"";
+							result = xmlResultMap.get("result_code")+"";
                 	  	}
 					}
 					EntityUtils.consume(entity);
@@ -322,12 +323,12 @@ public class WxPayServiceImpl implements WxPayService {
 			            break;
 			    }
 			} else {
-				return new QueryOrderResult("退款失败", "fail");
+				return new QueryOrderResult("退款失败", "FAIL");
 			}
   		} catch (Exception e) {
   			logger.error("查询微信退款结果异常", e);
   		}
-  		return new QueryOrderResult("未知", "unknow");
+  		return new QueryOrderResult("未知", "UNKNOW");
 	}
 	
 	

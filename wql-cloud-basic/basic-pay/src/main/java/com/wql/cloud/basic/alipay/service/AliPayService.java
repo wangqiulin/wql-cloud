@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.wql.cloud.basic.alipay.model.CreateOrderModel;
 import com.wql.cloud.basic.alipay.model.RefundOrderModel;
+import com.wql.cloud.basic.alipay.result.CreateRefundOrderResult;
 import com.wql.cloud.basic.alipay.result.PayNotifyResult;
 import com.wql.cloud.basic.alipay.result.QueryOrderResult;
 import com.wql.cloud.basic.alipay.result.QueryRefundOrderResult;
@@ -57,7 +58,7 @@ public interface AliPayService {
 	 * @param refundOrderModel
 	 * @return
 	 */
-	String refundOrder(RefundOrderModel refundOrderModel);
+	CreateRefundOrderResult refundOrder(RefundOrderModel refundOrderModel);
 	
 	/**
 	 * 查询退款订单结果

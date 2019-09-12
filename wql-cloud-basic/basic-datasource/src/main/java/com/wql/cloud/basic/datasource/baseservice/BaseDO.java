@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -54,6 +55,9 @@ public abstract class BaseDO extends BaseQueryDO implements Serializable{
 	@JsonIgnore
 	private Integer dataFlag;  
 	
+	@Transient
+	private String tableName;
+	
 	public Long getId() {
 		return id;
 	}
@@ -94,4 +98,12 @@ public abstract class BaseDO extends BaseQueryDO implements Serializable{
 		this.dataFlag = dataFlag;
 	}
 
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
+	
 }

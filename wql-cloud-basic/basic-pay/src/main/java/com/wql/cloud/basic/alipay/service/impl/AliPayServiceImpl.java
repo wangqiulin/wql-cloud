@@ -23,6 +23,7 @@ import com.alipay.api.AlipayRequest;
 import com.alipay.api.AlipayResponse;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
+import com.alipay.api.domain.AlipayTradeFastpayRefundQueryModel;
 import com.alipay.api.domain.AlipayTradeQueryModel;
 import com.alipay.api.domain.AlipayTradeRefundModel;
 import com.alipay.api.domain.AlipayTradeWapPayModel;
@@ -39,6 +40,7 @@ import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.wql.cloud.basic.alipay.config.AliPayConfig;
 import com.wql.cloud.basic.alipay.model.CreateOrderModel;
 import com.wql.cloud.basic.alipay.model.RefundOrderModel;
+import com.wql.cloud.basic.alipay.result.CreateRefundOrderResult;
 import com.wql.cloud.basic.alipay.result.PayNotifyResult;
 import com.wql.cloud.basic.alipay.result.QueryOrderResult;
 import com.wql.cloud.basic.alipay.result.QueryRefundOrderResult;
@@ -74,7 +76,7 @@ public class AliPayServiceImpl implements AliPayService {
 			// 设置参数
 			AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
 			model.setOutTradeNo(createOrderModel.getOutTradeNo());
-			model.setTotalAmount(createOrderModel.getTotalAmount());
+			model.setTotalAmount(createOrderModel.getTotalAmount().toPlainString());
 			model.setSubject(createOrderModel.getBody());
 			model.setTimeoutExpress(createOrderModel.getTimeoutExpress());
 			model.setProductCode(QUICK_MSECURITY_PAY);
@@ -100,7 +102,7 @@ public class AliPayServiceImpl implements AliPayService {
 			// 设置参数
 			AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
 			model.setOutTradeNo(createOrderModel.getOutTradeNo());
-			model.setTotalAmount(createOrderModel.getTotalAmount());
+			model.setTotalAmount(createOrderModel.getTotalAmount().toPlainString());
 			model.setSubject(createOrderModel.getBody());
 			model.setTimeoutExpress(createOrderModel.getTimeoutExpress());
 			model.setProductCode(QUICK_WAP_PAY);
@@ -126,7 +128,7 @@ public class AliPayServiceImpl implements AliPayService {
 			// 设置参数
 			AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
 			model.setOutTradeNo(createOrderModel.getOutTradeNo());
-			model.setTotalAmount(createOrderModel.getTotalAmount());
+			model.setTotalAmount(createOrderModel.getTotalAmount().toPlainString());
 			model.setSubject(createOrderModel.getBody());
 			model.setTimeoutExpress(createOrderModel.getTimeoutExpress());
 			model.setProductCode(FAST_INSTANT_TRADE_PAY);
@@ -179,8 +181,8 @@ public class AliPayServiceImpl implements AliPayService {
 
 	
 	@Override
-	public String refundOrder(RefundOrderModel refundOrderModel) {
-		String strResponse = null;
+	public CreateRefundOrderResult refundOrder(RefundOrderModel refundOrderModel) {
+		CreateRefundOrderResult res = new CreateRefundOrderResult();
 		try {
 			AlipayClient alipayClient = new DefaultAlipayClient(config.SERVER_URL, 
 					config.getAppId(), config.getPrivateKey(), config.FORMAT, 
@@ -188,23 +190,26 @@ public class AliPayServiceImpl implements AliPayService {
 			// 设置参数
 			AlipayTradeRefundModel model = new AlipayTradeRefundModel();
 			model.setOutTradeNo(refundOrderModel.getOutTradeNo());
-			model.setRefundAmount(refundOrderModel.getRefundAmount());
+			model.setOutRequestNo(refundOrderModel.getOutRequestNo()); 
+			model.setRefundAmount(refundOrderModel.getRefundAmount().toPlainString());
 			// 发起请求
 			AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
 			request.setBizModel(model);
 			AlipayTradeRefundResponse response = alipayClient.execute(request);
-			strResponse = response.getCode();
 			if ("10000".equals(response.getCode())) {
-				strResponse = "success";
+				res.setResult(true);
+				res.setResultMsg("退款发起成功");
 			} else {
 				logger.info("【支付宝退款】请求失败：" + response.getSubMsg());
-				strResponse = "fail";
+				res.setResult(false);
+				res.setResultMsg(response.getSubMsg());
 			}
 		} catch (Exception e) {
-			logger.error("支付宝退款, 出现异常", e);
-			strResponse = "fail";
+			logger.error("【支付宝退款】出现异常", e);
+			res.setResult(false);
+			res.setResultMsg(e.getMessage());
 		}
-		return strResponse;
+		return res;
 	}
 	
 	
@@ -212,11 +217,15 @@ public class AliPayServiceImpl implements AliPayService {
 	public QueryRefundOrderResult queryRefundOrderByTradeNo(String outTradeNo, String outRequestNo) {
 		QueryRefundOrderResult res = new QueryRefundOrderResult();
 	    try {
-	    	Map<String, String> map = new HashMap<>();
-	    	map.put("out_trade_no", outTradeNo);
-	    	map.put("out_request_no", outRequestNo);
+	    	AlipayTradeFastpayRefundQueryModel bizModel = new AlipayTradeFastpayRefundQueryModel();
+	    	bizModel.setOutTradeNo(outTradeNo);
+	    	bizModel.setOutRequestNo(outRequestNo);
+//	    	Map<String, String> map = new HashMap<>();
+//	    	map.put("out_trade_no", outTradeNo);
+//	    	map.put("out_request_no", outRequestNo);
 	        AlipayTradeFastpayRefundQueryRequest request = new AlipayTradeFastpayRefundQueryRequest();
-	        request.setBizContent(JSON.toJSONString(map));
+//	        request.setBizContent(JSON.toJSONString(map));
+	        request.setBizModel(bizModel);
 	        //退款查询
 	        AlipayClient alipayClient = new DefaultAlipayClient(config.SERVER_URL, 
 					config.getAppId(), config.getPrivateKey(), config.FORMAT, 

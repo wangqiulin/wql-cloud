@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.wql.cloud.basic.datasource.response.constant.DataResponse;
-import com.wql.cloud.payservice.pojo.domain.Order;
+import com.wql.cloud.payservice.pojo.domain.PayOrder;
 
 @FeignClient(value = "${feign.serviceId.pay}", fallback = PayClientHystrix.class)
 public interface PayClient {
 
 	@RequestMapping(value = "/order/queryList", method = RequestMethod.POST)
-	DataResponse<List<Order>> queryList(@RequestBody Order req);
+	DataResponse<List<PayOrder>> queryList(@RequestBody PayOrder req);
 
 	@RequestMapping(value = "/order/save", method = RequestMethod.POST)
-	DataResponse<Void> save(@RequestBody Order req);
+	DataResponse<Void> save(@RequestBody PayOrder req);
 	
 }

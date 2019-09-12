@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -32,8 +33,11 @@ public class SessionFactoryConfig implements TransactionManagementConfigurer {
 	@Autowired
 	private DataSource dataSource;
 	
-	@Autowired
-	private MybatisProperty mybatisProperty;
+	@Value("${mybatis.mapper.domainPackage}")
+	private String domainPackage;
+	
+	@Value("${mybatis.mapper.xmlPackage}")
+	private String xmlPackage;
 	
 	@Bean(name = "sqlSessionFactory")
 	public SqlSessionFactory createSqlSessionFactory() throws Exception {
@@ -41,17 +45,17 @@ public class SessionFactoryConfig implements TransactionManagementConfigurer {
 		
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(dataSource);
-		sqlSessionFactoryBean.setTypeAliasesPackage(mybatisProperty.getDomainPackage());
+		sqlSessionFactoryBean.setTypeAliasesPackage(domainPackage);
 		
 		//开启驼峰匹配
 		org.apache.ibatis.session.Configuration config = new org.apache.ibatis.session.Configuration();
 		config.setMapUnderscoreToCamelCase(true);
 		sqlSessionFactoryBean.setConfiguration(config);
 		
-        if(StringUtils.isNotBlank(mybatisProperty.getXmlPackage())) {
+        if(StringUtils.isNotBlank(xmlPackage)) {
         	//添加XML目录
             ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-            sqlSessionFactoryBean.setMapperLocations(resolver.getResources(mybatisProperty.getXmlPackage()));
+            sqlSessionFactoryBean.setMapperLocations(resolver.getResources(xmlPackage));
         }
         SqlSessionFactory sessionFactory = sqlSessionFactoryBean.getObject();
         logger.info("【SqlSessionFactory】---初始化成功");

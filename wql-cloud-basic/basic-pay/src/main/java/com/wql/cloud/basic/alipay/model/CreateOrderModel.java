@@ -1,5 +1,7 @@
 package com.wql.cloud.basic.alipay.model;
 
+import java.math.BigDecimal;
+
 public class CreateOrderModel {
 
 	/**
@@ -10,7 +12,7 @@ public class CreateOrderModel {
 	/**
 	 * 支付金额： 0.01
 	 */
-	private String totalAmount;
+	private BigDecimal totalAmount;
 	
 	/**
 	 * 商品描述
@@ -37,11 +39,11 @@ public class CreateOrderModel {
 		this.outTradeNo = outTradeNo;
 	}
 
-	public String getTotalAmount() {
+	public BigDecimal getTotalAmount() {
 		return totalAmount;
 	}
 
-	public void setTotalAmount(String totalAmount) {
+	public void setTotalAmount(BigDecimal totalAmount) {
 		this.totalAmount = totalAmount;
 	}
 

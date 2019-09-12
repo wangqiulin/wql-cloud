@@ -1,5 +1,7 @@
 package com.wql.cloud.basic.alipay.model;
 
+import java.math.BigDecimal;
+
 public class RefundOrderModel {
 
 	/**
@@ -8,19 +10,14 @@ public class RefundOrderModel {
 	private String outTradeNo;
 	
 	/**
-	 * 支付宝交易号，和商户订单号不能同时为空
+	 * 请求退款接口时，传入的退款请求号，如果在退款请求时未传入，则该值为创建交易时的外部交易号: 同一笔交易部分多次退款，需保证唯一
 	 */
-	private String tradeNo;
+	private String outRequestNo;
 	
 	/**
 	 * 需要退款的金额，该金额不能大于订单金额,单位为元，支持两位小数
 	 */
-	private String refundAmount;
-	
-	/**
-	 * 退款原因
-	 */
-	private String refundReason;
+	private BigDecimal refundAmount;
 	
 	public String getOutTradeNo() {
 		return outTradeNo;
@@ -30,28 +27,20 @@ public class RefundOrderModel {
 		this.outTradeNo = outTradeNo;
 	}
 
-	public String getTradeNo() {
-		return tradeNo;
+	public String getOutRequestNo() {
+		return outRequestNo;
 	}
 
-	public void setTradeNo(String tradeNo) {
-		this.tradeNo = tradeNo;
+	public void setOutRequestNo(String outRequestNo) {
+		this.outRequestNo = outRequestNo;
 	}
 
-	public String getRefundAmount() {
+	public BigDecimal getRefundAmount() {
 		return refundAmount;
 	}
 
-	public void setRefundAmount(String refundAmount) {
+	public void setRefundAmount(BigDecimal refundAmount) {
 		this.refundAmount = refundAmount;
 	}
 
-	public String getRefundReason() {
-		return refundReason;
-	}
-
-	public void setRefundReason(String refundReason) {
-		this.refundReason = refundReason;
-	}
-	
 }

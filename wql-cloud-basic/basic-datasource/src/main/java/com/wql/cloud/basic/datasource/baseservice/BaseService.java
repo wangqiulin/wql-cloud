@@ -13,11 +13,12 @@ import com.github.pagehelper.PageInfo;
 import com.wql.cloud.basic.datasource.tk.MyMapper;
 
 import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.entity.IDynamicTableName;
 
 /**
  * 单表通用的service层的抽象类
  */
-public abstract class BaseService<T extends BaseDO> {
+public abstract class BaseService<T extends BaseDO> implements IDynamicTableName {
 
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
