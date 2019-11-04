@@ -68,7 +68,7 @@ public class RefundOrderServiceImpl implements RefundOrderService {
 		//再进行退款请求操作
 		String channelWay = payOrder.getChannelWay();
 		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannelRoute().equals(channelWay)).findFirst().orElseGet(null);
-		Assert.notNull(payRouteFactory, "支付方式已更新，请返回后重新尝试");
+		Assert.notNull(payRouteFactory, "退款方式不存在");
 		payRouteFactory.createRefundOrder(outRefundNo, payOrder.getOutTradeNo(), payOrder.getPayAmount(), refundAmount);
 		//响应对象
 		CreateRefundOrderRes res = new CreateRefundOrderRes();
@@ -94,7 +94,7 @@ public class RefundOrderServiceImpl implements RefundOrderService {
 		//支付结果查询
 		String channelWay = refundOrder.getChannelWay();
 		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannelRoute().equals(channelWay))
-				.findFirst().orElseThrow(() -> new IllegalArgumentException("支付方式不存在"));
+				.findFirst().orElseThrow(() -> new IllegalArgumentException("退款方式不存在"));
 		payRouteFactory.queryRefundOrder(refundOrder);
 		//TODO
 		return res;
@@ -105,7 +105,7 @@ public class RefundOrderServiceImpl implements RefundOrderService {
 	public void refundCallback(String channelWay, String data) {
 		PayRouteFactory payRouteFactory = payRouteFactoryList.stream()
 				.filter(o -> o.getChannelRoute().equals(channelWay))
-				.findFirst().orElseThrow(() -> new IllegalArgumentException("支付方式不存在"));
+				.findFirst().orElseThrow(() -> new IllegalArgumentException("退款方式不存在"));
 		payRouteFactory.refundCallback(data);
 	}
 

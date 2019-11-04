@@ -48,12 +48,12 @@ public class PayOrderServiceImpl implements PayOrderService {
 		appPayment.setPaymentWay(createPayOrderReq.getPaymentWay());
 		appPayment.setState(1);
 		appPayment = appPaymentMapper.selectOne(appPayment);
-		Assert.notNull(appPayment, "支付方式已更新，请返回后重新尝试");
+		Assert.notNull(appPayment, "支付方式已更新，请重新尝试");
 		//支付下单
 		String outTradeNo = ""; //TODO
 		String channelWay = appPayment.getChannelWay();
 		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannelRoute().equals(channelWay))
-				.findFirst().orElseThrow(() -> new IllegalArgumentException("支付方式已更新，请返回后重新尝试"));
+				.findFirst().orElseThrow(() -> new IllegalArgumentException("支付方式已更新，请重新尝试"));
 		CreatePayReq createPayReq = new CreatePayReq();
 		createPayReq.setOutTradeNo(outTradeNo);
 		createPayReq.setPayAmount(createPayOrderReq.getPayAmount());
