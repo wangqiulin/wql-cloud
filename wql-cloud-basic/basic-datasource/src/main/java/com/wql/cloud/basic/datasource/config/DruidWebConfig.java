@@ -10,7 +10,7 @@ import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
 
 /**
- * 
+ * druid连接
  * @author wangqiulin
  *
  */

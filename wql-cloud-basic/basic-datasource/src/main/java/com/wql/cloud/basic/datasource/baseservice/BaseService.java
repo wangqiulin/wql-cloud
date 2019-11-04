@@ -33,12 +33,12 @@ public abstract class BaseService<T extends BaseDO> implements IDynamicTableName
     //=================查询一条===================//
     
     public T getById(Integer id) {
-    	Assert.notNull(id, "id cannot be empty");
+    	Assert.notNull(id, "id cann't empty");
         return this.mapper.selectByPrimaryKey(id);
     }
     
     public T getById(Long id) {
-    	Assert.notNull(id, "id cannot be empty");
+    	Assert.notNull(id, "id cann't empty");
         return this.mapper.selectByPrimaryKey(id);
     }
     
@@ -67,15 +67,15 @@ public abstract class BaseService<T extends BaseDO> implements IDynamicTableName
     //=================分页查询(查询总数)===================//
     
     public PageInfo<T> pageByRecord(Integer page, Integer rows, T record) {
-    	Assert.isTrue(page != null && page > 0, "page should not be less than 1");
-    	Assert.isTrue(rows != null && rows > 0, "rows should not be less than 1");
+    	Assert.isTrue(page != null && page > 0, "page shouldn't less than 1");
+    	Assert.isTrue(rows != null && rows > 0, "rows shouldn't less than 1");
     	PageHelper.startPage(page, rows, true); 
         return new PageInfo<T>(this.mapper.select(record));
     }
     
     public PageInfo<T> pageByExample(Integer page, Integer rows, Example example) {
-    	Assert.isTrue(page != null && page > 0, "page should not be less than 1");
-    	Assert.isTrue(rows != null && rows > 0, "rows should not be less than 1");
+    	Assert.isTrue(page != null && page > 0, "page shouldn't less than 1");
+    	Assert.isTrue(rows != null && rows > 0, "rows shouldn't less than 1");
         PageHelper.startPage(page, rows, true);
         return new PageInfo<T>(this.mapper.selectByExample(example));
     }
@@ -84,15 +84,15 @@ public abstract class BaseService<T extends BaseDO> implements IDynamicTableName
     //=================分页查询(不查总数)===================//
     
     public PageInfo<T> pageByRecordWithoutCount(Integer page, Integer rows, T record) {
-    	Assert.isTrue(page != null && page > 0, "page should not be less than 1");
-    	Assert.isTrue(rows != null && rows > 0, "rows should not be less than 1");
+    	Assert.isTrue(page != null && page > 0, "page shouldn't less than 1");
+    	Assert.isTrue(rows != null && rows > 0, "rows shouldn't less than 1");
     	PageHelper.startPage(page, rows, false);  
         return new PageInfo<T>(this.mapper.select(record));
     }
     
     public PageInfo<T> pageByExampleWithoutCount(Integer page, Integer rows, Example example) {
-    	Assert.isTrue(page != null && page > 0, "page should not be less than 1");
-    	Assert.isTrue(rows != null && rows > 0, "rows should not be less than 1");
+    	Assert.isTrue(page != null && page > 0, "page shouldn't less than 1");
+    	Assert.isTrue(rows != null && rows > 0, "rows shouldn't less than 1");
         PageHelper.startPage(page, rows, false);  
         return new PageInfo<T>(this.mapper.selectByExample(example));
     }
@@ -111,12 +111,12 @@ public abstract class BaseService<T extends BaseDO> implements IDynamicTableName
     //=================根据主键，查询记录是否存在===================//	
     
     public boolean existsById(Integer id){
-    	Assert.notNull(id, "id cannot be empty");
+    	Assert.notNull(id, "id cann't empty");
     	return this.mapper.existsWithPrimaryKey(id);
     }
     
     public boolean existsById(Long id){
-    	Assert.notNull(id, "id cannot be empty");
+    	Assert.notNull(id, "id cann't empty");
     	return this.mapper.existsWithPrimaryKey(id);
     }
     
@@ -153,7 +153,7 @@ public abstract class BaseService<T extends BaseDO> implements IDynamicTableName
      * @return
      */
     public Integer updateByVersion(T record, Example example) {
-    	Assert.notNull(record.getVersion(), "version cannot be empty");
+    	Assert.notNull(record.getVersion(), "version cann't empty");
     	//版本号作为条件
     	example.and().andEqualTo(VERSION, record.getVersion());
     	//通用更新字段
@@ -168,7 +168,7 @@ public abstract class BaseService<T extends BaseDO> implements IDynamicTableName
      * @return
      */
     public int updateBatchByIds(List<T> recordList) {
-    	Assert.notEmpty(recordList, "list cannot be empty");
+    	Assert.notEmpty(recordList, "list cann't empty");
     	return this.mapper.updateBatchByPrimaryKeySelective(recordList);
     }
     
@@ -176,12 +176,12 @@ public abstract class BaseService<T extends BaseDO> implements IDynamicTableName
     //=================删除===================//
     
     public Integer removeById(Integer id) {
-    	Assert.notNull(id, "id cannot be empty");
+    	Assert.notNull(id, "id cann't empty");
         return this.mapper.deleteByPrimaryKey(id);
     }
     
     public Integer removeById(Long id) {
-    	Assert.notNull(id, "id cannot be empty");
+    	Assert.notNull(id, "id cann't empty");
         return this.mapper.deleteByPrimaryKey(id);
     }
 
@@ -194,7 +194,7 @@ public abstract class BaseService<T extends BaseDO> implements IDynamicTableName
     }
     
     public Integer removeByIds(List<?> ids, Class<T> clazz) {
-    	Assert.notEmpty(ids, "ids cannot be empty");
+    	Assert.notEmpty(ids, "ids cann't empty");
     	Example example = new Example(clazz);
     	example.createCriteria().andIn(ID, ids);
         return this.mapper.deleteByExample(example);
@@ -209,7 +209,7 @@ public abstract class BaseService<T extends BaseDO> implements IDynamicTableName
      * @return
      */
     public Integer removeByFeild(String field, List<?> list, Class<T> clazz) {
-    	Assert.notEmpty(list, "list cannot be empty");
+    	Assert.notEmpty(list, "list cann't empty");
     	Example example = new Example(clazz);
     	example.createCriteria().andIn(field, list);
         return this.mapper.deleteByExample(example);
