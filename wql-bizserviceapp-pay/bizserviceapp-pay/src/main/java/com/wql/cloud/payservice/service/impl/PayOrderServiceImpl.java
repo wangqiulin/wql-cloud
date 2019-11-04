@@ -74,6 +74,7 @@ public class PayOrderServiceImpl implements PayOrderService {
 		payOrderMapper.insertSelective(order);
 		//响应对象
 		CreatePayOrderRes res = new CreatePayOrderRes();
+		res.setOrderNo(createPayOrderReq.getOrderNo());
 		res.setPayData(data);
 		return res;
 	}
