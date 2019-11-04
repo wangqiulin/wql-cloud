@@ -36,7 +36,7 @@ public class SessionFactoryConfig implements TransactionManagementConfigurer {
 	@Value("${mybatis.mapper.domainPackage}")
 	private String domainPackage;
 	
-	@Value("${mybatis.mapper.xmlPackage}")
+	@Value("${mybatis.mapper.xmlPackage:}")
 	private String xmlPackage;
 	
 	@Bean(name = "sqlSessionFactory")
