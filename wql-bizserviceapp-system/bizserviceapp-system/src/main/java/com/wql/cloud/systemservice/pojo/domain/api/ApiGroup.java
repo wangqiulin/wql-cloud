@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 import com.wql.cloud.basic.datasource.baseservice.BaseDO;
 
-@Table(name = "t_gateway_api_group")
+@Table(name = "t_system_api_group")
 public class ApiGroup extends BaseDO implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -8,7 +8,7 @@ import com.wql.cloud.basic.datasource.baseservice.BaseDO;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
 
-@Table(name = "t_user")
+@Table(name = "t_user_userinfo")
 public class User extends BaseDO implements Serializable {
 
 	private static final long serialVersionUID = 1L;

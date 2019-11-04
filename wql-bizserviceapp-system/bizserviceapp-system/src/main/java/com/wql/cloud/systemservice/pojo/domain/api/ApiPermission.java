@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 import com.wql.cloud.basic.datasource.baseservice.BaseDO;
 
-@Table(name = "t_gateway_api_permission")
+@Table(name = "t_system_api_permission")
 public class ApiPermission extends BaseDO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
