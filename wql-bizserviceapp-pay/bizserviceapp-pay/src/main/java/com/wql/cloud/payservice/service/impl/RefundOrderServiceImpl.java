@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import com.wql.cloud.payservice.biz.payroute.PayRouteFactory;
 import com.wql.cloud.payservice.mapper.PayOrderMapper;
 import com.wql.cloud.payservice.mapper.RefundOrderMapper;
 import com.wql.cloud.payservice.pojo.domain.PayOrder;
@@ -17,7 +18,6 @@ import com.wql.cloud.payservice.pojo.req.QueryRefundOrderReq;
 import com.wql.cloud.payservice.pojo.res.CreateRefundOrderRes;
 import com.wql.cloud.payservice.pojo.res.QueryRefundOrderRes;
 import com.wql.cloud.payservice.service.RefundOrderService;
-import com.wql.cloud.payservice.service.payroute.PayRouteFactory;
 import com.wql.cloud.tool.string.StringUtils;
 
 @Service
@@ -67,7 +67,7 @@ public class RefundOrderServiceImpl implements RefundOrderService {
 		refundOrderMapper.insertSelective(order);
 		//再进行退款请求操作
 		String channelWay = payOrder.getChannelWay();
-		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannel().equals(channelWay)).findFirst().orElseGet(null);
+		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannelRoute().equals(channelWay)).findFirst().orElseGet(null);
 		Assert.notNull(payRouteFactory, "支付方式已更新，请返回后重新尝试");
 		payRouteFactory.createRefundOrder(outRefundNo, payOrder.getOutTradeNo(), payOrder.getPayAmount(), refundAmount);
 		//响应对象
@@ -93,7 +93,7 @@ public class RefundOrderServiceImpl implements RefundOrderService {
 		//TODO
 		//支付结果查询
 		String channelWay = refundOrder.getChannelWay();
-		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannel().equals(channelWay))
+		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannelRoute().equals(channelWay))
 				.findFirst().orElseThrow(() -> new IllegalArgumentException("支付方式不存在"));
 		payRouteFactory.queryRefundOrder(refundOrder);
 		//TODO
@@ -104,7 +104,7 @@ public class RefundOrderServiceImpl implements RefundOrderService {
 	@Override
 	public void refundCallback(String channelWay, String data) {
 		PayRouteFactory payRouteFactory = payRouteFactoryList.stream()
-				.filter(o -> o.getChannel().equals(channelWay))
+				.filter(o -> o.getChannelRoute().equals(channelWay))
 				.findFirst().orElseThrow(() -> new IllegalArgumentException("支付方式不存在"));
 		payRouteFactory.refundCallback(data);
 	}

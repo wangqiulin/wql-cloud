@@ -1,4 +1,4 @@
-package com.wql.cloud.payservice.service.payroute.impl;
+package com.wql.cloud.payservice.biz.payroute.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
-import com.alibaba.fastjson.JSONObject;
 import com.wql.cloud.basic.wxpay.model.PlaceOrderModel;
 import com.wql.cloud.basic.wxpay.model.RefundOrderModel;
 import com.wql.cloud.basic.wxpay.result.PayNotifyResult;
@@ -23,18 +22,17 @@ import com.wql.cloud.basic.wxpay.result.PlaceOrderResult;
 import com.wql.cloud.basic.wxpay.result.QueryOrderResult;
 import com.wql.cloud.basic.wxpay.result.RefundNotifyResult;
 import com.wql.cloud.basic.wxpay.service.WxPayService;
+import com.wql.cloud.payservice.biz.payroute.PayRouteFactory;
 import com.wql.cloud.payservice.mapper.PayOrderMapper;
 import com.wql.cloud.payservice.mapper.RefundOrderMapper;
 import com.wql.cloud.payservice.pojo.domain.PayOrder;
 import com.wql.cloud.payservice.pojo.domain.RefundOrder;
-import com.wql.cloud.payservice.service.payroute.CreatePayReq;
-import com.wql.cloud.payservice.service.payroute.PayRouteFactory;
 import com.wql.cloud.tool.executor.TaskExecutorService;
 import com.wql.cloud.tool.httpclient.HttpUtil;
 
 @Service
-public class WxAppPayServiceImpl implements PayRouteFactory {
-
+public class WxH5PayServiceImpl implements PayRouteFactory {
+	
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());  
 	
 	@Autowired
@@ -49,10 +47,10 @@ public class WxAppPayServiceImpl implements PayRouteFactory {
 	private RefundOrderMapper refundOrderMapper;
 	
 	@Override
-	public String getChannel() {
-		return APP_WXPAY;
+	public String getChannelRoute() {
+		return H5_WXPAY;
 	}
-	
+
 	@Override
 	public String createPayOrder(CreatePayReq createPayReq) {
 		Assert.isTrue(StringUtils.isNotBlank(createPayReq.getCreateIp()), "createIp不能为空");
@@ -67,9 +65,9 @@ public class WxAppPayServiceImpl implements PayRouteFactory {
 		placeOrderModel.setTimeStart(new Date());
 		placeOrderModel.setTimeExpire(DateUtils.addMinutes(placeOrderModel.getTimeStart(), 30));
 		placeOrderModel.setBody(StringUtils.isBlank(createPayReq.getGoodsDesc()) ? "购买" : createPayReq.getGoodsDesc());
-		PlaceOrderResult data = wxPayService.placeOrderForApp(placeOrderModel);
+		PlaceOrderResult data = wxPayService.placeOrderForH5(placeOrderModel);
 		Assert.isTrue(data.getResultCode(), "微信支付下单失败");
-		return JSONObject.toJSONString(data.getWxPayDataMap());
+		return data.getMwebUrl();
 	}
 
 	
@@ -85,7 +83,7 @@ public class WxAppPayServiceImpl implements PayRouteFactory {
 				payOrder.setPayDesc("支付成功");
 				payOrder.setUpdateDate(new Date());
 				payOrderMapper.updateByPrimaryKeySelective(payOrder);
-				//异步回调通知, 最好用mq
+				//异步回调通知
 				if(StringUtils.isNotBlank(payOrder.getNotifyUrl())) {
 					try {
 						Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -165,7 +163,8 @@ public class WxAppPayServiceImpl implements PayRouteFactory {
 		String refundOrder = wxPayService.refundOrder(refundOrderModel);
 		Assert.isTrue(StringUtils.isNotBlank(refundOrder), "微信退款请求失败");
 	}
-
+	
+	
 	@Override
 	public void queryRefundOrder(RefundOrder refundOrder) {
 		String outTradeNo = refundOrder.getOutTradeNo();
@@ -192,6 +191,7 @@ public class WxAppPayServiceImpl implements PayRouteFactory {
 							if("SUCCESS".equals(successFlag)) {
 								refundOrder.setNofityCount(refundOrder.getNofityCount() + 1);
 								refundOrder.setNofityState(1);
+								refundOrderMapper.updateByPrimaryKeySelective(refundOrder);
 							}
 						}
 					} catch (Exception e) {

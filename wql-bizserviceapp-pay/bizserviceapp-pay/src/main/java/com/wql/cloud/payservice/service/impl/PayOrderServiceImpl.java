@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import com.wql.cloud.payservice.biz.payroute.PayRouteFactory;
+import com.wql.cloud.payservice.biz.payroute.PayRouteFactory.CreatePayReq;
 import com.wql.cloud.payservice.mapper.AppPaymentMapper;
 import com.wql.cloud.payservice.mapper.PayOrderMapper;
 import com.wql.cloud.payservice.pojo.domain.AppPayment;
@@ -17,8 +19,6 @@ import com.wql.cloud.payservice.pojo.req.QueryPayOrderReq;
 import com.wql.cloud.payservice.pojo.res.CreatePayOrderRes;
 import com.wql.cloud.payservice.pojo.res.QueryPayOrderRes;
 import com.wql.cloud.payservice.service.PayOrderService;
-import com.wql.cloud.payservice.service.payroute.CreatePayReq;
-import com.wql.cloud.payservice.service.payroute.PayRouteFactory;
 import com.wql.cloud.tool.bean.BeanUtils;
 import com.wql.cloud.tool.string.StringUtils;
 
@@ -52,7 +52,7 @@ public class PayOrderServiceImpl implements PayOrderService {
 		//支付下单
 		String outTradeNo = ""; //TODO
 		String channelWay = appPayment.getChannelWay();
-		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannel().equals(channelWay))
+		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannelRoute().equals(channelWay))
 				.findFirst().orElseThrow(() -> new IllegalArgumentException("支付方式已更新，请返回后重新尝试"));
 		CreatePayReq createPayReq = new CreatePayReq();
 		createPayReq.setOutTradeNo(outTradeNo);
@@ -96,7 +96,7 @@ public class PayOrderServiceImpl implements PayOrderService {
 		//TODO
 		//支付结果查询
 		String channelWay = payOrder.getChannelWay();
-		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannel().equals(channelWay))
+		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannelRoute().equals(channelWay))
 				.findFirst().orElseThrow(() -> new IllegalArgumentException("支付方式不存在"));
 		payRouteFactory.queryPayOrder(payOrder);
 		//TODO
@@ -107,7 +107,7 @@ public class PayOrderServiceImpl implements PayOrderService {
 	@Override
 	public void payCallback(String channelWay, String data) {
 		PayRouteFactory payRouteFactory = payRouteFactoryList.stream()
-				.filter(o -> o.getChannel().equals(channelWay))
+				.filter(o -> o.getChannelRoute().equals(channelWay))
 				.findFirst().orElseThrow(() -> new IllegalArgumentException("支付方式不存在"));
 		payRouteFactory.payCallback(data);
 	}

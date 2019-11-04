@@ -1,4 +1,4 @@
-package com.wql.cloud.payservice.service.payroute.impl;
+package com.wql.cloud.payservice.biz.payroute.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -23,12 +23,11 @@ import com.wql.cloud.basic.alipay.result.PayNotifyResult;
 import com.wql.cloud.basic.alipay.result.QueryOrderResult;
 import com.wql.cloud.basic.alipay.result.QueryRefundOrderResult;
 import com.wql.cloud.basic.alipay.service.AliPayService;
+import com.wql.cloud.payservice.biz.payroute.PayRouteFactory;
 import com.wql.cloud.payservice.mapper.PayOrderMapper;
 import com.wql.cloud.payservice.mapper.RefundOrderMapper;
 import com.wql.cloud.payservice.pojo.domain.PayOrder;
 import com.wql.cloud.payservice.pojo.domain.RefundOrder;
-import com.wql.cloud.payservice.service.payroute.CreatePayReq;
-import com.wql.cloud.payservice.service.payroute.PayRouteFactory;
 import com.wql.cloud.tool.executor.TaskExecutorService;
 import com.wql.cloud.tool.httpclient.HttpUtil;
 
@@ -49,7 +48,7 @@ public class AliAppPayServiceImpl implements PayRouteFactory {
 	private RefundOrderMapper refundOrderMapper;
 	
 	@Override
-	public String getChannel() {
+	public String getChannelRoute() {
 		return APP_ALIPAY;
 	}
 	
