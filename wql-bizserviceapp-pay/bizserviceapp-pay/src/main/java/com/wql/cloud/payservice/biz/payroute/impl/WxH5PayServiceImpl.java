@@ -93,8 +93,8 @@ public class WxH5PayServiceImpl implements PayRouteFactory {
 						if(!CollectionUtils.isEmpty(list)) {
 							String successFlag = list.get(0);
 							if("SUCCESS".equals(successFlag)) {
-								payOrder.setNofityCount(payOrder.getNofityCount() + 1);
-								payOrder.setNofityState(1);
+								payOrder.setNotifyCount(payOrder.getNotifyCount() + 1);
+								payOrder.setNotifyState(1);
 								payOrderMapper.updateByPrimaryKeySelective(payOrder);
 							}
 						}

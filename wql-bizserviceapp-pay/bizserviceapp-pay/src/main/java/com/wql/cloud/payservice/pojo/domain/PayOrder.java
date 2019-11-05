@@ -86,12 +86,12 @@ public class PayOrder extends BaseDO implements Serializable {
 	/**
 	 * 通知状态：0未通知，1通知成功，2通知失败
 	 */
-	private Integer nofityState;
+	private Integer notifyState;
 
 	/**
 	 * 通知结果的次数
 	 */
-	private Integer nofityCount;
+	private Integer notifyCount;
 
 	/**
 	 * 支付同步通知地址
@@ -220,20 +220,20 @@ public class PayOrder extends BaseDO implements Serializable {
 		this.notifyUrl = notifyUrl;
 	}
 
-	public Integer getNofityState() {
-		return nofityState;
+	public Integer getNotifyState() {
+		return notifyState;
 	}
 
-	public void setNofityState(Integer nofityState) {
-		this.nofityState = nofityState;
+	public void setNotifyState(Integer notifyState) {
+		this.notifyState = notifyState;
 	}
 
-	public Integer getNofityCount() {
-		return nofityCount;
+	public Integer getNotifyCount() {
+		return notifyCount;
 	}
 
-	public void setNofityCount(Integer nofityCount) {
-		this.nofityCount = nofityCount;
+	public void setNotifyCount(Integer notifyCount) {
+		this.notifyCount = notifyCount;
 	}
 
 	public String getReturnUrl() {

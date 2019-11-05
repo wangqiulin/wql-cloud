@@ -35,47 +35,47 @@ public class PayOrderServiceImpl implements PayOrderService {
 	@Override
 	@Transactional
 	public CreatePayOrderRes createPayOrder(CreatePayOrderReq createPayOrderReq) {
-		Assert.notNull(createPayOrderReq, "请求对象不能为空");
-		Assert.isTrue(StringUtils.isNotBlank(createPayOrderReq.getAppId()), "appId不能为空");
-		Assert.isTrue(StringUtils.isNotBlank(createPayOrderReq.getUserCode()), "userCode不能为空");
-		Assert.isTrue(StringUtils.isNotBlank(createPayOrderReq.getOrderNo()), "orderNo不能为空");
-		Assert.isTrue(StringUtils.isNotBlank(createPayOrderReq.getPaymentWay()), "paymentWay不能为空");
-		Assert.notNull(createPayOrderReq.getPayAmount(), "payAmount不能为空");
-		Assert.isTrue(createPayOrderReq.getPayAmount().compareTo(BigDecimal.ZERO) == 1, "payAmount不能小于0");
-		//查询支付渠道
-		AppPayment appPayment = new AppPayment();
-		appPayment.setAppId(createPayOrderReq.getAppId());
-		appPayment.setPaymentWay(createPayOrderReq.getPaymentWay());
-		appPayment.setState(1);
-		appPayment = appPaymentMapper.selectOne(appPayment);
-		Assert.notNull(appPayment, "支付方式已更新，请重新尝试");
-		//支付下单
-		String outTradeNo = ""; //TODO
-		String channelWay = appPayment.getChannelWay();
-		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannelRoute().equals(channelWay))
-				.findFirst().orElseThrow(() -> new IllegalArgumentException("支付方式已更新，请重新尝试"));
-		CreatePayReq createPayReq = new CreatePayReq();
-		createPayReq.setOutTradeNo(outTradeNo);
-		createPayReq.setPayAmount(createPayOrderReq.getPayAmount());
-		createPayReq.setCreateIp(createPayOrderReq.getCreateIp());
-		createPayReq.setGoodsDesc(createPayOrderReq.getGoodsDesc());
-		createPayReq.setReturnUrl(createPayOrderReq.getReturnUrl());
-		String data = payRouteFactory.createPayOrder(createPayReq);
+//		Assert.notNull(createPayOrderReq, "请求对象不能为空");
+//		Assert.isTrue(StringUtils.isNotBlank(createPayOrderReq.getAppId()), "appId不能为空");
+//		Assert.isTrue(StringUtils.isNotBlank(createPayOrderReq.getUserCode()), "userCode不能为空");
+//		Assert.isTrue(StringUtils.isNotBlank(createPayOrderReq.getOrderNo()), "orderNo不能为空");
+//		Assert.isTrue(StringUtils.isNotBlank(createPayOrderReq.getPaymentWay()), "paymentWay不能为空");
+//		Assert.notNull(createPayOrderReq.getPayAmount(), "payAmount不能为空");
+//		Assert.isTrue(createPayOrderReq.getPayAmount().compareTo(BigDecimal.ZERO) == 1, "payAmount不能小于0");
+//		//查询支付渠道
+//		AppPayment appPayment = new AppPayment();
+//		appPayment.setAppId(createPayOrderReq.getAppId());
+//		appPayment.setPaymentWay(createPayOrderReq.getPaymentWay());
+//		appPayment.setState(1);
+//		appPayment = appPaymentMapper.selectOne(appPayment);
+//		Assert.notNull(appPayment, "支付方式已更新，请重新尝试");
+//		//支付下单
+//		String outTradeNo = ""; //TODO
+//		String channelWay = appPayment.getChannelWay();
+//		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannelRoute().equals(channelWay))
+//				.findFirst().orElseThrow(() -> new IllegalArgumentException("支付方式已更新，请重新尝试"));
+//		CreatePayReq createPayReq = new CreatePayReq();
+//		createPayReq.setOutTradeNo(outTradeNo);
+//		createPayReq.setPayAmount(createPayOrderReq.getPayAmount());
+//		createPayReq.setCreateIp(createPayOrderReq.getCreateIp());
+//		createPayReq.setGoodsDesc(createPayOrderReq.getGoodsDesc());
+//		createPayReq.setReturnUrl(createPayOrderReq.getReturnUrl());
+//		String data = payRouteFactory.createPayOrder(createPayReq);
 		//创建订单
 		PayOrder order = new PayOrder();
 		BeanUtils.copy(createPayOrderReq, order);
-		order.setOutTradeNo(outTradeNo);
+//		order.setOutTradeNo(outTradeNo);
 		order.setPayState(1);
 		order.setPayDesc("待支付");
-		order.setNofityState(0);
-		order.setNofityCount(0);
+		order.setNotifyState(0);
+		order.setNotifyCount(0);
 		order.setDataFlag(1);
 		order.setId(null);
 		payOrderMapper.insertSelective(order);
 		//响应对象
 		CreatePayOrderRes res = new CreatePayOrderRes();
 		res.setOrderNo(createPayOrderReq.getOrderNo());
-		res.setPayData(data);
+//		res.setPayData(data);
 		return res;
 	}
 	

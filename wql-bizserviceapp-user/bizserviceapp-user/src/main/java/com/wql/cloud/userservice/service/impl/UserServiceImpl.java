@@ -5,16 +5,24 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.github.pagehelper.PageInfo;
 import com.wql.cloud.basic.datasource.baseservice.BaseService;
 import com.wql.cloud.basic.datasource.dynamic.TargetDataSource;
+import com.wql.cloud.basic.datasource.response.constant.BusinessEnum;
+import com.wql.cloud.basic.datasource.response.constant.DataResponse;
+import com.wql.cloud.basic.datasource.response.exception.myexp.BusinessException;
+import com.wql.cloud.payservice.client.PayClient;
+import com.wql.cloud.payservice.pojo.req.CreatePayOrderReq;
+import com.wql.cloud.payservice.pojo.res.CreatePayOrderRes;
 import com.wql.cloud.tool.jwt.JwtUtil;
 import com.wql.cloud.userservice.pojo.domain.User;
 import com.wql.cloud.userservice.service.UserService;
+
+import io.seata.spring.annotation.GlobalTransactional;
 
 
 /**
@@ -28,8 +36,12 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
 	public final Logger logger = LoggerFactory.getLogger(this.getClass()); 
 	
+	@Autowired
+	private PayClient payClient;
+	
 	@Override
-	@Transactional
+//	@Transactional
+	@GlobalTransactional(name = "wql-cloud-register-user",rollbackFor = Exception.class) //此注解开启全局事务
 //	@DistributedLock(param="userName", tryLock=true)
 	public String register(User req) {
 		User record = new User();
@@ -38,7 +50,19 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 		Assert.isNull(user, "用户名已存在");
 		//保存
 		record.setUserPwd(req.getUserPwd());
-		save(record);
+		this.save(record);
+		//test
+		CreatePayOrderReq createPayOrderReq = new CreatePayOrderReq();
+		createPayOrderReq.setAppId("123");
+		createPayOrderReq.setBusinessDesc("分布式测试");
+		createPayOrderReq.setBusinessType("test");
+		DataResponse<CreatePayOrderRes> dataResponse = payClient.createPayOrder(createPayOrderReq);
+		if("success".equals(req.getUserName())) {
+			logger.info("===============================成功了================"+dataResponse.getCode());
+		} else {
+			logger.info("===============================失败了================"+dataResponse.getCode());
+			throw new BusinessException(BusinessEnum.FAIL);
+		}
 		//生成token
 		String token = JwtUtil.createJWT(String.valueOf(record.getId()), record.getUserName(), 3600*1000);
 		return token;
