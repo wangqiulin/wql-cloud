@@ -23,7 +23,7 @@ import com.wql.cloud.basic.alipay.result.PayNotifyResult;
 import com.wql.cloud.basic.alipay.result.QueryOrderResult;
 import com.wql.cloud.basic.alipay.result.QueryRefundOrderResult;
 import com.wql.cloud.basic.alipay.service.AliPayService;
-import com.wql.cloud.payservice.biz.payroute.PayRouteFactory;
+import com.wql.cloud.payservice.biz.payroute.PayRouteService;
 import com.wql.cloud.payservice.mapper.PayOrderMapper;
 import com.wql.cloud.payservice.mapper.RefundOrderMapper;
 import com.wql.cloud.payservice.pojo.domain.PayOrder;
@@ -31,8 +31,8 @@ import com.wql.cloud.payservice.pojo.domain.RefundOrder;
 import com.wql.cloud.tool.executor.TaskExecutorService;
 import com.wql.cloud.tool.httpclient.HttpUtil;
 
-@Service
-public class AliAppPayServiceImpl implements PayRouteFactory {
+@Service("app-alipayService")
+public class AliAppPayServiceImpl implements PayRouteService {
 
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());  
 	
@@ -46,11 +46,6 @@ public class AliAppPayServiceImpl implements PayRouteFactory {
 	private PayOrderMapper payOrderMapper;
 	@Autowired
 	private RefundOrderMapper refundOrderMapper;
-	
-	@Override
-	public String getChannelRoute() {
-		return APP_ALIPAY;
-	}
 	
 	@Override
 	public String createPayOrder(CreatePayReq createPayReq) {

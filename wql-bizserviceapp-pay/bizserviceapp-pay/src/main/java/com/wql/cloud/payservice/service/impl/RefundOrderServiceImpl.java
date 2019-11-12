@@ -1,14 +1,13 @@
 package com.wql.cloud.payservice.service.impl;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import com.wql.cloud.payservice.biz.payroute.PayRouteFactory;
+import com.wql.cloud.payservice.biz.payroute.PayRouteService;
 import com.wql.cloud.payservice.mapper.PayOrderMapper;
 import com.wql.cloud.payservice.mapper.RefundOrderMapper;
 import com.wql.cloud.payservice.pojo.domain.PayOrder;
@@ -18,13 +17,12 @@ import com.wql.cloud.payservice.pojo.req.QueryRefundOrderReq;
 import com.wql.cloud.payservice.pojo.res.CreateRefundOrderRes;
 import com.wql.cloud.payservice.pojo.res.QueryRefundOrderRes;
 import com.wql.cloud.payservice.service.RefundOrderService;
+import com.wql.cloud.tool.springcontext.SpringContextUtil;
 import com.wql.cloud.tool.string.StringUtils;
 
 @Service
 public class RefundOrderServiceImpl implements RefundOrderService {
 	
-	@Autowired
-	private List<PayRouteFactory> payRouteFactoryList;
 	@Autowired
 	private PayOrderMapper payOrderMapper;
 	@Autowired
@@ -66,10 +64,9 @@ public class RefundOrderServiceImpl implements RefundOrderService {
 		order.setId(null);
 		refundOrderMapper.insertSelective(order);
 		//再进行退款请求操作
-		String channelWay = payOrder.getChannelWay();
-		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannelRoute().equals(channelWay)).findFirst().orElseGet(null);
-		Assert.notNull(payRouteFactory, "退款方式不存在");
-		payRouteFactory.createRefundOrder(outRefundNo, payOrder.getOutTradeNo(), payOrder.getPayAmount(), refundAmount);
+		PayRouteService payRouteService = (PayRouteService)SpringContextUtil.getBean(payOrder.getChannelWay() + "Service");
+		Assert.notNull(payRouteService, "退款方式不存在");
+		payRouteService.createRefundOrder(outRefundNo, payOrder.getOutTradeNo(), payOrder.getPayAmount(), refundAmount);
 		//响应对象
 		CreateRefundOrderRes res = new CreateRefundOrderRes();
 		return res;
@@ -92,9 +89,7 @@ public class RefundOrderServiceImpl implements RefundOrderService {
 		Assert.notNull(refundOrder, "订单不存在");
 		//TODO
 		//支付结果查询
-		String channelWay = refundOrder.getChannelWay();
-		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannelRoute().equals(channelWay))
-				.findFirst().orElseThrow(() -> new IllegalArgumentException("退款方式不存在"));
+		PayRouteService payRouteFactory = (PayRouteService)SpringContextUtil.getBean(refundOrder.getChannelWay() + "Service");
 		payRouteFactory.queryRefundOrder(refundOrder);
 		//TODO
 		return res;
@@ -103,9 +98,7 @@ public class RefundOrderServiceImpl implements RefundOrderService {
 	
 	@Override
 	public void refundCallback(String channelWay, String data) {
-		PayRouteFactory payRouteFactory = payRouteFactoryList.stream()
-				.filter(o -> o.getChannelRoute().equals(channelWay))
-				.findFirst().orElseThrow(() -> new IllegalArgumentException("退款方式不存在"));
+		PayRouteService payRouteFactory = (PayRouteService)SpringContextUtil.getBean(channelWay + "Service");
 		payRouteFactory.refundCallback(data);
 	}
 

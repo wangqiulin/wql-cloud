@@ -52,7 +52,7 @@ public interface OssService {
 	 *            文件流
 	 * @return
 	 */
-	String uploadImgFile(String endpoint, String accessKeyId, String accessKeySecret, String bucketName,
+	String uploadStream(String endpoint, String accessKeyId, String accessKeySecret, String bucketName,
 			String fileName, InputStream inputStream);
 
 	/**

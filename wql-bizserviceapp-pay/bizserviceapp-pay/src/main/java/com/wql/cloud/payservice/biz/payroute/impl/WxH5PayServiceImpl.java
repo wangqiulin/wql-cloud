@@ -22,7 +22,7 @@ import com.wql.cloud.basic.wxpay.result.PlaceOrderResult;
 import com.wql.cloud.basic.wxpay.result.QueryOrderResult;
 import com.wql.cloud.basic.wxpay.result.RefundNotifyResult;
 import com.wql.cloud.basic.wxpay.service.WxPayService;
-import com.wql.cloud.payservice.biz.payroute.PayRouteFactory;
+import com.wql.cloud.payservice.biz.payroute.PayRouteService;
 import com.wql.cloud.payservice.mapper.PayOrderMapper;
 import com.wql.cloud.payservice.mapper.RefundOrderMapper;
 import com.wql.cloud.payservice.pojo.domain.PayOrder;
@@ -30,8 +30,8 @@ import com.wql.cloud.payservice.pojo.domain.RefundOrder;
 import com.wql.cloud.tool.executor.TaskExecutorService;
 import com.wql.cloud.tool.httpclient.HttpUtil;
 
-@Service
-public class WxH5PayServiceImpl implements PayRouteFactory {
+@Service("h5-wxpayService")
+public class WxH5PayServiceImpl implements PayRouteService {
 	
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());  
 	
@@ -46,11 +46,6 @@ public class WxH5PayServiceImpl implements PayRouteFactory {
 	@Autowired
 	private RefundOrderMapper refundOrderMapper;
 	
-	@Override
-	public String getChannelRoute() {
-		return H5_WXPAY;
-	}
-
 	@Override
 	public String createPayOrder(CreatePayReq createPayReq) {
 		Assert.isTrue(StringUtils.isNotBlank(createPayReq.getCreateIp()), "createIp不能为空");

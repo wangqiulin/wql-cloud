@@ -1,21 +1,15 @@
 package com.wql.cloud.basic.oss.util;
 
 import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.math.BigInteger;
-import java.security.SecureRandom;
 
 /**
  * DES加解密util
  */
 public class DES {
 	
-	public DES()
-	{
+	public DES(){
 	}
 
 

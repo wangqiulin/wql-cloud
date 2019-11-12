@@ -12,7 +12,7 @@ public interface NetRiskService {
 	 * 网易二次验证结果
 	 * 
 	 * @param secretId: 账户
-	 * @param secretKey: 验证码私钥
+	 * @param secretKey: 私钥
 	 * @param captchaId: 哪种类型的验证码
 	 * @param validate: 验证参数
 	 * @return

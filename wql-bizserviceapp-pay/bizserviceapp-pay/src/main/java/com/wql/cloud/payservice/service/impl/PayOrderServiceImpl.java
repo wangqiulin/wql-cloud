@@ -1,15 +1,14 @@
 package com.wql.cloud.payservice.service.impl;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import com.wql.cloud.payservice.biz.payroute.PayRouteFactory;
-import com.wql.cloud.payservice.biz.payroute.PayRouteFactory.CreatePayReq;
+import com.wql.cloud.payservice.biz.payroute.PayRouteService;
+import com.wql.cloud.payservice.biz.payroute.PayRouteService.CreatePayReq;
 import com.wql.cloud.payservice.mapper.AppPaymentMapper;
 import com.wql.cloud.payservice.mapper.PayOrderMapper;
 import com.wql.cloud.payservice.pojo.domain.AppPayment;
@@ -20,13 +19,12 @@ import com.wql.cloud.payservice.pojo.res.CreatePayOrderRes;
 import com.wql.cloud.payservice.pojo.res.QueryPayOrderRes;
 import com.wql.cloud.payservice.service.PayOrderService;
 import com.wql.cloud.tool.bean.BeanUtils;
+import com.wql.cloud.tool.springcontext.SpringContextUtil;
 import com.wql.cloud.tool.string.StringUtils;
 
 @Service
 public class PayOrderServiceImpl implements PayOrderService {
 	
-	@Autowired
-	private List<PayRouteFactory> payRouteFactoryList;
 	@Autowired
 	private AppPaymentMapper appPaymentMapper;
 	@Autowired
@@ -35,36 +33,34 @@ public class PayOrderServiceImpl implements PayOrderService {
 	@Override
 	@Transactional
 	public CreatePayOrderRes createPayOrder(CreatePayOrderReq createPayOrderReq) {
-//		Assert.notNull(createPayOrderReq, "请求对象不能为空");
-//		Assert.isTrue(StringUtils.isNotBlank(createPayOrderReq.getAppId()), "appId不能为空");
-//		Assert.isTrue(StringUtils.isNotBlank(createPayOrderReq.getUserCode()), "userCode不能为空");
-//		Assert.isTrue(StringUtils.isNotBlank(createPayOrderReq.getOrderNo()), "orderNo不能为空");
-//		Assert.isTrue(StringUtils.isNotBlank(createPayOrderReq.getPaymentWay()), "paymentWay不能为空");
-//		Assert.notNull(createPayOrderReq.getPayAmount(), "payAmount不能为空");
-//		Assert.isTrue(createPayOrderReq.getPayAmount().compareTo(BigDecimal.ZERO) == 1, "payAmount不能小于0");
-//		//查询支付渠道
-//		AppPayment appPayment = new AppPayment();
-//		appPayment.setAppId(createPayOrderReq.getAppId());
-//		appPayment.setPaymentWay(createPayOrderReq.getPaymentWay());
-//		appPayment.setState(1);
-//		appPayment = appPaymentMapper.selectOne(appPayment);
-//		Assert.notNull(appPayment, "支付方式已更新，请重新尝试");
-//		//支付下单
-//		String outTradeNo = ""; //TODO
-//		String channelWay = appPayment.getChannelWay();
-//		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannelRoute().equals(channelWay))
-//				.findFirst().orElseThrow(() -> new IllegalArgumentException("支付方式已更新，请重新尝试"));
-//		CreatePayReq createPayReq = new CreatePayReq();
-//		createPayReq.setOutTradeNo(outTradeNo);
-//		createPayReq.setPayAmount(createPayOrderReq.getPayAmount());
-//		createPayReq.setCreateIp(createPayOrderReq.getCreateIp());
-//		createPayReq.setGoodsDesc(createPayOrderReq.getGoodsDesc());
-//		createPayReq.setReturnUrl(createPayOrderReq.getReturnUrl());
-//		String data = payRouteFactory.createPayOrder(createPayReq);
+		Assert.notNull(createPayOrderReq, "请求对象不能为空");
+		Assert.isTrue(StringUtils.isNotBlank(createPayOrderReq.getAppId()), "appId不能为空");
+		Assert.isTrue(StringUtils.isNotBlank(createPayOrderReq.getUserCode()), "userCode不能为空");
+		Assert.isTrue(StringUtils.isNotBlank(createPayOrderReq.getOrderNo()), "orderNo不能为空");
+		Assert.isTrue(StringUtils.isNotBlank(createPayOrderReq.getPaymentWay()), "paymentWay不能为空");
+		Assert.notNull(createPayOrderReq.getPayAmount(), "payAmount不能为空");
+		Assert.isTrue(createPayOrderReq.getPayAmount().compareTo(BigDecimal.ZERO) == 1, "payAmount不能小于0");
+		//查询支付渠道
+		AppPayment appPayment = new AppPayment();
+		appPayment.setAppId(createPayOrderReq.getAppId());
+		appPayment.setPaymentWay(createPayOrderReq.getPaymentWay());
+		appPayment.setState(1);
+		appPayment = appPaymentMapper.selectOne(appPayment);
+		Assert.notNull(appPayment, "支付方式已更新，请重新尝试");
+		//支付下单
+		String outTradeNo = ""; //TODO
+		CreatePayReq createPayReq = new CreatePayReq();
+		createPayReq.setOutTradeNo(outTradeNo);
+		createPayReq.setPayAmount(createPayOrderReq.getPayAmount());
+		createPayReq.setCreateIp(createPayOrderReq.getCreateIp());
+		createPayReq.setGoodsDesc(createPayOrderReq.getGoodsDesc());
+		createPayReq.setReturnUrl(createPayOrderReq.getReturnUrl());
+		PayRouteService payRouteService = (PayRouteService)SpringContextUtil.getBean(appPayment.getChannelWay() + "Service");
+		String data = payRouteService.createPayOrder(createPayReq);
 		//创建订单
 		PayOrder order = new PayOrder();
 		BeanUtils.copy(createPayOrderReq, order);
-//		order.setOutTradeNo(outTradeNo);
+		order.setOutTradeNo(outTradeNo);
 		order.setPayState(1);
 		order.setPayDesc("待支付");
 		order.setNotifyState(0);
@@ -75,7 +71,7 @@ public class PayOrderServiceImpl implements PayOrderService {
 		//响应对象
 		CreatePayOrderRes res = new CreatePayOrderRes();
 		res.setOrderNo(createPayOrderReq.getOrderNo());
-//		res.setPayData(data);
+		res.setPayData(data);
 		return res;
 	}
 	
@@ -96,9 +92,7 @@ public class PayOrderServiceImpl implements PayOrderService {
 		Assert.notNull(payOrder, "订单不存在");
 		//TODO
 		//支付结果查询
-		String channelWay = payOrder.getChannelWay();
-		PayRouteFactory payRouteFactory = payRouteFactoryList.stream().filter(o -> o.getChannelRoute().equals(channelWay))
-				.findFirst().orElseThrow(() -> new IllegalArgumentException("支付方式不存在"));
+		PayRouteService payRouteFactory = (PayRouteService)SpringContextUtil.getBean(payOrder.getChannelWay() + "Service");
 		payRouteFactory.queryPayOrder(payOrder);
 		//TODO
 		return res;
@@ -107,9 +101,7 @@ public class PayOrderServiceImpl implements PayOrderService {
 	
 	@Override
 	public void payCallback(String channelWay, String data) {
-		PayRouteFactory payRouteFactory = payRouteFactoryList.stream()
-				.filter(o -> o.getChannelRoute().equals(channelWay))
-				.findFirst().orElseThrow(() -> new IllegalArgumentException("支付方式不存在"));
+		PayRouteService payRouteFactory = (PayRouteService)SpringContextUtil.getBean(channelWay + "Service");
 		payRouteFactory.payCallback(data);
 	}
 	

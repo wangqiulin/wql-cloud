@@ -8,14 +8,7 @@ import com.wql.cloud.payservice.pojo.domain.PayOrder;
 import com.wql.cloud.payservice.pojo.domain.RefundOrder;
 import com.wql.cloud.tool.httpclient.HttpUtil;
 
-public interface PayRouteFactory {
-
-	static final String APP_ALIPAY = "app-alipay";
-	static final String H5_ALIPAY = "h5-alipay";
-	static final String APP_WXPAY = "app-wxpay";
-	static final String H5_WXPAY = "h5-wxpay";
-	
-	String getChannelRoute();
+public interface PayRouteService {
 	
 	/**
 	 * 创建支付订单

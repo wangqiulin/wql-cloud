@@ -23,11 +23,6 @@ public enum RiskTypeEnum {
 		return message;
 	}
 
-	/**
-	 * 
-	 * @param status
-	 * @return
-	 */
 	public static RiskTypeEnum getEnumByStatus(int status) {
 		for (RiskTypeEnum riskTypeEnum : values()) {
 			if (riskTypeEnum.getStatus() == status) {

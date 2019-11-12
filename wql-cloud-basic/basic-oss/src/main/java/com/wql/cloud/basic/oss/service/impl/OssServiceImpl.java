@@ -59,7 +59,7 @@ public class OssServiceImpl implements OssService {
 	}
 
 	@Override
-	public String uploadImgFile(String endpoint, String accessKeyId, String accessKeySecret, String bucketName,
+	public String uploadStream(String endpoint, String accessKeyId, String accessKeySecret, String bucketName,
 			String fileName, InputStream inputStream) {
 		OSS ossClient = getOSSClient(endpoint, accessKeyId, accessKeySecret, bucketName);
 		try {
@@ -251,7 +251,6 @@ public class OssServiceImpl implements OssService {
 			} else {
 				lastUrl = urlStr;
 			}
-
 			return toHttpsUrl(lastUrl);
 		}
 		return null;
@@ -265,6 +264,7 @@ public class OssServiceImpl implements OssService {
 	 * @param accessKeySecret
 	 * @param bucketName
 	 */
+	@SuppressWarnings("deprecation")
 	private OSS getOSSClient(String endpoint, String accessKeyId, String accessKeySecret, String bucketName) {
 		OSS ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
 		if (!ossClient.doesBucketExist(bucketName)) {

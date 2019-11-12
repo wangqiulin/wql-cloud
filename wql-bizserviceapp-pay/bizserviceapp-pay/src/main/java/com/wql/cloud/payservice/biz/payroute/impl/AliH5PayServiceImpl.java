@@ -23,7 +23,7 @@ import com.wql.cloud.basic.alipay.result.PayNotifyResult;
 import com.wql.cloud.basic.alipay.result.QueryOrderResult;
 import com.wql.cloud.basic.alipay.result.QueryRefundOrderResult;
 import com.wql.cloud.basic.alipay.service.AliPayService;
-import com.wql.cloud.payservice.biz.payroute.PayRouteFactory;
+import com.wql.cloud.payservice.biz.payroute.PayRouteService;
 import com.wql.cloud.payservice.mapper.PayOrderMapper;
 import com.wql.cloud.payservice.mapper.RefundOrderMapper;
 import com.wql.cloud.payservice.pojo.domain.PayOrder;
@@ -32,8 +32,8 @@ import com.wql.cloud.tool.executor.TaskExecutorService;
 import com.wql.cloud.tool.httpclient.HttpUtil;
 
 
-@Service
-public class AliH5PayServiceImpl implements PayRouteFactory {
+@Service("h5-alipayService")
+public class AliH5PayServiceImpl implements PayRouteService {
 
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());  
 	
@@ -48,11 +48,6 @@ public class AliH5PayServiceImpl implements PayRouteFactory {
 	@Autowired
 	private RefundOrderMapper refundOrderMapper;
 
-	@Override
-	public String getChannelRoute() {
-		return H5_ALIPAY;
-	}
-	
 	@Override
 	public String createPayOrder(CreatePayReq createPayReq) {
 		Assert.isTrue(StringUtils.isNotBlank(createPayReq.getOutTradeNo()), "outTradeNo不能为空");

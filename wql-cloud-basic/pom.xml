@@ -11,6 +11,17 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.5.22.RELEASE</version>
     </parent>
+    <modules>
+        <module>basic-datasource</module>
+        <module>basic-tool</module>
+        <module>basic-job</module>
+        <module>basic-redis</module>
+        <module>basic-config</module>
+        <module>basic-pay</module>
+        <module>basic-mq</module>
+        <module>basic-oss</module>
+        <module>basic-push</module>
+    </modules>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -145,20 +156,6 @@
             <version>4.2.2</version>
         </dependency>
     </dependencies>
-    <modules>
-        <module>basic-datasource</module>
-        <module>basic-tool</module>
-        <module>basic-job</module>
-        <module>basic-redis</module>
-        <module>basic-pay</module>
-        <module>basic-mq</module>
-        <module>basic-oss</module>
-        <module>basic-elasticsearch</module>
-        <module>basic-push</module>
-        <module>basic-config</module>
-        <module>basic-zookeeper</module>
-        <module>basic-hbase</module>
-    </modules>
     <build>
         <plugins>
             <!-- jdk版本 -->
