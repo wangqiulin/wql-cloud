@@ -5,16 +5,8 @@ import java.util.List;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
-
-/**
- * 注册jwt认证过滤器
- * 
- * @author wangqiulin
- *
- */
-@Configuration
+//@Configuration
 public class JwtConfig {
 
 	@Bean
