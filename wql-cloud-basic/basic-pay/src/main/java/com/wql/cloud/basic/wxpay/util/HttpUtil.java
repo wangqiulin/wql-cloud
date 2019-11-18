@@ -12,7 +12,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -74,10 +73,10 @@ public class HttpUtil {
 		URI uri = generateURL(url, params);
 		HttpGet get = new HttpGet(uri);
 		get.setConfig(requestConfig);
-		logger.info("HttpUtil.doPost-请求URL: " + uri +";请求参数:"+ JSONObject.toJSONString(params));
+		logger.info("HttpUtil.doPost-请求URL: " + uri +", 请求参数:"+ JSONObject.toJSONString(params));
 		long start = new Date().getTime();
 		String res = execute(get);
-		logger.info("HTTP Response context: \n" + res);
+		logger.info("HTTP Response context: " + res);
 		logger.info("HTTP costs：" + (new Date().getTime() - start));
 		return res;
 	}
@@ -90,8 +89,7 @@ public class HttpUtil {
 	 * @throws Exception
 	 */
 	public static String doPost(String url, String params, CertConfig certConfig) throws Exception {
-		logger.info("HttpUtil.doPost-请求URL: " + url);
-		logger.info("HttpUtil.doPost-请求参数: " + params);
+		logger.info("HttpUtil.doPost-请求URL: {}, 请求参数: {}", url, params);
 		String result = new String();
 		try {
 			buildHttpsClientWithCert(certConfig);
@@ -124,8 +122,7 @@ public class HttpUtil {
 	 * @throws Exception
 	 */
 	public static String doPost(String url, String params, boolean https) throws Exception {
-		logger.info("HttpUtil.doPost-请求URL: " + url);
-		logger.info("HttpUtil.doPost-请求参数: " + params);
+		logger.info("HttpUtil.doPost-请求URL: {}, 请求参数: {}", url, params);
 		String result = new String();
 		try {
 			buildHttpClient(https);
@@ -164,8 +161,7 @@ public class HttpUtil {
 	 * @return
 	 */
 	public static String doPost(String url, Map<String, String> params, boolean https) {
-		logger.info("HttpUtil.doPost-请求URL: " + url);
-		logger.info("HttpUtil.doPost-请求参数: " + params);
+		logger.info("HttpUtil.doPost-请求URL: {}, 请求参数: {}", url, params);
 		List<NameValuePair> pairList = new ArrayList<NameValuePair>();
 		for (String key : params.keySet()) {
 			pairList.add(new BasicNameValuePair(key, params.get(key)));
@@ -228,7 +224,6 @@ public class HttpUtil {
 		if (httpsClientWithCert == null) {
 			synchronized (HttpUtil.class) {
 				if (httpsClientWithCert == null) {
-
 					SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, certConfig.getKeyStorePwd().toCharArray()).build();
 					// 指定TLS版本
 					SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[] { "TLSv1" }, null, NoopHostnameVerifier.INSTANCE);
@@ -408,39 +403,6 @@ public class HttpUtil {
 				return false;
 			return true;
 		}
-
-	}
-
-	public static void main(String[] args) {
-		String url = "http://127.0.0.1:8080/creditapp/outer/pbccrc/report";
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("orgcode", "20310115201608001");
-		params.put("hash", "5ec2b80e31c9bac94093bb658dc206a8");
-		params.put(
-				"data",
-				"{\"report_extend\":\"{\"cusName\":\"张君\",\"cusIdNo\":\"120104198703284316\","
-						+ "\"binderName\":\"张君\",\"binderIdNo\":\"120104198703284316\","
-						+ "\"operatorId\":\"300111000145566430\",\"extend_1\":null,"
-						+ "\"extend_2\":null,\"extend_3\":null}\","
-						+ "\"report_risk\":\"{\"personalinfo\":{\"marital\":\"已婚\",\"IDnumber\":\"120104198703284316\","
-						+ "\"IDtype\":\"身份证\",\"name\":\"张君\"},\"reportinfo\":{\"reportSN\":\"2016091400003193182887\","
-						+ "\"reporttime\":\"20160914173643\",\"querytime\":\"20160914112405\"},"
-						+ "\"overdues\":{\"creditOrgCounts\":0,\"creditOrgCounts200\":0,\"creditAmts\":0,\"creditAmts200\":0,"
-						+ "\"creditCountsM60\":0,\"creditCountsM60D90\":0,\"loanCounts\":0,\"loanAmts\":0,\"loanCountsM60\":0,"
-						+ "\"loanCountsM60D90\":0,\"countsM60\":0,\"countsM60D90\":0},\"debts\":{\"creditLimitMax\":41000,"
-						+ "\"creditLimitTotal\":94685,\"creditOrgCounts\":0,\"creditLimitUsed\":2750,\"creditLimitUseRate\":"
-						+ "\"2.90%\",\"loanAmts\":0,\"loanAmtsNoSettle\":0,\"loanCounts\":0,\"loanBalances\":0,\"loanBalanceCounts\":0,"
-						+ "\"loanBalancesMortgage\":0,\"loanBalancesCar\":0,\"loanBalancesBiz\":0,\"loanBalancesOther\":0,"
-						+ "\"loanBalancesMonth\":0,\"loanBalancesMortgageMonth\":0,\"loanBalancesCarMonth\":0,\"loanBalancesBizMonth\":0,"
-						+ "\"loanBalancesOtherMonth\":0,\"loanBalanceInfos\":[],\"loanBalancesMonthOther\":0},\"creditLoanHis\":{\"creditMOB\":129,\"loanMOB\":0},\"creditLoanNeeds\":{\"creditOrgCountsM3\":0,\"creditLimitTotalM3\":0,\"loanCountsM3\":0,\"loanAmtsM3\":0,\"loanQueriesM3\":1,\"selfQueriesM3\":1},\"others\":{\"guarantees\":0,\"guaranteeAmts\":0,\"month6TaxAmts\":0}}\",\"report\":\"{\"reportinfo\":{\"reportSN\":\"2016091400003193182887\",\"reporttime\":\"20160914173643\",\"querytime\":\"20160914112405\"},\"personalinfo\":{\"marital\":\"已婚\",\"IDnumber\":\"120104198703284316\",\"IDtype\":\"身份证\",\"name\":\"张君\"},\"creditRecord\":{\"summary\":{\"otherLoan\":{\"overdueTotal\":\"0\",\"activeTotal\":\"0\",\"accountTotal\":\"0\",\"overdue90Total\":\"0\",\"guarantee\":\"0\"},\"mortgage\":{\"overdueTotal\":\"0\",\"activeTotal\":\"0\",\"accountTotal\":\"0\",\"overdue90Total\":\"0\",\"guarantee\":\"0\"},\"creditCard\":{\"overdueTotal\":\"0\",\"activeTotal\":\"11\",\"accountTotal\":\"15\",\"overdue90Total\":\"0\",\"guarantee\":\"0\"}},\"intro\":\"?这部分包含您的信用卡、贷款和其他信贷记录。金额类数据均以人民币计算，精确到元。\",\"detail\":{\"otherLoan\":{\"noOverdueDetails\":[],\"overdueDetails\":[]},\"mortgage\":{\"noOverdueDetails\":[],\"overdueDetails\":[]},\"creditCard\":{\"noOverdueDetails\":[\"2014年10月27日中国工商银行上海市分行发放的贷记卡（人民币账户）。截至2016年8月，信用额度500，已使用额度0。\",\"2011年12月30日中国农业银行发放的贷记卡（美元账户）。截至2016年8月,信用额度折合人民币8,292，已使用额度0。\",\"2011年12月30日中国农业银行发放的贷记卡（人民币账户）。截至2016年8月，信用额度10,000，已使用额度0。\",\"2010年10月25日招商银行发放的贷记卡（美元账户）。截至2016年8月,信用额度折合人民币25,000，已使用额度0。\",\"2010年10月25日招商银行发放的贷记卡（人民币账户）。截至2016年8月，信用额度25,000，已使用额度2,750。\",\"2010年10月16日中国建设银行上海市分行发放的贷记卡（人民币账户）。截至2016年8月，信用额度2,000，已使用额度0。\",\"2010年10月16日中国建设银行上海市分行发放的贷记卡（美元账户）。截至2016年8月,信用额度折合人民币1,893，已使用额度0。\",\"2010年9月18日交通银行发放的贷记卡（人民币账户）。截至2016年8月，信用额度41,000，已使用额度0。\",\"2007年6月5日中国银行上海市分行发放的贷记卡（人民币账户）。截至2016年7月，信用额度4,500，已使用额度0。\",\"2005年12月7日兴业银行发放的贷记卡（人民币账户）。截至2016年8月，信用额度1,500，已使用额度0。\",\"2005年12月7日兴业银行发放的贷记卡（美元账户）。截至2016年8月,信用额度折合人民币1,500，已使用额度0。\",\"2009年8月5日浦发银行信用卡中心发放的贷记卡（人民币账户），截至2016年8月已销户。\",\"2007年11月26日中国建设银行上海市分行发放的贷记卡（人民币账户），截至2011年8月已销户。\",\"2007年11月26日中国建设银行上海市分行发放的贷记卡（美元账户），截至2011年8月已销户。\",\"2007年6月5日中国银行上海市分行发放的贷记卡（美元账户），截至2009年6月已销户。\"],\"overdueDetails\":[]}}},\"publicRecord\":{\"summary\":{\"enforcement\":\"0\",\"tax\":\"0\",\"punishment\":\"0\",\"judgment\":\"0\",\"telecom\":\"0\"},\"intro\":\" 系统中没有您最近5年内的欠税记录、民事判决记录、强制执行记录、行政处罚记录及电信欠费记录。 \",\"detail\":{\"enforcement\":[],\"tax\":[],\"punishment\":[],\"judgment\":[],\"telecom\":[]}},\"queryRecord\":{\"summary\":{\"individual\":\"1\",\"organization\":\"13\"},\"intro\":\"这部分包含您的信用报告最近2年被查询的记录。\",\"detail\":{\"individual\":[{\"date\":\"2016年8月3日\",\"reason\":\"本人查询（互联网个人信用信息服务平台）\",\"operator\":\"本人\"}],\"organization\":[{\"date\":\"2016年9月3日\",\"reason\":\"贷后管理\",\"operator\":\"招商银行/CMBU*ER0*3\"},{\"date\":\"2016年7月12日\",\"reason\":\"贷后管理\",\"operator\":\"交通银行太平洋信用卡中心/d*anjx\"},{\"date\":\"2016年7月8日\",\"reason\":\"贷后管理\",\"operator\":\"招商银行/C*BUSE*003\"},{\"date\":\"2016年6月27日\",\"reason\":\"贷款审批\",\"operator\":\"南京银行股份有限公司/*rb26\"},{\"date\":\"2016年5月7日\",\"reason\":\"贷后管理\",\"operator\":\"交通银行太平洋信用卡中心/*uanjx\"},{\"date\":\"2016年1月5日\",\"reason\":\"贷后管理\",\"operator\":\"招商银行/CM*USER0*4\"},{\"date\":\"2015年11月27日\",\"reason\":\"贷后管理\",\"operator\":\"交通银行太平洋信用卡中心/*uanjx\"},{\"date\":\"2015年10月28日\",\"reason\":\"贷后管理\",\"operator\":\"招商银行/*MBUSE*003\"},{\"date\":\"2015年8月19日\",\"reason\":\"贷后管理\",\"operator\":\"浦发银行信用卡中心/*20067\"},{\"date\":\"2015年4月9日\",\"reason\":\"贷后管理\",\"operator\":\"上海浦东发展银行/*kc*-xyk\"},{\"date\":\"2015年2月14日\",\"reason\":\"贷后管理\",\"operator\":\"上海浦东发展银行/jk*x-x*k\"},"
-						+ "{\"date\":\"2015年1月29日\",\"reason\":\"贷后管理\",\"operator\":\"交通银行/*re*itreport\"},{\"date\":\"2014年10月24日\"," + "\"reason\":\"信用卡审批\",\"operator\":\"中国工商银行/icbc*jk*xyh\"}]}}\"}");
-		try {
-			String aaa=HttpUtil.doPost(url, params, false);
-			System.out.println(aaa);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 
 }

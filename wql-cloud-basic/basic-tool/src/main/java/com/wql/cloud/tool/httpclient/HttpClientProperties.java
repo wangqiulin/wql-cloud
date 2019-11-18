@@ -3,12 +3,6 @@ package com.wql.cloud.tool.httpclient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * redisson配置
- * 
- * @auther wangqiulin
- * @date 2018/10/11
- */
 @Configuration
 public class HttpClientProperties {
 

@@ -32,11 +32,6 @@ import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
-/**
- * 
- * @author wangqiulin
- * @date 2018年5月13日
- */
 @Configuration
 public class RestTemplateConfig {
 

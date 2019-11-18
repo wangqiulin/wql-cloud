@@ -204,7 +204,10 @@ public class CsvDownloadUtil {
   	}
     
     
-    /*public <T> boolean getWorkbook(Class<T> clazz, Object obj) throws Exception {
+    /*
+     * 使用事例：
+     * 
+     * public <T> boolean getWorkbook(Class<T> clazz, Object obj) throws Exception {
     	HttpServletResponse response = null;
     	
     	//1.获取excel的头信息
