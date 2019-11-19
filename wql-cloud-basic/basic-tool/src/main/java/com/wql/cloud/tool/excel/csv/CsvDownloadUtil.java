@@ -4,7 +4,6 @@ import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -12,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -25,8 +23,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.xuxueli.poi.excel.annotation.ExcelField;
-
 /**
  * csv文件下载
  */
@@ -35,23 +31,6 @@ public class CsvDownloadUtil {
     private static final Logger logger = LoggerFactory.getLogger(CsvDownloadUtil.class);
 
     private static String EMPTY_STR = "";
-
-    /**
-     * 设置表头信息
-     */
-    public static Map<String, String> getCsvHeader(Class<?> clazz) throws Exception {
-        Map<String, String> header = new LinkedHashMap<>();
-        Field[] fields = clazz.getDeclaredFields();
-        Class<ExcelField> apiModelPropertyClass = ExcelField.class;
-        for (Field field : fields) {
-            if (field.isAnnotationPresent(apiModelPropertyClass)) {
-                String value = field.getAnnotation(apiModelPropertyClass).name();
-                header.put(field.getName(), value);
-            }
-        }
-        return header;
-    }
-
     
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void writeHeader(Map<String, String> csvHeader, String fileName, HttpServletResponse response) throws IOException {

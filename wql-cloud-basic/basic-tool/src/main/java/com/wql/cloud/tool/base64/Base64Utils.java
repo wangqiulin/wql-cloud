@@ -7,12 +7,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import it.sauronsoftware.base64.Base64;
+import cn.hutool.core.codec.Base64;
 
 /**
  * BASE64编码解码工具包
- * 依赖javabase64-1.3.1.jar
  * 
  * @author wangqiulin
  */
@@ -123,5 +121,5 @@ public class Base64Utils {
         out.close();
         in.close();
     }
-
+    
 }

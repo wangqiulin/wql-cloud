@@ -1,9 +1,9 @@
 package com.wql.cloud.payservice.biz.payroute.impl;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -84,7 +84,7 @@ public class WxH5PayServiceImpl implements PayRouteService {
 						Map<String, Object> paramMap = new HashMap<String, Object>();
 						paramMap.put("orderNo", payOrder.getOrderNo());
 						paramMap.put("payedTime", result.getPayedTime());
-						ArrayList<String> list = taskExecutorService.submit(new NotifyCallable(payOrder.getNotifyUrl(), paramMap, httpUtil), 1);
+						List<String> list = taskExecutorService.submit(new NotifyCallable(payOrder.getNotifyUrl(), paramMap, httpUtil), 1);
 						if(!CollectionUtils.isEmpty(list)) {
 							String successFlag = list.get(0);
 							if("SUCCESS".equals(successFlag)) {
@@ -180,7 +180,7 @@ public class WxH5PayServiceImpl implements PayRouteService {
 						Map<String, Object> paramMap = new HashMap<String, Object>();
 						paramMap.put("orderNo", refundOrder.getOrderNo());
 						paramMap.put("refundTime", result.getPayedTime());
-						ArrayList<String> list = taskExecutorService.submit(new NotifyCallable(refundOrder.getNotifyUrl(), paramMap, httpUtil), 1);
+						List<String> list = taskExecutorService.submit(new NotifyCallable(refundOrder.getNotifyUrl(), paramMap, httpUtil), 1);
 						if(!CollectionUtils.isEmpty(list)) {
 							String successFlag = list.get(0);
 							if("SUCCESS".equals(successFlag)) {

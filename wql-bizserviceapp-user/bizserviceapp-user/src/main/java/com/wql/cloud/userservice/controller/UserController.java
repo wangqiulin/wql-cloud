@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,9 +25,6 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 public class UserController {
 
-	@Autowired
-	private HttpServletResponse response;
-	
 	@Autowired
 	private UserService userService;
 	
@@ -97,11 +92,6 @@ public class UserController {
 				e.printStackTrace();
 			}
 		});
-		String sheetNamePrefix = "用户列表";
-	    Map<String, String> csvHeader = CsvDownloadUtil.getCsvHeader(UserExcel.class);
-		CsvDownloadUtil.writeHeader(csvHeader, sheetNamePrefix, response);
-		CsvDownloadUtil.writeData(csvHeader, userExcelList, response);
-    	response.getOutputStream().close();
     }
 	
 }

@@ -3,26 +3,16 @@ package com.wql.cloud.userservice.pojo.res;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.apache.poi.hssf.util.HSSFColor;
-
-import com.xuxueli.poi.excel.annotation.ExcelField;
-import com.xuxueli.poi.excel.annotation.ExcelSheet;
-
-@ExcelSheet(name = "用户列表", headColor = HSSFColor.HSSFColorPredefined.LIGHT_GREEN)
 public class UserExcel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ExcelField(name = "创建时间", dateformat="yyyy-MM-dd HH:mm:ss")
 	private Date createDate;
 	
-	@ExcelField(name = "更新时间", dateformat="yyyy-MM-dd HH:mm:ss")
 	private Date updateDate;
 
-	@ExcelField(name = "用户名")
 	private String userName;
 	
-	@ExcelField(name = "密码")
 	private String userPwd;
 
 	public Date getCreateDate() {

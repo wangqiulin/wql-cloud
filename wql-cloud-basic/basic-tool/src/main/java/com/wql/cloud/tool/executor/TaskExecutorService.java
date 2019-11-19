@@ -1,6 +1,8 @@
 package com.wql.cloud.tool.executor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -13,9 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 /**
  * 五种线程池的适应场景
@@ -53,10 +52,10 @@ public class TaskExecutorService {
 	 * @param corePoolSize
 	 * @return
 	 */
-	public <V> ArrayList<V> submit(Callable<V> callable, int corePoolSize) {
+	public <V> List<V> submit(Callable<V> callable, int corePoolSize) {
 		//创建ExecutorService
 		ExecutorService executorService = Executors.newFixedThreadPool(corePoolSize);
-		Map<Integer,Future<V>> dataMap = Maps.newHashMap();
+		Map<Integer,Future<V>> dataMap = new HashMap<Integer, Future<V>>();
 		for (int i = 0; i < corePoolSize; i++) {
 			Future<V> future = executorService.submit(callable);
 			dataMap.put(i, future);
@@ -64,7 +63,7 @@ public class TaskExecutorService {
 		//表示不再接受新任务，但不会强行终止已经提交或者正在执行中的任务
 		executorService.shutdown(); 
 		//处理返回值
-		ArrayList<V> list = Lists.newArrayList();
+		List<V> list = new ArrayList<>();
 		for (int i = 0; i < corePoolSize; i++) {
 			try {
 				list.add(dataMap.get(i).get());
