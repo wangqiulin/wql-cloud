@@ -11,16 +11,18 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wql.cloud.basic.datasource.dynamic.DynamicDataSourceRegister;
 
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @EnableEurekaClient
-//@Import({DynamicDataSourceRegister.class})
+@Import({DynamicDataSourceRegister.class})
 @tk.mybatis.spring.annotation.MapperScan("com.wql.cloud.userservice.mapper")
 @EnableFeignClients
 public class UserServiceApplication extends SpringBootServletInitializer {

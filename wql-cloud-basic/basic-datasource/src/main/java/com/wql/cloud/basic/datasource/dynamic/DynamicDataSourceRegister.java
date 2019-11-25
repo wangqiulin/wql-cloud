@@ -101,10 +101,6 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 					.password(password)
 					.type(dataSourceType);
 			return factory.build();
-			
-			//seata分布式事务回滚，配置数据源
-			//return new DataSourceProxy(factory.build()); 
-			
 		} catch (Exception e) {
 			logger.error("========druid configuration initialization filter========", e);
 		}
@@ -145,8 +141,7 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 	 */
 	private void dataBinder(DataSource dataSource, Environment env) {
 		RelaxedDataBinder dataBinder = new RelaxedDataBinder(dataSource);
-		// dataBinder.setValidator(new
-		// LocalValidatorFactory().run(this.applicationContext));
+		// dataBinder.setValidator(new LocalValidatorFactory().run(this.applicationContext));
 		dataBinder.setConversionService(conversionService);
 		dataBinder.setIgnoreNestedProperties(false);// false
 		dataBinder.setIgnoreInvalidFields(false);// false

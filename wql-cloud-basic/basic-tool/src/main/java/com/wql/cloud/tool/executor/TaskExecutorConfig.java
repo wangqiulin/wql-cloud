@@ -25,19 +25,19 @@ public class TaskExecutorConfig {
 	/**
 	 * 核心线程数
 	 */
-	@Value("${taskExecutor.corePoolSize:5}")
+	@Value("${taskExecutor.corePoolSize:4}")
 	private int corePoolSize;
 
 	/**
 	 * 最大线程数
 	 */
-	@Value("${taskExecutor.maxPoolSize:30}")
+	@Value("${taskExecutor.maxPoolSize:20}")
 	private int maxPoolSize;
 
 	/**
 	 * 线程池维护线程所允许的空闲时间
 	 */
-	@Value("${taskExecutor.keepAliveSeconds:10}")
+	@Value("${taskExecutor.keepAliveSeconds:30}")
 	private int keepAliveSeconds;
 
 	/**
@@ -61,9 +61,9 @@ public class TaskExecutorConfig {
 		executor.setCorePoolSize(corePoolSize);
 		executor.setMaxPoolSize(maxPoolSize);
 		executor.setKeepAliveSeconds(keepAliveSeconds);
+		executor.setAllowCoreThreadTimeOut(false); //false表示核心线程数一直存在
 		executor.setQueueCapacity(queueCapacity);
 		executor.setThreadNamePrefix(threadNamePrefix);
-		// 线程池对拒绝任务(无线程可用)的处理策略 ThreadPoolExecutor.CallerRunsPolicy策略,调用者的线程会执行该任务,如果执行器已关闭,则丢弃
 		executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
 		return executor;
 	}
