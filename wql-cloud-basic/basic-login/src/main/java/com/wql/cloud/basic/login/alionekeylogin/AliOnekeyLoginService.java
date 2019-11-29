@@ -1,9 +1,10 @@
-package com.wql.cloud.basic.oss.service;
+package com.wql.cloud.basic.login.alionekeylogin;
+
+import java.rmi.ServerException;
 
 import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.exceptions.ServerException;
 
-public interface LoginService {
+public interface AliOnekeyLoginService {
 
 	/**
 	 * 阿里一键登录，获取手机号
@@ -15,6 +16,6 @@ public interface LoginService {
 	 * @throws ClientException 
 	 * @throws ServerException 
 	 */
-	String aliOneClickLogin(String accessKeyId, String accessSecret, String accessToken) throws ServerException, ClientException;
+	String aliOnekeyLogin(String accessKeyId, String accessSecret, String accessToken) throws ServerException, ClientException;
 	
 }

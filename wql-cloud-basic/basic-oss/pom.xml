@@ -15,11 +15,5 @@
 			<artifactId>aliyun-sdk-oss</artifactId>
 			<version>3.7.0</version>
 		</dependency>
-        <!-- 一键登录 -->
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-core</artifactId>
-            <version>4.4.6</version>
-        </dependency>
 	</dependencies>
 </project>

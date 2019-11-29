@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.oss.service.impl;
+package com.wql.cloud.basic.login.alionekeylogin.impl;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -15,11 +15,11 @@ import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.http.ProtocolType;
 import com.aliyuncs.profile.DefaultProfile;
-import com.wql.cloud.basic.oss.service.LoginService;
+import com.wql.cloud.basic.login.alionekeylogin.AliOnekeyLoginService;
 
 
 @Service
-public class LoginServiceImpl implements LoginService {
+public class AliOnekeyLoginServiceImpl implements AliOnekeyLoginService {
 
 	public final Logger logger = LoggerFactory.getLogger(this.getClass()); 
 	
@@ -28,7 +28,7 @@ public class LoginServiceImpl implements LoginService {
 	 */
 	@Override
 	@SuppressWarnings("deprecation")
-	public String aliOneClickLogin(String accessKeyId, String accessSecret, String accessToken) throws ServerException, ClientException {
+	public String aliOnekeyLogin(String accessKeyId, String accessSecret, String accessToken) throws ServerException, ClientException {
 		DefaultProfile profile = DefaultProfile.getProfile("default", accessKeyId, accessKeyId);
         IAcsClient client = new DefaultAcsClient(profile);
         CommonRequest request = new CommonRequest();
