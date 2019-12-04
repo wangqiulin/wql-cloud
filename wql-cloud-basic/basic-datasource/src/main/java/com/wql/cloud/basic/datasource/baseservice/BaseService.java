@@ -13,20 +13,14 @@ import com.github.pagehelper.PageInfo;
 import com.wql.cloud.basic.datasource.tk.MyMapper;
 
 import tk.mybatis.mapper.entity.Example;
-import tk.mybatis.mapper.entity.IDynamicTableName;
 
 /**
  * 单表通用的service层的抽象类
  */
-public abstract class BaseService<T extends BaseDO> implements IDynamicTableName {
+public abstract class BaseService<T extends BaseDO> {
 
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public static final Integer PAGE = 1;
-    public static final Integer ROWS = 10;
-    public static final String ID = "id";
-    public static final String VERSION = "version";
-    
     @Autowired
     private MyMapper<T> mapper;
     
@@ -67,15 +61,13 @@ public abstract class BaseService<T extends BaseDO> implements IDynamicTableName
     //=================分页查询(查询总数)===================//
     
     public PageInfo<T> pageByRecord(Integer page, Integer rows, T record) {
-    	Assert.isTrue(page != null && page > 0, "page shouldn't less than 1");
-    	Assert.isTrue(rows != null && rows > 0, "rows shouldn't less than 1");
+    	this.validPage(page, rows);
     	PageHelper.startPage(page, rows, true); 
         return new PageInfo<T>(this.mapper.select(record));
     }
-    
+
     public PageInfo<T> pageByExample(Integer page, Integer rows, Example example) {
-    	Assert.isTrue(page != null && page > 0, "page shouldn't less than 1");
-    	Assert.isTrue(rows != null && rows > 0, "rows shouldn't less than 1");
+    	this.validPage(page, rows);
         PageHelper.startPage(page, rows, true);
         return new PageInfo<T>(this.mapper.selectByExample(example));
     }
@@ -84,15 +76,13 @@ public abstract class BaseService<T extends BaseDO> implements IDynamicTableName
     //=================分页查询(不查总数)===================//
     
     public PageInfo<T> pageByRecordWithoutCount(Integer page, Integer rows, T record) {
-    	Assert.isTrue(page != null && page > 0, "page shouldn't less than 1");
-    	Assert.isTrue(rows != null && rows > 0, "rows shouldn't less than 1");
+    	this.validPage(page, rows);
     	PageHelper.startPage(page, rows, false);  
         return new PageInfo<T>(this.mapper.select(record));
     }
     
     public PageInfo<T> pageByExampleWithoutCount(Integer page, Integer rows, Example example) {
-    	Assert.isTrue(page != null && page > 0, "page shouldn't less than 1");
-    	Assert.isTrue(rows != null && rows > 0, "rows shouldn't less than 1");
+    	this.validPage(page, rows);
         PageHelper.startPage(page, rows, false);  
         return new PageInfo<T>(this.mapper.selectByExample(example));
     }
@@ -155,7 +145,7 @@ public abstract class BaseService<T extends BaseDO> implements IDynamicTableName
     public Integer updateByVersion(T record, Example example) {
     	Assert.notNull(record.getVersion(), "version cann't empty");
     	//版本号作为条件
-    	example.and().andEqualTo(VERSION, record.getVersion());
+    	example.and().andEqualTo("version", record.getVersion());
     	//通用更新字段
     	record.setUpdateDate(new Date());
     	record.setVersion(record.getVersion() + 1);
@@ -196,7 +186,7 @@ public abstract class BaseService<T extends BaseDO> implements IDynamicTableName
     public Integer removeByIds(List<?> ids, Class<T> clazz) {
     	Assert.notEmpty(ids, "ids cann't empty");
     	Example example = new Example(clazz);
-    	example.createCriteria().andIn(ID, ids);
+    	example.createCriteria().andIn("id", ids);
         return this.mapper.deleteByExample(example);
     }
     
@@ -214,6 +204,11 @@ public abstract class BaseService<T extends BaseDO> implements IDynamicTableName
     	example.createCriteria().andIn(field, list);
         return this.mapper.deleteByExample(example);
     }
+    
+    private void validPage(Integer page, Integer rows) {
+		Assert.isTrue(page != null && page > 0, "page shouldn't less than 1");
+    	Assert.isTrue(rows != null && rows > 0, "rows shouldn't less than 1");
+	}
     
     
 }

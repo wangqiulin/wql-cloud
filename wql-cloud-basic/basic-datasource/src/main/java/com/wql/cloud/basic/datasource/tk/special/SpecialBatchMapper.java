@@ -21,10 +21,9 @@ public interface SpecialBatchMapper<T> {
 	 *
 	 * @return
 	 */
-	@Options(useGeneratedKeys = true, keyProperty = "id") 
+	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id") 
 	@InsertProvider(type = SpecialBatchProvider.class, method = "batchInsertList")
 	int batchInsertList(List<T> list);
-	
 	
 	/**
 	 * 根据id批量更新：https://blog.csdn.net/sunct/article/details/90146681

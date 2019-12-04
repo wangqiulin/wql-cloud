@@ -44,8 +44,6 @@ public class SpecialBatchProvider extends MapperTemplate {
 		return sql.toString();
 	}
 	
-	
-
     /**
      * 拼update sql, 使用case when方式，id为主键
      *
@@ -72,7 +70,6 @@ public class SpecialBatchProvider extends MapperTemplate {
                 sql.append("  </trim>");
             }
         }
-
         sql.append("</trim>");
         sql.append("WHERE");
         sql.append(" id IN ");
@@ -83,5 +80,5 @@ public class SpecialBatchProvider extends MapperTemplate {
         sql.append("</trim>");
         return sql.toString();
     }
-	
+    
 }
