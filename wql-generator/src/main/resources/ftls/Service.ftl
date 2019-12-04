@@ -59,9 +59,4 @@ public class ${ClassName}ServiceImpl extends BaseService<${ClassName}> ${Impl} {
 		return this.pageByRecord(${EntityName}.getPage(), ${EntityName}.getPageSize(), ${EntityName});
 	}
 	
-	@Override
-    public String getDynamicTableName() {
-        return null;
-    }
-	
 }
