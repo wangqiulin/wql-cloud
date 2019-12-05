@@ -9,6 +9,13 @@ import com.wql.cloud.basic.alipay.result.PayNotifyResult;
 import com.wql.cloud.basic.alipay.result.QueryOrderResult;
 import com.wql.cloud.basic.alipay.result.QueryRefundOrderResult;
 
+/**
+ * 支付宝开发文档：
+ * 	https://docs.open.alipay.com/api_1
+ * 
+ * @author wangqiulin
+ *
+ */
 public interface AliPayService {
 
     /**
@@ -54,6 +61,7 @@ public interface AliPayService {
 
 	/**
 	 * 退款请求
+	 * @see https://docs.open.alipay.com/api_1/alipay.trade.refund
 	 * 
 	 * @param refundOrderModel
 	 * @return
@@ -71,6 +79,7 @@ public interface AliPayService {
 	
 	/**
 	 * 支付回调校验（校验成功返回对象，失败返回null）
+	 * @see 因为支付宝支付与退款用的都是同一个回调地址,所以在用到退款回调的时候要区分到底是支付的回调还是退款的回掉,一般来说,如果是退款回调会有refund_fee这个参数,支付不会有.
 	 * 
 	 * @param dataMap
 	 * @return

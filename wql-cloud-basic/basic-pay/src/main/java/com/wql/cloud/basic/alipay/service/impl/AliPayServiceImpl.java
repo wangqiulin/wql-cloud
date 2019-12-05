@@ -1,6 +1,7 @@
 package com.wql.cloud.basic.alipay.service.impl;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -196,9 +197,15 @@ public class AliPayServiceImpl implements AliPayService {
 			AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
 			request.setBizModel(model);
 			AlipayTradeRefundResponse response = alipayClient.execute(request);
-			if ("10000".equals(response.getCode())) {
+			 //判断请求是否发送成功
+			if(response.isSuccess()) {
 				res.setResult(true);
 				res.setResultMsg("退款发起成功");
+				//支付宝返回结果的时候会有一个资金状态来直接表明是否资金发生了变化.通过getFundChange()可以获取到他的资金变化状态,如果返回的是Y，那么就是退款成功了.
+				if("Y".equals(response.getFundChange())) {
+					res.setRefundResult(true);
+					res.setResultMsg("退款成功");
+				}
 			} else {
 				logger.info("【支付宝退款】请求失败：" + response.getSubMsg());
 				res.setResult(false);
@@ -220,11 +227,7 @@ public class AliPayServiceImpl implements AliPayService {
 	    	AlipayTradeFastpayRefundQueryModel bizModel = new AlipayTradeFastpayRefundQueryModel();
 	    	bizModel.setOutTradeNo(outTradeNo);
 	    	bizModel.setOutRequestNo(outRequestNo);
-//	    	Map<String, String> map = new HashMap<>();
-//	    	map.put("out_trade_no", outTradeNo);
-//	    	map.put("out_request_no", outRequestNo);
 	        AlipayTradeFastpayRefundQueryRequest request = new AlipayTradeFastpayRefundQueryRequest();
-//	        request.setBizContent(JSON.toJSONString(map));
 	        request.setBizModel(bizModel);
 	        //退款查询
 	        AlipayClient alipayClient = new DefaultAlipayClient(config.SERVER_URL, 
@@ -250,7 +253,7 @@ public class AliPayServiceImpl implements AliPayService {
 			// 首先进行签名验证
 			boolean signVerified = AlipaySignature.rsaCheckV1(dataMap, config.getPublicKey(), config.CHARSET, config.getSignType());
 			if (!signVerified) {
-				logger.warn("支付宝支付回调，签名失败");
+				logger.warn("支付宝回调，签名失败");
 				return null;
 			}
 			// 数据转换
@@ -258,6 +261,8 @@ public class AliPayServiceImpl implements AliPayService {
 			if (StringUtils.equalsAny(param.getTradeStatus(), TRADE_SUCCESS, TRADE_FINISHED)) {
 				return param;
 			}
+			//因为支付宝支付与退款用的都是同一个回调地址,所以在用到退款回调的时候要区分到底是支付的回调还是退款的回掉,一般来说,如果是退款回调会有refund_fee这个参数,支付不会有.
+			//param.getRefundFee();
 		} catch (AlipayApiException e) {
 			logger.error("支付宝回调处理异常", e);
 		}
