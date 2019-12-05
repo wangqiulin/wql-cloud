@@ -118,15 +118,13 @@ public abstract class BaseService<T extends BaseDO> {
     }
     
     public Integer saveList(List<T> recordList) {
-    	for (T record : recordList) {
-    		record.setId(null);
-		}
         return this.mapper.insertList(recordList);
     }
     
     //=================更新===================//
     
     public Integer updateById(T record) {
+    	Assert.notNull(record.getId(), "id cann't empty");
     	record.setUpdateDate(new Date());
         return this.mapper.updateByPrimaryKeySelective(record);
     }
