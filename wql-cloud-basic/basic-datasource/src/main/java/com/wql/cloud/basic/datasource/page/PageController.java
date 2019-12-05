@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  *
  */
 @Controller
+@RequestMapping("/page/")
 public class PageController {
 
 	@RequestMapping(value="{page}", method= RequestMethod.GET)

@@ -40,8 +40,6 @@ server:
   
 #解决本地多网卡时，注入到eureka时ip变化的问题  
 spring.cloud.inetutils.preferred-networks: 192.168.1.
-#seata分布式事务
-spring.cloud.alibaba.seata.tx-service-group: wql_cloud_tx_group
 
 eureka: 
   instance:
@@ -73,7 +71,7 @@ hystrix:
 logging:
   level:
     com.wql.cloud.client: DEBUG
-    io.seata: DEBUG
+    com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: WARN
 
 wql: 
   eureka: 

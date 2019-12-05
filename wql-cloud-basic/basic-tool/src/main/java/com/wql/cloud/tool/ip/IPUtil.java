@@ -2,6 +2,8 @@ package com.wql.cloud.tool.ip;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * IP地址工具类
  */
@@ -15,20 +17,25 @@ public class IPUtil {
 	 */
 	public static String getIpAdrress(HttpServletRequest request) {
 		String ip = request.getHeader("X-Forwarded-For");
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		if (StringUtils.isBlank(ip) || "unknown".equalsIgnoreCase(ip)) {
 			ip = request.getHeader("Proxy-Client-IP");
 		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		if (StringUtils.isBlank(ip) || "unknown".equalsIgnoreCase(ip)) {
 			ip = request.getHeader("WL-Proxy-Client-IP");
 		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("HTTP_CLIENT_IP");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		if (StringUtils.isBlank(ip) || "unknown".equalsIgnoreCase(ip)) {
 			ip = request.getRemoteAddr();
+		}
+		
+		if(StringUtils.isNotBlank(ip)) {
+			// 多个路由时，取第一个非unknown的ip
+			final String[] arr = ip.split(",");
+			for (final String str : arr) {
+				if (!"unknown".equalsIgnoreCase(str)) {
+					ip = str;
+					break;
+				}
+			}
 		}
 		return ip;
 	}

@@ -46,7 +46,8 @@ hystrix:
 logging:
   level:
     com.wql.cloud.client: DEBUG
-
+    com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: WARN
+    
 #优雅停机
 endpoints:
   shutdown:
