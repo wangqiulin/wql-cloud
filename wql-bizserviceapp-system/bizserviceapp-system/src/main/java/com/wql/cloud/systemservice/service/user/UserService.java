@@ -14,4 +14,12 @@ public interface UserService {
 	 */
 	List<UserResource> getUserResource(String userCode);
 
+	/**
+	 * 更新用户资源
+	 * 
+	 * @param userCode
+	 */
+	void updateUserResource(String userCode);
+	
+	
 }

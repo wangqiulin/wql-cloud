@@ -1,12 +1,16 @@
 package com.wql.cloud.systemservice.pojo.res;
 
+import java.io.Serializable;
+
 /**
  * 用户资源
  * 
  * @author wangqiulin
  *
  */
-public class UserResource {
+public class UserResource implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	/**资源明细名称*/
 	private String resourceDetailName;

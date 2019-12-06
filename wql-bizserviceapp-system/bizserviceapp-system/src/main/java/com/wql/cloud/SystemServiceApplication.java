@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
@@ -24,6 +25,7 @@ import com.wql.cloud.basic.datasource.dynamic.DynamicDataSourceRegister;
 @Import({DynamicDataSourceRegister.class})
 @tk.mybatis.spring.annotation.MapperScan("com.wql.cloud.systemservice.mapper")
 @EnableFeignClients
+@EnableCaching  //开启缓存
 public class SystemServiceApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {

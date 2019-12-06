@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -25,6 +28,7 @@ import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
 @Service
+@CacheConfig(cacheNames = {"system-user-resource-cache"})
 public class UserServiceImpl implements UserService {
 
 	@Autowired
@@ -42,7 +46,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private DeptMapper deptMapper;
 	
+	
 	@Override
+	@Cacheable(key = "targetClass + #p0") //放入缓存
 	public List<UserResource> getUserResource(String userCode) {
 		//获取用户角色
 		UserRoleRel record = new UserRoleRel();
@@ -66,5 +72,17 @@ public class UserServiceImpl implements UserService {
 		return userResourceList;
 	}
 
+
+	@Override
+	@CachePut(key = "targetClass + #p0") //更新缓存
+//	@CacheEvict(key = "targetClass + #p0", allEntries=true)  //方法调用后清空所有缓存
+//	@CacheEvict(key = "targetClass + #p0", beforeInvocation=true) //方法调用前清空所有缓存
+	public void updateUserResource(String userCode) {
+		
+	}
+
+	
+	
+	
 	
 }
