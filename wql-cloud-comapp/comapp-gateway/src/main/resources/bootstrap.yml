@@ -99,6 +99,14 @@ eureka:
 ---
 spring: 
   profiles: dev
+#  cloud: 
+#    config:
+#      discovery:
+#        enabled: true
+#        serviceId: comapp-config
+#      name: comapp-gateway
+#      profile: dev
+#      label: master
 eureka: 
   client: 
     serviceUrl: 
@@ -107,6 +115,14 @@ eureka:
 ---
 spring: 
   profiles: prod
+  cloud: 
+    config:
+      discovery:
+        enabled: true
+        serviceId: comapp-config
+      name: comapp-gateway
+      profile: prod
+      label: master
 eureka: 
   client: 
     serviceUrl: 

@@ -86,14 +86,14 @@ eureka:
 ---
 spring: 
   profiles: prod
-#  cloud: 
-#    config:
-#      discovery:
-#        enabled: true
-#        serviceId: comapp-config
-#      name: bizserviceapp-system
-#      profile: prod
-#      label: master
+  cloud: 
+    config:
+      discovery:
+        enabled: true
+        serviceId: comapp-config
+      name: bizserviceapp-system
+      profile: prod
+      label: master
   
 eureka: 
   client: 
