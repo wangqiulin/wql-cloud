@@ -15,7 +15,7 @@ import org.springframework.util.CollectionUtils;
 
 import com.wql.cloud.gateway.core.factory.ApiFactory;
 import com.wql.cloud.gateway.core.factory.FilterFactory;
-import com.wql.cloud.gateway.core.filter.InnerFilter;
+import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.BlackListFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.DecryptFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.MerchantPermissionFilter;

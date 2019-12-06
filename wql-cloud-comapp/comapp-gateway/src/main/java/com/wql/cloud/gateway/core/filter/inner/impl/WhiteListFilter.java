@@ -13,11 +13,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.netflix.zuul.context.RequestContext;
 import com.wql.cloud.gateway.core.enums.FilterResponseEnum;
 import com.wql.cloud.gateway.core.factory.MerchantFactory;
-import com.wql.cloud.gateway.core.filter.InnerFilter;
+import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.model.FilterResponse;
 import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
-import com.wql.cloud.gateway.utils.IPAddressUtil;
 import com.wql.cloud.gateway.utils.DealJsonDataUtil;
+import com.wql.cloud.gateway.utils.IPAddressUtil;
 
 /**
  * 白名单过滤器
