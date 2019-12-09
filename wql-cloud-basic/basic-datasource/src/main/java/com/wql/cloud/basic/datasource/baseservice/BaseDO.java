@@ -6,7 +6,6 @@ import java.util.Date;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -26,7 +25,7 @@ import io.swagger.annotations.ApiModelProperty;
  *
  */
 @ApiModel("数据库表对应实体类的基类")
-public abstract class BaseDO extends BaseQueryDO implements Serializable{
+public abstract class BaseDO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	

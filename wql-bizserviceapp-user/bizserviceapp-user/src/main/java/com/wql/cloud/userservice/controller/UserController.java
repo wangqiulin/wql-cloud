@@ -59,7 +59,8 @@ public class UserController {
 	@ApiOperation(value = "查询列表")
 	@PostMapping("/user/queryList")
 	public DataResponse<List<User>> queryList(@RequestBody User req) {
-		return DataResponse.success(userService.queryList(req));
+		List<User> list = userService.queryList(req);
+		return DataResponse.success(list);
 	}
 	
 	

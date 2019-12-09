@@ -92,7 +92,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 	@Override
 	@TargetDataSource(name = "read")
 	public PageInfo<User> queryPageList(User req) {
-		return this.pageByRecord(req.getPage(), req.getPageSize(), req);
+		return this.pageByRecord(1, 10, req);
 	}
 
 
