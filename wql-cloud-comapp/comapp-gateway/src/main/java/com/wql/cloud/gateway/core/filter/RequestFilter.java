@@ -27,32 +27,24 @@ public class RequestFilter extends ZuulFilter {
 
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	/**
-	 * 过滤规则管理类
-	 */
+	/**过滤规则管理类 */
 	@Autowired
 	private FilterManager filterManager;
 
-	/**
-	 * 请求过滤器工厂
-	 */
+	/**请求过滤器工厂 */
 	@Resource(name = "requestInnerFilterFactory")
 	private FilterFactory requestInnerFilterFactory;
 
 	@Autowired
 	private GatewayProperty gatewayProperty;
 	
-	/**
-	 * 过滤器是否生效
-	 */
+	/**过滤器是否生效 */
 	@Override
 	public boolean shouldFilter() {
 		return true;
 	}
 
-	/**
-	 * 执行过滤规则验证
-	 */
+	/**执行过滤规则验证*/
 	@Override
 	public Object run() {
 		RequestContext ctx = RequestContext.getCurrentContext();

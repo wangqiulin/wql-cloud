@@ -22,6 +22,7 @@
         <module>basic-oss</module>
         <module>basic-push</module>
         <module>basic-login</module>
+        <module>basic-security</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>

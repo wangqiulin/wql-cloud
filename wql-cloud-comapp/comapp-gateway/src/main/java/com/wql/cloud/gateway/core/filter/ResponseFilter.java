@@ -24,21 +24,15 @@ public class ResponseFilter extends ZuulFilter {
 
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	/**
-	 * 过滤规则管理类
-	 */
+	/**过滤规则管理类*/
 	@Autowired
 	private FilterManagerImpl filterManager;
 
-	/**
-	 * 响应过滤器工厂
-	 */
+	/**响应过滤器工厂 */
 	@Resource(name = "responseInnerFilterFactory")
 	private FilterFactory responseInnerFilterFactory;
 
-	/**
-	 * 过滤器是否生效
-	 */
+	/**过滤器是否生效*/
 	@Override
 	public boolean shouldFilter() {
 		RequestContext context = RequestContext.getCurrentContext();
@@ -46,9 +40,7 @@ public class ResponseFilter extends ZuulFilter {
 				|| context.getResponseDataStream() != null || context.getResponseBody() != null);
 	}
 
-	/**
-	 * 执行过滤规则验证
-	 */
+	/**执行过滤规则验证*/
 	@Override
 	public Object run() {
 		RequestContext ctx = RequestContext.getCurrentContext();
@@ -73,17 +65,13 @@ public class ResponseFilter extends ZuulFilter {
 		return null;
 	}
 
-	/**
-	 * 响应之后执行过滤
-	 */
+	/**响应之后执行过滤*/
 	@Override
 	public String filterType() {
 		return FilterConstants.POST_TYPE;
 	}
 
-	/**
-	 * 过滤顺序排在第999位
-	 */
+	/**过滤顺序排在第999位*/
 	@Override
 	public int filterOrder() {
 		return 999;
