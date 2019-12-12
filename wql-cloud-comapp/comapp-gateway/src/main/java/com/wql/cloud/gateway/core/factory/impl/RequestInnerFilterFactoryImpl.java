@@ -74,20 +74,16 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 	public List<InnerFilter> getFilterList(String apiKey) {
 		// 定义过滤器列表
 		List<InnerFilter> innerList = new ArrayList<InnerFilter>();
-
 		// 判断是否加载黑名单过滤器
 		if (gatewayProperty.getBlacklistSwitch()) {
 			innerList.add(blackListFilter);
 		}
-
 		// 判断是否加载白名单过滤器
 		if (gatewayProperty.getWhitelistSwitch()) {
 			innerList.add(whiteListFilter);
 		}
-
 		// 加载请求参数过滤器
 		innerList.add(paramFilter);
-
 		// 获取api相关过滤器列表
 		List<InnerFilter> apiInnerList = apiReqFilterLocalMap.get(apiKey);
 		if (CollectionUtils.isEmpty(apiInnerList)) {
@@ -111,23 +107,19 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 		Api api = apiFactory.getApi(apiKey);
 		// 设置过滤器列表
 		List<InnerFilter> innerList = new ArrayList<>();
-
 		// api权限 0 公共 1 登陆 2 角色 3商户
 		Integer apiPermission = api.getApiPermission();
 		if (null != apiPermission && 3 == apiPermission) {// 3商户
 			innerList.add(merchantPermissionFilter);
 		}
-
 		// 判断是否做数据签名过滤
 		if (api.isApiReqChecksign()) {
 			innerList.add(signCheckFilter);
 		}
-
 		// 判断是否做数据解密过滤
 		if (api.isApiReqDecrypt()) {
 			innerList.add(decryptFilter);
 		}
-
 		// 加载到本地内存中
 		apiReqFilterLocalMap.put(apiKey, innerList);
 		return apiReqFilterLocalMap.get(apiKey);
@@ -135,9 +127,7 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 
 	@Override
 	public void initApiFilterMap() {
-		logger.info(">>>>>>>>>>>>>>>>>>>>>>清空apiReqFilterLocalMap中的api filter 信息>>>>>>>>>>>>>>>>begin>>>>>");
 		apiReqFilterLocalMap.clear();
-		logger.info("<<<<<<<<<<<<<<<<<<<<<<清空apiReqFilterLocalMap中的api filter 信息<<<<<<<<<<<<<<<<<<end<<<<<");
 	}
 	
 }

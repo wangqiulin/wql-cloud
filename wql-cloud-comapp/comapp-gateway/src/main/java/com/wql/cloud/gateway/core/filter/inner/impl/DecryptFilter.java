@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.ServletInputStream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class DecryptFilter implements InnerFilter {
 			/**
 			 * 请求数据为空不需要解密
 			 */
-			if (data == null || "".equals(data) || data.indexOf("\"") >= 0) {
+			if (StringUtils.isBlank(data) || data.indexOf("\"") >= 0) {
 				fr.setCode(FilterResponseEnum.FAIL.getCode());
 				fr.setMessage("data or sign is null");
 				return fr;

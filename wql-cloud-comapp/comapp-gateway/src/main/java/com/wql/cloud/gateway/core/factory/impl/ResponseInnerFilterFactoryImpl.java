@@ -80,9 +80,7 @@ public class ResponseInnerFilterFactoryImpl implements FilterFactory {
 
 	@Override
 	public void initApiFilterMap() {
-		logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>清空apiResFilterLocalMap中的api filter 信息>>>>>>>>>>>>>>>>>>>>>>begin>>>>>");
 		apiResFilterLocalMap.clear();
-		logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<清空apiResFilterLocalMap中的api filter 信息<<<<<<<<<<<<<<<<<<<<<<<<end<<<<<");
 	}
 	
 }

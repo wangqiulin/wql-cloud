@@ -26,9 +26,7 @@ public class MerchantPermissionFilter implements InnerFilter {
 
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	/**
-	 * 商户信息工厂
-	 */
+	/**商户信息工厂*/
 	@Autowired
 	private MerchantFactory merchantFactory;
 

@@ -43,23 +43,21 @@ public class ParamFilter implements InnerFilter {
 			String apiKey = json.getString("apiKey");
 			logger.info("apiKey------>" + apiKey);
 			// 验证参数apiKey是否存在
-			if (apiKey == null || "".equals(apiKey)) {
+			if (StringUtils.isBlank(apiKey)) {
 				logger.error("apiKey is null");
 				fr.setCode(FilterResponseEnum.FAIL.getCode());
-				fr.setMessage("apiKey is not null");
+				fr.setMessage("apiKey is null");
 				return fr;
 			}
-
 			// 获取api信息
 			Api api = apiFactory.getApi(apiKey);
 			logger.info("api------>" + JSON.toJSON(api));
 			if (null == api) {
 				logger.error("api is null");
 				fr.setCode(FilterResponseEnum.FAIL.getCode());
-				fr.setMessage("api is not null");
+				fr.setMessage("api is null");
 				return fr;
 			}
-
 			// 验证路由信息是否存在
 			boolean routeFlag = false;
 			Integer routeMode = api.getApiRouteMode();
@@ -72,7 +70,6 @@ public class ParamFilter implements InnerFilter {
 					routeFlag = true;
 				}
 			}
-
 			if (routeFlag) {
 				logger.error("apiKey:" + apiKey + " 不存在的api");
 				fr.setCode(FilterResponseEnum.FAIL.getCode());

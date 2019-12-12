@@ -2,21 +2,18 @@ package com.wql.cloud.gateway.core.filter;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSONObject;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.wql.cloud.gateway.core.enums.FilterResponseEnum;
 import com.wql.cloud.gateway.core.factory.FilterFactory;
 import com.wql.cloud.gateway.core.manage.FilterManager;
 import com.wql.cloud.gateway.core.model.FilterResponse;
-import com.wql.cloud.gateway.property.GatewayProperty;
 import com.wql.cloud.gateway.utils.DealJsonDataUtil;
 
 /**
@@ -35,9 +32,6 @@ public class RequestFilter extends ZuulFilter {
 	@Resource(name = "requestInnerFilterFactory")
 	private FilterFactory requestInnerFilterFactory;
 
-	@Autowired
-	private GatewayProperty gatewayProperty;
-	
 	/**过滤器是否生效 */
 	@Override
 	public boolean shouldFilter() {
@@ -50,30 +44,6 @@ public class RequestFilter extends ZuulFilter {
 		RequestContext ctx = RequestContext.getCurrentContext();
 		// 设置编码
 		ctx.getResponse().setContentType("text/html;charset=UTF-8");
-		
-		//获取请求的url，某些url需要直接放行，比如支付回调通知
-		String serviceUrl = null;
-		String serviceId = null;
-		boolean pass = false; //是否放行
-		String servletPath = ctx.getRequest().getServletPath();
-		String passUrls = gatewayProperty.getPassUrls();
-		if(StringUtils.isNotBlank(passUrls)) {
-			//真实地址，截取了 /gateway
-			serviceUrl = servletPath.substring(8);
-			JSONObject jo = JSONObject.parseObject(passUrls);
-			serviceId = jo.getString(serviceUrl);
-			if(StringUtils.isNotBlank(serviceId)) {
-				pass = true;
-			}
-		}
-		
-		if(pass) {
-			ctx.setSendZuulResponse(true);
-			ctx.setResponseStatusCode(200);
-			ctx.set("isSuccess", FilterResponseEnum.SUCCESS.getCode());
-			return null;
-		}
-		
 		// 设置过滤器工厂
 		filterManager.setFilterFactory(requestInnerFilterFactory);
 		// 过滤结果

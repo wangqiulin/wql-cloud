@@ -22,7 +22,6 @@ import com.wql.cloud.gateway.core.enums.FilterResponseEnum;
 import com.wql.cloud.gateway.core.factory.ApiFactory;
 import com.wql.cloud.gateway.core.model.Api;
 import com.wql.cloud.gateway.core.model.FilterResponse;
-import com.wql.cloud.gateway.property.GatewayProperty;
 import com.wql.cloud.gateway.utils.DealJsonDataUtil;
 
 /**
@@ -34,8 +33,8 @@ public class PreConfigFilter extends ZuulFilter {
 
 	@Autowired
 	private ApiFactory apiFactory;
-	@Autowired
-	private GatewayProperty gatewayProperty;
+//	@Autowired
+//	private GatewayProperty gatewayProperty;
 	
 	@Override
 	public boolean shouldFilter() {
@@ -58,83 +57,79 @@ public class PreConfigFilter extends ZuulFilter {
 		ctx.getResponse().setContentType("text/html;charset=UTF-8");
 		
 		//获取请求的url，某些url需要直接放行，比如支付回调通知
-		String serviceUrl = null;
-		String serviceId = null;
-		boolean pass = false; //是否放行
-		String servletPath = ctx.getRequest().getServletPath();
-		String passUrls = gatewayProperty.getPassUrls();
-		if(StringUtils.isNotBlank(passUrls)) {
-			//真实地址，截取了 /gateway
-			serviceUrl = servletPath.substring(8);
-			JSONObject jo = JSONObject.parseObject(passUrls);
-			serviceId = jo.getString(serviceUrl);
-			if(StringUtils.isNotBlank(serviceId)) {
-				pass = true;
-			}
-		}
+//		String serviceUrl = null;
+//		String serviceId = null;
+//		String servletPath = ctx.getRequest().getServletPath();
+//		String passUrls = gatewayProperty.getPassUrls();
+//		if(StringUtils.isNotBlank(passUrls)) {
+//			//真实地址，截取了 /gateway
+//			serviceUrl = servletPath.substring(8);
+//			JSONObject jo = JSONObject.parseObject(passUrls);
+//			serviceId = jo.getString(serviceUrl);
+//			if(StringUtils.isNotBlank(serviceId)) {
+//				ctx.put(REQUEST_URI_KEY, serviceUrl);
+//				ctx.set(SERVICE_ID_KEY, serviceId);
+//				ctx.setRouteHost(null);
+//				ctx.addOriginResponseHeader(SERVICE_ID_HEADER, serviceId);
+//				return null;
+//			}
+//		}
 		
-		if(!pass) {
-			// 获取apikey
-			JSONObject json = DealJsonDataUtil.getRequestJSONObject(ctx);
-			String apiKey = json.getString("apiKey");
-			logger.info("apiKey------>" + apiKey);
-			// 验证参数apiKey是否存在
-			if (StringUtils.isBlank(apiKey)) {
-				// 返回结果
-				FilterResponse fr = new FilterResponse();
-				ctx.setSendZuulResponse(false);
-				ctx.setResponseStatusCode(401);
-				fr.setCode(FilterResponseEnum.FAIL.getCode());
-				fr.setMessage("apiKey is null");
-				ctx.setResponseBody(DealJsonDataUtil.filterResponseToJSON(fr).toJSONString());
-				ctx.set("isSuccess", FilterResponseEnum.FAIL.getCode());
-				return null;
-			}
-			// 获取api信息
-			Api api = apiFactory.getApi(apiKey);
-			logger.info("api------>" + JSON.toJSON(api));
-			if (null == api) {
-				// 返回结果
-				FilterResponse fr = new FilterResponse();
-				logger.error("api is null");
-				ctx.setSendZuulResponse(false);
-				ctx.setResponseStatusCode(401);
-				fr.setCode(FilterResponseEnum.FAIL.getCode());
-				fr.setMessage("api is null");
-				ctx.setResponseBody(DealJsonDataUtil.filterResponseToJSON(fr).toJSONString());
-				ctx.set("isSuccess", FilterResponseEnum.FAIL.getCode());
-				return null;
-			}
-			// 路由方式 0 ribbon 1 http
-			Integer routeMode = api.getApiRouteMode();
-			if (routeMode == 0) {
-				// 处理ribbon请求
-				ctx.put(REQUEST_URI_KEY, api.getApiRoutePath());  // 请求uri
-				ctx.set(SERVICE_ID_KEY, api.getApiRouteServiceid()); // 服务ID
-				ctx.setRouteHost(null);
-				ctx.addOriginResponseHeader(SERVICE_ID_HEADER, api.getApiRouteServiceid());
-			} else if (routeMode == 1) {
-				// 处理http请求
-				ctx.setRouteHost(getUrl(api.getApiRoutePath()));
-				ctx.addOriginResponseHeader(SERVICE_HEADER, api.getApiRoutePath());
-			} else {
-				FilterResponse fr = new FilterResponse();
-				logger.error("routeMode is not valid");
-				ctx.setSendZuulResponse(false);
-				ctx.setResponseStatusCode(401);
-				fr.setCode(FilterResponseEnum.FAIL.getCode());
-				fr.setMessage("routeMode is not valid");
-				ctx.setResponseBody(DealJsonDataUtil.filterResponseToJSON(fr).toJSONString());
-				ctx.set("isSuccess", FilterResponseEnum.FAIL.getCode());
-				return null;
-			}
-		} else {
-			ctx.put(REQUEST_URI_KEY, serviceUrl);
-			ctx.set(SERVICE_ID_KEY, serviceId);
-			ctx.setRouteHost(null);
-			ctx.addOriginResponseHeader(SERVICE_ID_HEADER, serviceId);
+		// 获取apikey
+		JSONObject json = DealJsonDataUtil.getRequestJSONObject(ctx);
+		String apiKey = json.getString("apiKey");
+		logger.info("apiKey------>" + apiKey);
+		// 验证参数apiKey是否存在
+		if (StringUtils.isBlank(apiKey)) {
+			// 返回结果
+			FilterResponse fr = new FilterResponse();
+			ctx.setSendZuulResponse(false);
+			ctx.setResponseStatusCode(401);
+			fr.setCode(FilterResponseEnum.FAIL.getCode());
+			fr.setMessage("apiKey is null");
+			ctx.setResponseBody(DealJsonDataUtil.filterResponseToJSON(fr).toJSONString());
+			ctx.set("isSuccess", FilterResponseEnum.FAIL.getCode());
+			return null;
 		}
-		return null;
+		// 获取api信息
+		Api api = apiFactory.getApi(apiKey);
+		logger.info("api------>" + JSON.toJSON(api));
+		if (null == api) {
+			FilterResponse fr = new FilterResponse();
+			logger.error("api is null");
+			ctx.setSendZuulResponse(false);
+			ctx.setResponseStatusCode(401);
+			fr.setCode(FilterResponseEnum.FAIL.getCode());
+			fr.setMessage("api is null");
+			ctx.setResponseBody(DealJsonDataUtil.filterResponseToJSON(fr).toJSONString());
+			ctx.set("isSuccess", FilterResponseEnum.FAIL.getCode());
+			return null;
+		}
+		// 路由方式 0 ribbon 1 http
+		Integer routeMode = api.getApiRouteMode();
+		if (routeMode == 0) {
+			// 处理ribbon请求
+			ctx.put(REQUEST_URI_KEY, api.getApiRoutePath());  // 请求uri
+			ctx.set(SERVICE_ID_KEY, api.getApiRouteServiceid()); // 服务ID
+			ctx.setRouteHost(null);
+			ctx.addOriginResponseHeader(SERVICE_ID_HEADER, api.getApiRouteServiceid());
+			return null;
+		} else if (routeMode == 1) {
+			// 处理http请求
+			ctx.setRouteHost(getUrl(api.getApiRoutePath()));
+			ctx.addOriginResponseHeader(SERVICE_HEADER, api.getApiRoutePath());
+			return null;
+		} else {
+			FilterResponse fr = new FilterResponse();
+			logger.error("routeMode is not valid");
+			ctx.setSendZuulResponse(false);
+			ctx.setResponseStatusCode(401);
+			fr.setCode(FilterResponseEnum.FAIL.getCode());
+			fr.setMessage("routeMode is not valid");
+			ctx.setResponseBody(DealJsonDataUtil.filterResponseToJSON(fr).toJSONString());
+			ctx.set("isSuccess", FilterResponseEnum.FAIL.getCode());
+			return null;
+		}
 	}
 
 	@Override

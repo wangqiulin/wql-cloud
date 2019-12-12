@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.ServletInputStream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class SignCheckFilter implements InnerFilter {
 			String sign = json.getString("sign");
 
 			// 数据或签名为空不做处理
-			if (data == null || "".equals(data) || sign == null || "".equals(sign)) {
+			if (StringUtils.isBlank(data) || StringUtils.isBlank(sign)) {
 				fr.setCode(FilterResponseEnum.FAIL.getCode());
 				fr.setMessage("data or sign is not null");
 				return fr;
