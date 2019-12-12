@@ -23,6 +23,9 @@ import com.wql.cloud.systemservice.pojo.res.MerchantCacheInfo;
 import com.wql.cloud.systemservice.service.merchant.MerchantService;
 import com.wql.cloud.tool.collect.CollectionUtils;
 import com.wql.cloud.tool.json.JsonUtils;
+import com.xxl.job.core.biz.model.ReturnT;
+import com.xxl.job.core.handler.annotation.XxlJob;
+import com.xxl.job.core.log.XxlJobLogger;
 
 @Service
 public class MerchantServiceImpl implements MerchantService {
@@ -43,8 +46,8 @@ public class MerchantServiceImpl implements MerchantService {
 	@Autowired
 	private RedisUtil redisUtil;
 	
-	@Override
-	public void loadMerchantCache() {
+	@XxlJob("merchantJobHandler")
+    public ReturnT<String> loadMerchantCache(String param) throws Exception {
 		//查询商户信息
 		Merchant record1 = new Merchant();
 		record1.setDataFlag(1);
@@ -52,7 +55,7 @@ public class MerchantServiceImpl implements MerchantService {
 		List<Merchant> merchantList = merchantMapper.select(record1);
 		if(CollectionUtils.isEmpty(merchantList)) {
 			redisUtil.remove(SYSTEM_MERCHANT);
-			return ;
+			return ReturnT.SUCCESS;
 		}
 		//查询白名单
 		MerchantWhitelist record2 = new MerchantWhitelist();
@@ -114,6 +117,7 @@ public class MerchantServiceImpl implements MerchantService {
 			}
 			redisUtil.set(SYSTEM_MERCHANT.concat(merchant.getMerchantCode()),  JsonUtils.toJsonString(info));
 		}
-	} 
+        return ReturnT.SUCCESS;
+	}
 	
 }

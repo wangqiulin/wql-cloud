@@ -12,6 +12,8 @@ import com.wql.cloud.systemservice.mapper.api.ApiMapper;
 import com.wql.cloud.systemservice.pojo.domain.api.Api;
 import com.wql.cloud.systemservice.service.api.ApiService;
 import com.wql.cloud.tool.json.JsonUtils;
+import com.xxl.job.core.biz.model.ReturnT;
+import com.xxl.job.core.handler.annotation.XxlJob;
 
 @Service
 public class ApiServiceImpl implements ApiService {
@@ -24,8 +26,8 @@ public class ApiServiceImpl implements ApiService {
 	@Autowired
 	private RedisUtil redisUtil;
 	
-	@Override
-	public void loadApiCache() {
+	@XxlJob("apiCacheJobHandler")
+    public ReturnT<String> loadApiCache(String param) throws Exception {
 		List<Api> apiList = apiMapper.selectAll();
 		for (Api api : apiList) {
 			if(api.getDataFlag() == 0 || api.getApiState() == 0) {
@@ -34,6 +36,8 @@ public class ApiServiceImpl implements ApiService {
 				redisUtil.set(SYSTEM_API + api.getApiKey(), JsonUtils.toJsonString(api));
 			}
 		}
+        return ReturnT.SUCCESS;
 	}
+	
 
 }

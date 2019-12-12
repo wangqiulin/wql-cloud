@@ -14,6 +14,9 @@ import com.wql.cloud.systemservice.pojo.domain.blacklist.Blacklist;
 import com.wql.cloud.systemservice.service.blacklist.BlacklistService;
 import com.wql.cloud.tool.collect.CollectionUtils;
 import com.wql.cloud.tool.json.JsonUtils;
+import com.xxl.job.core.biz.model.ReturnT;
+import com.xxl.job.core.handler.annotation.XxlJob;
+import com.xxl.job.core.log.XxlJobLogger;
 
 @Service
 public class BlacklistServiceImpl implements BlacklistService {
@@ -26,9 +29,8 @@ public class BlacklistServiceImpl implements BlacklistService {
 	@Autowired
 	private RedisUtil redisUtil;
 	
-	@Override
-	public void loadBlacklistCache() {
-		//查询黑名单
+	@XxlJob("blackListJobHandler")
+    public ReturnT<String> loadBlacklistCache(String param) throws Exception {
 		Blacklist record = new Blacklist();
 		record.setDataFlag(1);
 		record.setBlackState(1);
@@ -39,6 +41,7 @@ public class BlacklistServiceImpl implements BlacklistService {
 		} else {
 			redisUtil.remove(SYSTEM_BLACKLIST);
 		}
+        return ReturnT.SUCCESS;
 	}
-
+	
 }

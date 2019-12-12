@@ -14,6 +14,8 @@ import com.wql.cloud.gateway.constants.GatewayConstants;
 import com.wql.cloud.gateway.core.factory.ApiFactory;
 import com.wql.cloud.gateway.core.model.Api;
 import com.wql.cloud.gateway.utils.JsonUtils;
+import com.xxl.job.core.biz.model.ReturnT;
+import com.xxl.job.core.handler.annotation.XxlJob;
 
 /**
  * 路由工厂实现类
@@ -48,7 +50,6 @@ public class ApiFactoryImpl implements ApiFactory {
 
 	/**
 	 * 从缓存中取出api信息并放入到内存中
-	 * 
 	 * @param apiKey
 	 * @return
 	 */
@@ -65,11 +66,11 @@ public class ApiFactoryImpl implements ApiFactory {
 		return api;
 	}
 
-	@Override
-	public void initApiLocalMap() {
-		logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>清空apiLocalMap中的api信息>>>>>>>>>>>>>>>>>>>>>>begin>>>>>");
+	
+	@XxlJob("apiRefreshJobHandler")
+    public ReturnT<String> loadApiCache(String param) throws Exception {
 		apiLocalMap.clear();
-		logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<清空apiLocalMap中的api信息<<<<<<<<<<<<<<<<<<<<<<<<end<<<<<");
+		return ReturnT.SUCCESS;
 	}
 
 }

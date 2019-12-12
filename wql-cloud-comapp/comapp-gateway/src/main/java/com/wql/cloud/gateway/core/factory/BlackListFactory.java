@@ -13,8 +13,4 @@ public interface BlackListFactory {
 	 */
 	public List<String> getBlackList();
 	
-	/**
-	 * 加载黑名单列表
-	 */
-	public void initBlackList();
 }

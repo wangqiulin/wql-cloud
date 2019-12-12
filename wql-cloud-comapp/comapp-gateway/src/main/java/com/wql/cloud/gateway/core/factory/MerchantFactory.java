@@ -14,8 +14,4 @@ public interface MerchantFactory {
 	 */
 	public MerchantCacheInfo getMerchant(String merchantCode);
 	
-	/**
-	 * 加载商户信息
-	 */
-	public void initMerchantLocalMap();
 }

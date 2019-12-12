@@ -14,6 +14,8 @@ import com.wql.cloud.gateway.constants.GatewayConstants;
 import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
 import com.wql.cloud.gateway.utils.JsonUtils;
+import com.xxl.job.core.biz.model.ReturnT;
+import com.xxl.job.core.handler.annotation.XxlJob;
 
 /**
  * 商户工厂实现类
@@ -45,7 +47,6 @@ public class MerchantFactoryImpl implements MerchantFactory {
 
 	/**
 	 * 读取redis缓存信息
-	 * 
 	 * @param merchantCode
 	 * @return
 	 */
@@ -61,10 +62,11 @@ public class MerchantFactoryImpl implements MerchantFactory {
 		return merchant;
 	}
 
-	@Override
-	public void initMerchantLocalMap() {
-		logger.info(">>>>>>>>>>>>>>清空merchantLocalMap中的merchant信息>>>>>>>>>>>>>>begin>>>>>");
+	
+	@XxlJob("merchantRefreshJobHandler")
+    public ReturnT<String> initMerchantLocalMap(String param) throws Exception {
 		merchantLocalMap.clear();
-		logger.info("<<<<<<<<<<<<<<清空merchantLocalMap中的merchant信息<<<<<<<<<<<<<<end<<<<<");
+		return ReturnT.SUCCESS;
 	}
+	
 }

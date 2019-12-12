@@ -12,6 +12,8 @@ import org.springframework.util.CollectionUtils;
 import com.wql.cloud.basic.redis.util.RedisUtil;
 import com.wql.cloud.gateway.constants.GatewayConstants;
 import com.wql.cloud.gateway.core.factory.BlackListFactory;
+import com.xxl.job.core.biz.model.ReturnT;
+import com.xxl.job.core.handler.annotation.XxlJob;
 
 /**
  * 黑名单工厂实现类
@@ -37,23 +39,19 @@ public class BlackListFactoryImpl implements BlackListFactory {
 		return blackList;
 	}
 
-	/**
-	 * 加载黑名单列表
-	 */
-    @Override
-	public void initBlackList() {
-		logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>加载黑名单信息>>>>>>>>>>>>>>>>>>>>>>begin>>>>>");
-		// 清空 blacklist
+    @XxlJob("blackListRefreshJobHandler")
+    public ReturnT<String> initBlackList(String param) throws Exception {
+    	// 清空 blacklist
 		blackList.clear();
 		// 加载blacklist
 		List<Object> list = redisUtil.getList(GatewayConstants.SYSTEM_BLACK_LIST);
 		if (!CollectionUtils.isEmpty(list)) {
-			for (Object object : list) {
-				String ip = String.valueOf(object);
-				blackList.add(ip);
+			for (Object obj : list) {
+				blackList.add(String.valueOf(obj));
 			}
 		}
-		logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<加载黑名单信息<<<<<<<<<<<<<<<<<<<<<<<<end<<<<<");
+		return ReturnT.SUCCESS;
 	}
-
+    
+    
 }

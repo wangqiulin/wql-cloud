@@ -15,8 +15,4 @@ public interface ApiFactory {
 	 */
 	public Api getApi(String apiKey);
 
-	/**
-	 * 初始化apiLocalMap
-	 */
-	public void initApiLocalMap();
 }
