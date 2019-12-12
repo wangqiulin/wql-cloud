@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.wql.cloud.basic.datasource.response.constant.BusinessEnum;
 import com.wql.cloud.basic.datasource.response.constant.DataResponse;
-import com.wql.cloud.systemservice.pojo.res.UserResource;
+import com.wql.cloud.systemservice.pojo.res.user.UserResource;
 
 @Component
 public class SystemClientHystrix implements SystemClient {

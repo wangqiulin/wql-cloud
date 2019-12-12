@@ -1,4 +1,4 @@
-package com.wql.cloud.systemservice.pojo.res;
+package com.wql.cloud.systemservice.pojo.res.user;
 
 import java.io.Serializable;
 

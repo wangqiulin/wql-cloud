@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.wql.cloud.basic.datasource.response.constant.DataResponse;
-import com.wql.cloud.systemservice.pojo.res.UserResource;
+import com.wql.cloud.systemservice.pojo.res.user.UserResource;
 
 @FeignClient(value = "${feign.serviceId.system}", fallback = SystemClientHystrix.class)
 public interface SystemClient {

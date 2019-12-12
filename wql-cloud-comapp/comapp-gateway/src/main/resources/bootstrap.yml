@@ -84,7 +84,10 @@ ribbon:
   #ribbon连接池配置
   MaxTotalConnections: 200
   MaxConnectionsPerHost: 50
-
+  OkToRetryOnAllOperations: true
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 1
+  
 eureka: 
   instance:
     preferIpAddress: true

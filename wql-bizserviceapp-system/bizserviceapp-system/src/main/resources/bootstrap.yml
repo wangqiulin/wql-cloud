@@ -28,9 +28,15 @@ eureka:
     registryFetchIntervalSeconds: 10   # 服务列表缓存更新时间
 
 ribbon: 
-  ReadTimeout: 10000  #请求处理的超时时间
   ConnectTimeout: 1000  #请求连接的超时时间
-
+  ReadTimeout: 10000  #请求处理的超时时间
+  #ribbon连接池配置
+  MaxTotalConnections: 200
+  MaxConnectionsPerHost: 50
+  OkToRetryOnAllOperations: true
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 1
+    
 #信号量模式
 hystrix:
   command:
