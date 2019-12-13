@@ -21,21 +21,11 @@ import com.wql.cloud.gateway.utils.DealJsonDataUtil;
 @Component
 public class FilterManagerImpl implements FilterManager {
 
-	/**
-	 * 日志
-	 */
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	/**
-	 * 过滤器工厂
-	 */
+	/**过滤器工厂 */
 	private FilterFactory filterFactory;
 
-	/**
-	 * 设置过滤器工厂
-	 * 
-	 * @param filterFactory
-	 */
 	@Override
 	public void setFilterFactory(FilterFactory filterFactory) {
 		this.filterFactory = filterFactory;
@@ -51,14 +41,10 @@ public class FilterManagerImpl implements FilterManager {
 		// 获取apiKey
 		JSONObject json = DealJsonDataUtil.getRequestJSONObject(ctx);
 		String apiKey = json.getString("apiKey");
-		
 		// 返回结果
 		FilterResponse fr = new FilterResponse();
-		
 		// 过滤器列表
 		List<InnerFilter> innerFilterList = filterFactory.getFilterList(apiKey);
-		logger.info("apiKey:" + apiKey + " , 对应的过滤器列表:" + innerFilterList);
-
 		// 执行过滤规则
 		for (InnerFilter innerFilter : innerFilterList) {
 			// 过滤结果

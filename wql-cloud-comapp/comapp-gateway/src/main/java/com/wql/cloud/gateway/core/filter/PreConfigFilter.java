@@ -78,7 +78,6 @@ public class PreConfigFilter extends ZuulFilter {
 		// 获取apikey
 		JSONObject json = DealJsonDataUtil.getRequestJSONObject(ctx);
 		String apiKey = json.getString("apiKey");
-		logger.info("apiKey------>" + apiKey);
 		// 验证参数apiKey是否存在
 		if (StringUtils.isBlank(apiKey)) {
 			// 返回结果
@@ -93,7 +92,6 @@ public class PreConfigFilter extends ZuulFilter {
 		}
 		// 获取api信息
 		Api api = apiFactory.getApi(apiKey);
-		logger.info("api------>" + JSON.toJSON(api));
 		if (null == api) {
 			FilterResponse fr = new FilterResponse();
 			logger.error("api is null");
