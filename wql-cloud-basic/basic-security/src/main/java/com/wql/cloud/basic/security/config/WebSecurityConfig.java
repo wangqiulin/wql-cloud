@@ -33,11 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Value("${login.path:/user/login}")
     private String loginPath;
 
-	/**文件上传是否需要安全拦截*/
-	@Value("${file.upload.security.enabled:false}")
-	private String fileUploadSecurityEnabled;
-    
-    @Value("${wisdom.business.whitelist}")
+    @Value("${business.whitelist:192.168.1.93}")
     private String[] whitelist;
 
 	/**405 错误处理*/

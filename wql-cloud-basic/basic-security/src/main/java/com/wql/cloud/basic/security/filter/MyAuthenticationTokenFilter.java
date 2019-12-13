@@ -49,7 +49,7 @@ public class MyAuthenticationTokenFilter extends OncePerRequestFilter {
     private String loginPath;
 
     /**token存放位置*/
-    @Value("${header.token:Authentication}")
+    @Value("${header.token:Authorization}")
     private String tokenHeader;
 
     @Autowired
