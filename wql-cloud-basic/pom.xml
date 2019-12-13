@@ -131,7 +131,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.0.5</version>
+            <version>5.0.7</version>
         </dependency>
         <!-- xml转换 -->
         <dependency>

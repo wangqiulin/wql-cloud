@@ -20,7 +20,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
-			<version>1.1.20</version>
+			<version>1.1.21</version>
 		</dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -31,7 +31,7 @@
 		<dependency>
 		     <groupId>com.github.pagehelper</groupId>
   	         <artifactId>pagehelper-spring-boot-starter</artifactId>
-  	         <version>1.2.12</version>
+  	         <version>1.2.13</version>
 		</dependency>
 		<!-- 集成tk插件 -->
 		<dependency>
