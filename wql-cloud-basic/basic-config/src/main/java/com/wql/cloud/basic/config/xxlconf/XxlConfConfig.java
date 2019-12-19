@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.xxlconf.config;
+package com.wql.cloud.basic.config.xxlconf;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,11 +8,6 @@ import org.springframework.context.annotation.Configuration;
 
 import com.xxl.conf.core.spring.XxlConfFactory;
 
-/**
- * 
- * @author wangqiulin
- *
- */
 @Configuration
 public class XxlConfConfig {
 	
@@ -29,7 +24,6 @@ public class XxlConfConfig {
 
     @Value("${xxl.conf.mirrorfile}")
     private String mirrorfile;
-
     
     @Bean
     public XxlConfFactory xxlConfFactory() {

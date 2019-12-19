@@ -30,4 +30,18 @@ public class ReplaceUtil {
 		return content;
 	}
 	
+	
+	public static String replace2(String content, Map<String, Object> dataMap){
+		if(StringUtils.isBlank(content)){
+			return null;
+		}
+		if(CollectionUtils.isEmpty(dataMap)) {
+			return content;
+		}
+		for (Entry<String, Object> entry : dataMap.entrySet()) {
+			content = StringUtils.replace(content, "${"+entry.getKey()+"}", String.valueOf(entry.getValue()));
+		}
+		return content;
+	}
+	
 }

@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.mq.xxlconfig;
+package com.wql.cloud.basic.mq.xxlmq;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
