@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.oss.enums;
+package com.wql.cloud.basic.risk.enums;
 
 /**
  * 风控类型

@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.oss.service;
+package com.wql.cloud.basic.risk.service;
 
 /**
  * 网易风控

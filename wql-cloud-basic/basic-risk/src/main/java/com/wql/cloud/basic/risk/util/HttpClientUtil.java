@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.oss.util;
+package com.wql.cloud.basic.risk.util;
 
 import java.util.ArrayList;
 import java.util.List;

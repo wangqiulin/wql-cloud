@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.oss.service.impl;
+package com.wql.cloud.basic.risk.service.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.wql.cloud.basic.oss.service.NetRiskService;
-import com.wql.cloud.basic.oss.util.HttpClientUtil;
+import com.wql.cloud.basic.risk.service.NetRiskService;
+import com.wql.cloud.basic.risk.util.HttpClientUtil;
 
 @Service
 public class NetRiskServiceImpl implements NetRiskService {

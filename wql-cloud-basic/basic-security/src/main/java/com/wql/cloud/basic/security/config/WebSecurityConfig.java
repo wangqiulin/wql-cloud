@@ -55,6 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    	// 使用自定义登录身份认证组件
     	auth.authenticationProvider(authenticationProvider);
 	}
 
@@ -96,15 +97,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 公共资源放开
                 .antMatchers(this.queryPublicResource()).permitAll()
 				//swagger ui
-				.antMatchers(HttpMethod.GET,
-						"/swagger-resources/configuration/ui",
-						"/swagger-resources",
-						"/v2/api-docs",
-						"/swagger-resources/configuration/security"
-				).permitAll()
+				.antMatchers(HttpMethod.GET, "/swagger**/**", "/webjars/**", "/v2/**").permitAll()
 				// 禁用其他链接（需要认证）
 				.anyRequest().authenticated();
-		// 添加JWT filter
+		// 开启登录认证流程过滤器
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class)
         //添加跨域支持
         .cors();
