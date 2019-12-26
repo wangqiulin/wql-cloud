@@ -27,6 +27,7 @@
         <module>basic-search</module>
         <module>basic-redisson</module>
         <module>basic-risk</module>
+        <module>basic-seata</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
