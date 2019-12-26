@@ -1,0 +1,6 @@
+spring:
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+      cluster-nodes: es:9300
