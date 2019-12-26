@@ -29,6 +29,7 @@
         <module>basic-risk</module>
         <module>basic-seata</module>
         <module>basic-mongodb</module>
+        <module>basic-mail</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>

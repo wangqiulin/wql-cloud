@@ -1,4 +1,4 @@
-package com.wql.cloud.tool.email;
+package com.wql.cloud.basic.mail.util;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -15,6 +15,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+
+import com.wql.cloud.basic.mail.bean.MailBean;
 
 @Component
 public class SendEmailUtil {
@@ -51,7 +53,7 @@ public class SendEmailUtil {
 	 * 
 	 * @param mailBean
 	 */
-	public void sendHTMLMail(MailBean mailBean) {
+	public void sendHtmlMail(MailBean mailBean) {
 		MimeMessage mimeMailMessage = null;
 		try {
 			mimeMailMessage = javaMailSender.createMimeMessage();
