@@ -69,7 +69,7 @@ public class UserController {
 	}
 	
 	
-	@ApiOperation("查询用户资源")
+	@ApiOperation("查询用户菜单资源")
 	@RequestMapping(value = "/system/getUserResource", method = RequestMethod.POST)
 	public DataResponse<List<UserResource>> getUserResource(@RequestParam(value = "userCode", required = true) String userCode){
 		return DataResponse.success(userService.getUserResource(userCode));
