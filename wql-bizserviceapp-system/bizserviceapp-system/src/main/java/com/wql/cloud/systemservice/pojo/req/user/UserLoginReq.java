@@ -11,6 +11,9 @@ public class UserLoginReq {
 	
 	@ApiModelProperty("密码")
 	private String userPwd;
+	
+	@ApiModelProperty("应用key")
+	private String webappKey;
 
 	public String getUserName() {
 		return userName;
@@ -26,6 +29,14 @@ public class UserLoginReq {
 
 	public void setUserPwd(String userPwd) {
 		this.userPwd = userPwd;
+	}
+
+	public String getWebappKey() {
+		return webappKey;
+	}
+
+	public void setWebappKey(String webappKey) {
+		this.webappKey = webappKey;
 	}
 
 }

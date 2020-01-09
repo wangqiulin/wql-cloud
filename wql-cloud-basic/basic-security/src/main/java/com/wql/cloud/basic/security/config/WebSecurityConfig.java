@@ -16,10 +16,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.wql.cloud.basic.security.MyAccessDeniedHandler;
-import com.wql.cloud.basic.security.MyAuthenticationEntryPoint;
-import com.wql.cloud.basic.security.MyAuthenticationProvider;
-import com.wql.cloud.basic.security.filter.MyAuthenticationTokenFilter;
+import com.wql.cloud.basic.security.provider.MyAuthenticationProvider;
 
 /**
  * TODO Spring Security 配置
@@ -40,19 +37,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private MyAuthenticationEntryPoint unauthorizedHandler;
 	
-	/**自定义认证*/
-	@Autowired
-	private MyAuthenticationProvider authenticationProvider;
-	
 	/**访问拒绝处理*/
 	@Autowired
 	private MyAccessDeniedHandler accessDeniedHandler;
 
-	@Bean
-	public MyAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
-		return new MyAuthenticationTokenFilter();
-	}
-    
+	/**自定义认证*/
+	@Autowired
+	private MyAuthenticationProvider authenticationProvider;
+	
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     	// 使用自定义登录身份认证组件
@@ -89,7 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						"/env")
 				.permitAll()
 				// 允许所有OPTIONS请求
-				.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				// 授权api放开
 				.antMatchers(new String[]{loginPath}).permitAll()
 				// 白名单放开
@@ -108,6 +100,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.headers().cacheControl();
 	}
 
+	
+	@Bean
+	public MyAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
+		return new MyAuthenticationTokenFilter();
+	}
+	
+	
+	
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

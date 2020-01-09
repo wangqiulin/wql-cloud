@@ -9,6 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <dependencies>
+        <!-- springSecurity -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>

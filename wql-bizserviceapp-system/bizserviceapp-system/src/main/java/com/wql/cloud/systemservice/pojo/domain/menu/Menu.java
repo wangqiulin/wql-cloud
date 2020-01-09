@@ -24,6 +24,8 @@ public class Menu extends BaseDO implements Serializable {
 	private String menuResourceCode;
 	
 	private String menuIcon;
+	
+	private String webappKey;
 
 	public String getMenuCode() {
 		return menuCode;
@@ -79,6 +81,14 @@ public class Menu extends BaseDO implements Serializable {
 
 	public void setMenuIcon(String menuIcon) {
 		this.menuIcon = menuIcon;
+	}
+
+	public String getWebappKey() {
+		return webappKey;
+	}
+
+	public void setWebappKey(String webappKey) {
+		this.webappKey = webappKey;
 	}
 	
 }

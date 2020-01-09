@@ -15,8 +15,6 @@ public class RoleResourceRel extends BaseDO implements Serializable {
 	
 	private String resourceCode;
 	
-	private String resourceDetailCode;
-
 	public String getRoleCode() {
 		return roleCode;
 	}
@@ -31,14 +29,6 @@ public class RoleResourceRel extends BaseDO implements Serializable {
 
 	public void setResourceCode(String resourceCode) {
 		this.resourceCode = resourceCode;
-	}
-
-	public String getResourceDetailCode() {
-		return resourceDetailCode;
-	}
-
-	public void setResourceDetailCode(String resourceDetailCode) {
-		this.resourceDetailCode = resourceDetailCode;
 	}
 
 }

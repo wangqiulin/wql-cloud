@@ -9,9 +9,6 @@ public class UserUpdateReq {
 	@ApiModelProperty("用户code")
 	private String userCode;
 	
-	@ApiModelProperty("用户名")
-	private String userName;
-	
 	@ApiModelProperty("密码")
 	private String userPwd;
 	
@@ -24,14 +21,6 @@ public class UserUpdateReq {
 
 	public void setUserCode(String userCode) {
 		this.userCode = userCode;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	public String getUserPwd() {

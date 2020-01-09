@@ -3,12 +3,13 @@ package com.wql.cloud.systemservice.service.user;
 import java.util.List;
 
 import com.wql.cloud.systemservice.pojo.domain.user.User;
+import com.wql.cloud.systemservice.pojo.req.menu.UserMenuReq;
 import com.wql.cloud.systemservice.pojo.req.user.UserAddReq;
 import com.wql.cloud.systemservice.pojo.req.user.UserDeleteReq;
 import com.wql.cloud.systemservice.pojo.req.user.UserLoginReq;
 import com.wql.cloud.systemservice.pojo.req.user.UserUpdateReq;
+import com.wql.cloud.systemservice.pojo.res.menu.UserMenuRes;
 import com.wql.cloud.systemservice.pojo.res.user.UserLoginRes;
-import com.wql.cloud.systemservice.pojo.res.user.UserResource;
 
 public interface UserService {
 	
@@ -44,13 +45,6 @@ public interface UserService {
 	 */
 	List<User> queryUserList(User req);
 	
-	/**
-	 * 获取用户所属资源
-	 * @param userCode
-	 * @return
-	 */
-	List<UserResource> getUserResource(String userCode);
-
 	/**
 	 * 更新用户资源
 	 * @param userCode

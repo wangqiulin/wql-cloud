@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wql.cloud.basic.security.jwt.JwtUtil;
 import com.wql.cloud.basic.security.jwt.UUIDGenerator;
-import com.wql.cloud.basic.security.model.MyAuthenticationToken;
 import com.wql.cloud.basic.security.model.UserInfo;
 
 @RestController
@@ -35,15 +35,15 @@ public class LoginController {
 		Map<String, Object> resMap = new HashMap<>();
 		try {
 			// 用户验证
-			MyAuthenticationToken authenticationToken = new MyAuthenticationToken(userLoginReq.getUsername(), userLoginReq.getPassword());
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userLoginReq.getUsername(), userLoginReq.getPassword());
 			final Authentication authentication = authenticationManager.authenticate(authenticationToken);
 			
 			// 记录用户信息
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			MyAuthenticationToken myAuthentication = (MyAuthenticationToken) authentication;
+			UsernamePasswordAuthenticationToken myAuthentication = (UsernamePasswordAuthenticationToken) authentication;
+			UserInfo userInfo = (UserInfo)myAuthentication.getPrincipal();
 			
 			//使用jwt，生成Token
-			UserInfo userInfo = (UserInfo)myAuthentication.getPrincipal();
 			String token = JwtUtil.createJWT(UUIDGenerator.getUUID(), userInfo.getUserCode(), 1000*60*60*24*30);
             Map<String,Object> map = new HashMap<>();
 			map.put("token", token);

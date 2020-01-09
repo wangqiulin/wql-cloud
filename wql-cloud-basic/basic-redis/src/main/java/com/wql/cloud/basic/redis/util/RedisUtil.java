@@ -217,6 +217,11 @@ public class RedisUtil {
 	}
 
 
+	public boolean exists(String key) {
+        return redisTemplate.hasKey(key);
+    }
+	
+	
 //	public void tx(String key) {
 //		//开启事务
 //		redisTemplate.setEnableTransactionSupport(true);

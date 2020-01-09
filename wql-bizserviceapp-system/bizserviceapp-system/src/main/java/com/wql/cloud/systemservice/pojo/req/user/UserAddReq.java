@@ -14,6 +14,9 @@ public class UserAddReq {
 
 	@ApiModelProperty("状态：0禁用，1正常")
 	private Integer userState;
+
+	@ApiModelProperty("应用key")
+	private String webappKey;
 	
 	public String getUserName() {
 		return userName;
@@ -37,6 +40,14 @@ public class UserAddReq {
 
 	public void setUserState(Integer userState) {
 		this.userState = userState;
+	}
+
+	public String getWebappKey() {
+		return webappKey;
+	}
+
+	public void setWebappKey(String webappKey) {
+		this.webappKey = webappKey;
 	}
 
 }

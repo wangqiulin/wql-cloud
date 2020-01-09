@@ -23,7 +23,6 @@
         <module>basic-push</module>
         <module>basic-login</module>
         <module>basic-security</module>
-        <module>basic-security2</module>
         <module>basic-search</module>
         <module>basic-redisson</module>
         <module>basic-risk</module>

@@ -6,17 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wql.cloud.basic.datasource.response.constant.DataResponse;
 import com.wql.cloud.systemservice.pojo.domain.user.User;
+import com.wql.cloud.systemservice.pojo.req.menu.UserMenuReq;
 import com.wql.cloud.systemservice.pojo.req.user.UserAddReq;
 import com.wql.cloud.systemservice.pojo.req.user.UserDeleteReq;
 import com.wql.cloud.systemservice.pojo.req.user.UserLoginReq;
 import com.wql.cloud.systemservice.pojo.req.user.UserUpdateReq;
+import com.wql.cloud.systemservice.pojo.res.menu.UserMenuRes;
 import com.wql.cloud.systemservice.pojo.res.user.UserLoginRes;
-import com.wql.cloud.systemservice.pojo.res.user.UserResource;
 import com.wql.cloud.systemservice.service.user.UserService;
 
 import io.swagger.annotations.Api;
@@ -66,13 +66,6 @@ public class UserController {
 	public DataResponse<List<User>> queryUserList(@RequestBody User req){
 		List<User> list = userService.queryUserList(req);
 		return DataResponse.success(list);
-	}
-	
-	
-	@ApiOperation("查询用户菜单资源")
-	@RequestMapping(value = "/system/getUserResource", method = RequestMethod.POST)
-	public DataResponse<List<UserResource>> getUserResource(@RequestParam(value = "userCode", required = true) String userCode){
-		return DataResponse.success(userService.getUserResource(userCode));
 	}
 	
 }

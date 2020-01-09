@@ -18,6 +18,8 @@ public class User extends BaseDO implements Serializable {
 	private String userPwd;
 
 	private Integer userState;
+	
+	private String webappKey;
 
 	public String getUserCode() {
 		return userCode;
@@ -49,6 +51,14 @@ public class User extends BaseDO implements Serializable {
 
 	public void setUserState(Integer userState) {
 		this.userState = userState;
+	}
+
+	public String getWebappKey() {
+		return webappKey;
+	}
+
+	public void setWebappKey(String webappKey) {
+		this.webappKey = webappKey;
 	}
 
 }

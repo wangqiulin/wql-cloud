@@ -16,7 +16,7 @@ import com.wql.cloud.tool.bean.BeanUtils;
 import com.wql.cloud.tool.excel.csv.CsvDownloadUtil;
 import com.wql.cloud.userservice.pojo.domain.User;
 import com.wql.cloud.userservice.pojo.res.UserExcel;
-import com.wql.cloud.userservice.service.UserService;
+import com.wql.cloud.userservice.service.user.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.wql.cloud.basic.datasource.response.constant.DataResponse;
-import com.wql.cloud.systemservice.pojo.res.user.UserResource;
+import com.wql.cloud.systemservice.pojo.res.menu.UserMenuRes;
 
 @FeignClient(value = "${feign.serviceId.system}", fallback = SystemClientHystrix.class)
 public interface SystemClient {
@@ -20,6 +20,6 @@ public interface SystemClient {
 	 * @return
 	 */
 	@RequestMapping(value = "/system/getUserResource", method = RequestMethod.POST)
-	DataResponse<List<UserResource>> getUserResource(@RequestParam(value = "userCode", required = true) String userCode);
+	DataResponse<List<UserMenuRes>> getUserResource(@RequestParam(value = "userCode", required = true) String userCode);
 	
 }

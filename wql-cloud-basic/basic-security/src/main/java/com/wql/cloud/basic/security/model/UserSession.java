@@ -12,9 +12,6 @@ public class UserSession implements Serializable {
 	/**用户名称*/
 	private String userName;
 
-	/**手机*/
-	private String userPhone;
-
 	/**用户状态*/
 	private String userState;
 
@@ -32,14 +29,6 @@ public class UserSession implements Serializable {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-
-	public String getUserPhone() {
-		return userPhone;
-	}
-
-	public void setUserPhone(String userPhone) {
-		this.userPhone = userPhone;
 	}
 
 	public String getUserState() {
