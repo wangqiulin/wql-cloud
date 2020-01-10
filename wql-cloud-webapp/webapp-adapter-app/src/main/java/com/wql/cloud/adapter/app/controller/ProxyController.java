@@ -4,8 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,13 +25,9 @@ import com.wql.cloud.adapter.app.model.RequestParamModel;
 @RestController
 public class ProxyController extends BaseController {
 
-	private static Logger log = LoggerFactory.getLogger(ProxyController.class);
-
-	/** 服务请求工厂 */
 	@Autowired
 	private RequestObjectAdapterFactory requestFactory;
 	
-	/** 服务响应工厂 */
 	@Autowired
 	private ResponseObjectAdapterFactory responseFactory;
 
