@@ -13,6 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <basic-redis.version>0.0.1-SNAPSHOT</basic-redis.version>
+        <basic-security.version>0.0.1-SNAPSHOT</basic-security.version>
     </properties>
     <dependencies>
         <dependency>
@@ -57,26 +58,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <!-- <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency> -->
         <dependency>
             <groupId>com.wql.cloud</groupId>
             <artifactId>basic-redis</artifactId>
             <version>${basic-redis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.wql.cloud</groupId>
+            <artifactId>basic-security</artifactId>
+            <version>${basic-security.version}</version>
         </dependency>
     </dependencies>
     <build>
