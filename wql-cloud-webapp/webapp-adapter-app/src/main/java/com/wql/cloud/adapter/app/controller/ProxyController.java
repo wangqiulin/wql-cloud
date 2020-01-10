@@ -62,8 +62,7 @@ public class ProxyController extends BaseController {
 		ApiModel apiModel = this.checkApi(form);
 		// api权限 0 公共 1 登陆 2 角色 3商户
 		String apiPermission = apiModel.getApiPermission();
-		log.info("apiPermission-->{}", apiPermission);
-		if (StringUtils.isNotEmpty(apiPermission) && "1".equals(apiPermission)) {
+		if (StringUtils.isNotBlank(apiPermission) && "1".equals(apiPermission)) {
 			this.validateLogin(form);
 		}
 		return callRemoteMethod(form, request);

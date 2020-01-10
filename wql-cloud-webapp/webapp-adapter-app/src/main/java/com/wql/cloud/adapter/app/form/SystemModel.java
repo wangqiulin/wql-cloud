@@ -15,7 +15,7 @@ public class SystemModel implements Serializable {
 	private String identifier;
 
 	/**
-	 * IOS/Android/H5
+	 * iOS/Android/H5
 	 */
 	private String appType;
 

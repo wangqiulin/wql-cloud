@@ -30,6 +30,7 @@ import com.wql.cloud.adapter.app.constants.RedisConstants;
 import com.wql.cloud.adapter.app.exception.CreditAdapterException;
 import com.wql.cloud.adapter.app.exception.CreditAdaptorErrorCode;
 import com.wql.cloud.adapter.app.form.BaseRequestForm;
+import com.wql.cloud.adapter.app.form.SessionModel;
 import com.wql.cloud.adapter.app.form.SystemModel;
 import com.wql.cloud.adapter.app.model.ApiModel;
 import com.wql.cloud.adapter.app.model.RequestParamModel;
@@ -37,6 +38,8 @@ import com.wql.cloud.adapter.app.properties.SystemProperties;
 import com.wql.cloud.adapter.app.util.JsonUtils;
 import com.wql.cloud.adapter.app.util.Md5Util;
 import com.wql.cloud.basic.redis.util.RedisUtil;
+import com.wql.cloud.basic.security.jwt.CheckResult;
+import com.wql.cloud.basic.security.jwt.JwtUtil;
 
 @RestController
 public class BaseController {
@@ -93,28 +96,32 @@ public class BaseController {
 	 * @param form
 	 */
 	protected void validateLogin(BaseRequestForm form) {
+		SessionModel session = form.getSession();
+		String userId = session.getUserId();
+		String token = session.getToken();
 		// Token 验证(JWT)
-		if (StringUtils.isBlank(form.getSession().getUserId()) && StringUtils.isBlank(form.getSession().getToken())) {
+		if (StringUtils.isBlank(userId) && StringUtils.isBlank(token)) {
 		    //修改为登录过期
 			throw new CreditAdapterException(CreditAdaptorErrorCode.TOKEN_ERROR);
 		}
-		String cacheToken = (String) redisUtil.get(RedisConstants.USER_LOGIN_KEY + form.getSession().getUserId());
+		String cacheToken = (String) redisUtil.get(RedisConstants.USER_LOGIN_KEY + userId);
 		if (StringUtils.isBlank(cacheToken)) {
 			throw new CreditAdapterException(CreditAdaptorErrorCode.TOKEN_ERROR);
 		}
 		// 账号被冻结 取缓存 如果存在则说明是冻结账号
-		if (redisUtil.exists(RedisConstants.USER_FREEZE_KEY + form.getSession().getUserId())) {
+		if (redisUtil.exists(RedisConstants.USER_FREEZE_KEY + userId)) {
 			CreditAdapterException exception = new CreditAdapterException(CreditAdaptorErrorCode.USER_FREEZE);
 			throw exception;
 		}
 		// 被挤下线
-		if (!cacheToken.equals(form.getSession().getToken())) {
+		if (!cacheToken.equals(token)) {
 			throw new CreditAdapterException(CreditAdaptorErrorCode.USER_SQUEEZE);
 		}
-		//TODO  验证Token有效性
-//		if (!TokenMgr.validateJWT(form.getSession().getToken()).isSuccess()) {
-//			throw new CreditAdapterException(CreditAdaptorErrorCode.TOKEN_ERROR);
-//		}
+		// 验证Token有效性
+		CheckResult checkResult = JwtUtil.validateJWT(token);
+		if(!checkResult.getSuccess()) {
+			throw new CreditAdapterException(CreditAdaptorErrorCode.TOKEN_ERROR);
+		}
 	}
 
 	/**
