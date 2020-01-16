@@ -9,11 +9,10 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<dependencies>
-        <!-- 文件上传 -->
 		<dependency>
 			<groupId>com.aliyun.oss</groupId>
 			<artifactId>aliyun-sdk-oss</artifactId>
-			<version>3.8.0</version>
+			<version>3.8.1</version>
 		</dependency>
 	</dependencies>
 </project>
