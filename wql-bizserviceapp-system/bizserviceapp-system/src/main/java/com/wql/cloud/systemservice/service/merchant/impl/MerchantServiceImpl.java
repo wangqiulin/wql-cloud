@@ -25,7 +25,6 @@ import com.wql.cloud.tool.collect.CollectionUtils;
 import com.wql.cloud.tool.json.JsonUtils;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.annotation.XxlJob;
-import com.xxl.job.core.log.XxlJobLogger;
 
 @Service
 public class MerchantServiceImpl implements MerchantService {

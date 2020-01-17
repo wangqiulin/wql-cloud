@@ -10,12 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wql.cloud.basic.datasource.response.constant.DataResponse;
 import com.wql.cloud.systemservice.pojo.domain.user.User;
-import com.wql.cloud.systemservice.pojo.req.menu.UserMenuReq;
 import com.wql.cloud.systemservice.pojo.req.user.UserAddReq;
 import com.wql.cloud.systemservice.pojo.req.user.UserDeleteReq;
 import com.wql.cloud.systemservice.pojo.req.user.UserLoginReq;
 import com.wql.cloud.systemservice.pojo.req.user.UserUpdateReq;
-import com.wql.cloud.systemservice.pojo.res.menu.UserMenuRes;
 import com.wql.cloud.systemservice.pojo.res.user.UserLoginRes;
 import com.wql.cloud.systemservice.service.user.UserService;
 

@@ -3,12 +3,10 @@ package com.wql.cloud.systemservice.service.user;
 import java.util.List;
 
 import com.wql.cloud.systemservice.pojo.domain.user.User;
-import com.wql.cloud.systemservice.pojo.req.menu.UserMenuReq;
 import com.wql.cloud.systemservice.pojo.req.user.UserAddReq;
 import com.wql.cloud.systemservice.pojo.req.user.UserDeleteReq;
 import com.wql.cloud.systemservice.pojo.req.user.UserLoginReq;
 import com.wql.cloud.systemservice.pojo.req.user.UserUpdateReq;
-import com.wql.cloud.systemservice.pojo.res.menu.UserMenuRes;
 import com.wql.cloud.systemservice.pojo.res.user.UserLoginRes;
 
 public interface UserService {
