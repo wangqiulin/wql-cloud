@@ -14,6 +14,13 @@ import com.wql.cloud.basic.datasource.response.exception.myexp.ApiException;
 import com.wql.cloud.basic.redis.util.RedisUtil;
 import com.wql.cloud.tool.ip.IPUtil;
 
+/**
+ * 使用方法：
+ * 		@RequestLimit(time = 100, limit = 1)
+ * 
+ * @author wangqiulin
+ *
+ */
 @Aspect
 @Component
 public class RequestLimitAspect {
