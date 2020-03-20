@@ -30,12 +30,12 @@ public class DataResponse<T> implements Serializable {
 	public DataResponse() {
 	}
 
-	public DataResponse(BusinessEnum busEnum) {
+	public DataResponse(ApiEnum busEnum) {
 		this.code = busEnum.getCode();
 		this.message = busEnum.getMessage();
 	}
 
-	public DataResponse(BusinessEnum busEnum, T data) {
+	public DataResponse(ApiEnum busEnum, T data) {
 		this.code = busEnum.getCode();
 		this.message = busEnum.getMessage();
 		this.data = data;
@@ -79,11 +79,11 @@ public class DataResponse<T> implements Serializable {
 	//==================封装公用的响应方法========================//
 	
 	public static <T> DataResponse<T> success() {
-		return new DataResponse<>(BusinessEnum.SUCCESS, null);
+		return new DataResponse<>(ApiEnum.SUCCESS, null);
 	}
 	
 	public static <T> DataResponse<T> success(T data) {
-		return new DataResponse<>(BusinessEnum.SUCCESS, data);
+		return new DataResponse<>(ApiEnum.SUCCESS, data);
 	}
 	
 	public static <T> DataResponse<T> success(String code, T data) {
@@ -96,11 +96,11 @@ public class DataResponse<T> implements Serializable {
 	
 	
 	public static <T> DataResponse<T> failure() {
-		return new DataResponse<>(BusinessEnum.FAIL);
+		return new DataResponse<>(ApiEnum.FAILURE);
 	}
 	
 	public static <T> DataResponse<T> failure(String message) {
-		return new DataResponse<>(BusinessEnum.FAIL.getCode(), message);
+		return new DataResponse<>(ApiEnum.FAILURE.getCode(), message);
 	}
 	
 	public static <T> DataResponse<T> failure(String code, String message) {

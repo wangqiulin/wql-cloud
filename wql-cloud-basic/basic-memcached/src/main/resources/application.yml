@@ -1,0 +1,6 @@
+memcached: 
+  server: 1.1.1.1:3333 2.2.2.2:4444 #memcached服务器集群(格式为host:port，多个服务器之间用空格隔开)
+  opTimeout: 3000 #接口操作的默认超时时间，可以被接口覆盖
+  poolSize: 10 #池子大小
+  failureMode: false #是否开启失败模式，默认为false
+  enabled: true # 是否使用memcached缓存

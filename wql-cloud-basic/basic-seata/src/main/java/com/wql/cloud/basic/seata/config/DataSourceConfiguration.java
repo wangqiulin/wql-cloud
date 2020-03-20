@@ -34,8 +34,8 @@ public class DataSourceConfiguration {
 	}
 
 	@Primary
-	@Bean("dataSourceProxy")
-	public DataSourceProxy dataSourceProxy(DataSource dataSource) {
+	@Bean("dataSource")
+	public DataSourceProxy dataSource(DataSource dataSource) {
 		return new DataSourceProxy(dataSource);
 	}
 	

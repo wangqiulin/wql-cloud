@@ -46,6 +46,15 @@ logging:
     com.wql.cloud.client: DEBUG
     com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: WARN
 
+#优雅停机
+endpoints:
+  shutdown:
+    enabled: true
+#关闭验证，已经有了本地token验证
+management:
+  security:
+    enabled: true
+
 wql: 
   eureka: 
     username: admin

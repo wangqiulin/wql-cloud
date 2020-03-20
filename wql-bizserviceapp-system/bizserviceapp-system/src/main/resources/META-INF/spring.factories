@@ -1,1 +1,0 @@
-org.springframework.boot.env.EnvironmentPostProcessor=com.wql.cloud.systemservice.config.clientip.InspectEurekaClientIp

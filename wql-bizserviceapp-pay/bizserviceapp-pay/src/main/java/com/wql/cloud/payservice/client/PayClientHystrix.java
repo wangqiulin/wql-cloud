@@ -2,7 +2,7 @@ package com.wql.cloud.payservice.client;
 
 import org.springframework.stereotype.Component;
 
-import com.wql.cloud.basic.datasource.response.constant.BusinessEnum;
+import com.wql.cloud.basic.datasource.response.constant.ApiEnum;
 import com.wql.cloud.basic.datasource.response.constant.DataResponse;
 import com.wql.cloud.payservice.pojo.req.CreatePayOrderReq;
 import com.wql.cloud.payservice.pojo.req.CreateRefundOrderReq;
@@ -18,22 +18,22 @@ public class PayClientHystrix implements PayClient {
 
 	@Override
 	public DataResponse<CreatePayOrderRes> createPayOrder(CreatePayOrderReq req) {
-		return new DataResponse<>(BusinessEnum.SYSTEM_FAIL);
+		return new DataResponse<>(ApiEnum.SYSTEM_FAIL);
 	}
 
 	@Override
 	public DataResponse<QueryPayOrderRes> queryPayOrder(QueryPayOrderReq req) {
-		return new DataResponse<>(BusinessEnum.SYSTEM_FAIL);
+		return new DataResponse<>(ApiEnum.SYSTEM_FAIL);
 	}
 
 	@Override
 	public DataResponse<CreateRefundOrderRes> createRefundOrder(CreateRefundOrderReq req) {
-		return new DataResponse<>(BusinessEnum.SYSTEM_FAIL);
+		return new DataResponse<>(ApiEnum.SYSTEM_FAIL);
 	}
 
 	@Override
 	public DataResponse<QueryRefundOrderRes> queryRefundOrder(QueryRefundOrderReq req) {
-		return new DataResponse<>(BusinessEnum.SYSTEM_FAIL);
+		return new DataResponse<>(ApiEnum.SYSTEM_FAIL);
 	}
 	
 }
