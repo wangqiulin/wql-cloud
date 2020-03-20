@@ -16,6 +16,16 @@ public class RedisUtil {
 	@Resource(name = "redisTemplate")
 	private RedisTemplate<String, Object> redisTemplate;
 	
+	/**
+	 * 判断是否存在该key
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public boolean hasKey(String key) {
+		return redisTemplate.hasKey(key);
+	}
+	
 	// -------------------设置功能---------------------//
 	/**
 	 * 永久设置
