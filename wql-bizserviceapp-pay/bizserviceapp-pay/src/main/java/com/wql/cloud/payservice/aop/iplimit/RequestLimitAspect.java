@@ -75,7 +75,7 @@ public class RequestLimitAspect {
 			if (countRequest > limit) {
 				throw new ApiException("failure", "请求频繁，请稍后重试");
 			} else {
-				redisService.incrByNum(key, 1);
+				redisService.incr(key, 1);
 			}
 		} else {
 			redisService.setWithExByS(key, "1", (long)time);

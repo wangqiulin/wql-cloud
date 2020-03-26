@@ -44,7 +44,7 @@ public class BlackListFactoryImpl implements BlackListFactory {
     	// 清空 blacklist
 		blackList.clear();
 		// 加载blacklist
-		List<Object> list = redisUtil.getList(GatewayConstants.SYSTEM_BLACK_LIST);
+		List<Object> list = redisUtil.boundListAll(GatewayConstants.SYSTEM_BLACK_LIST);
 		if (!CollectionUtils.isEmpty(list)) {
 			for (Object obj : list) {
 				blackList.add(String.valueOf(obj));
