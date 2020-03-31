@@ -34,7 +34,7 @@ public class RequestLimitAspect {
 	/**
 	 * 被此注解标明的方法会被代理
 	 */
-	@Pointcut("@annotation(com.wql.cloud.payservice.aop.iplimit.RequestLimit)")
+	@Pointcut("execution(public * *(..)) && @annotation(com.wql.cloud.payservice.aop.iplimit.RequestLimit)")
 	public void limitPointCut() {
 	}
 
@@ -82,22 +82,4 @@ public class RequestLimitAspect {
 		}
 	}
 
-	/**
-	 * 获取实际访问者ip 注意 通过ha或者nginx等代理的ip除了最后一次的访问ip 如（ip1,ip2,ip3,）
-	 * 有可能篡改ip1或p2，只有ip3无法篡改，这时候只能判断ip3， 所以可以根据实际业务可以拿用户信息（比如token里面获取的用户信息）作为访问记录
-	 */
-//	public static String getIpAddress(HttpServletRequest request) {
-//		String ip = request.getHeader("x-forwarded-for");
-//		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-//			ip = request.getHeader("Proxy-Client-IP");
-//		}
-//		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-//			ip = request.getHeader("WL-Proxy-Client-IP");
-//		}
-//		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-//			ip = request.getRemoteAddr();
-//		}
-//		return ip;
-//	}
-	
 }

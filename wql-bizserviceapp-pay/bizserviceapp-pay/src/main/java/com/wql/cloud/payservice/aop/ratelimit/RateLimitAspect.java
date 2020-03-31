@@ -51,7 +51,7 @@ public class RateLimitAspect {
     private HttpServletResponse response;
 
     //@Pointcut("execution (* com.wql.cloud.*.controller..*.*(..))")
-    @Pointcut("@annotation(com.wql.cloud.payservice.aop.ratelimit.RateLimit)")
+    @Pointcut("execution(public * *(..)) && @annotation(com.wql.cloud.payservice.aop.ratelimit.RateLimit)")
     public void serviceLimit() {
     }
 

@@ -1,6 +1,7 @@
 package com.wql.cloud.basic.redis.util;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -9,16 +10,24 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.DefaultTypedTuple;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RedisUtil {
 
+	private static final Logger log = LoggerFactory.getLogger(RedisUtil.class);
+	
+	private static final Long SUCCESS = 1L;
+	
 	@Resource(name = "redisTemplate")
 	private RedisTemplate<String, Object> redisTemplate;
 	
@@ -623,6 +632,63 @@ public class RedisUtil {
 	public Object boundListLeftPop(String key) {
         return redisTemplate.boundListOps(key).leftPop();
     }
+	
+	
+	//============================================//
+	
+	/**
+	 * 执行redis的lua脚本
+	 * 
+	 * @param script
+	 * @param keys
+	 * @param args
+	 * @return
+	 */
+	public Number execute(RedisScript<Number> script, List<String> keys, Object... args) {
+		return redisTemplate.execute(script, keys, args);
+	}
+	
+	
+	/**
+	 * 获取锁
+	 * @param lockKey
+	 * @param value
+	 * @param expireTime：单位-秒
+	 * @return
+	 */
+	public boolean getLock(String lockKey, Object value, int expireTime) {
+		try {
+			log.info("添加分布式锁key={},expireTime={}",lockKey,expireTime);
+			String script = "if redis.call('setNx',KEYS[1],ARGV[1]) then if redis.call('get',KEYS[1])==ARGV[1] then return redis.call('expire',KEYS[1],ARGV[2]) else return 0 end end";
+			RedisScript<String> redisScript = new DefaultRedisScript<>(script, String.class);
+			Object result = redisTemplate.execute(redisScript, Collections.singletonList(lockKey), value, expireTime);
+			if (SUCCESS.equals(result)) {
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	/**
+	 * 释放锁
+	 * @param lockKey
+	 * @param value
+	 * @return
+	 */
+	public boolean releaseLock(String lockKey, String value) {
+		String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+		RedisScript<String> redisScript = new DefaultRedisScript<>(script, String.class);
+		Object result = redisTemplate.execute(redisScript, Collections.singletonList(lockKey), value);
+		if (SUCCESS.equals(result)) {
+			return true;
+		}
+		return false;
+	}
+
+	
+	
 	
 	
 //	public void tx(String key) {
