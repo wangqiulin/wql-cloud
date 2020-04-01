@@ -31,7 +31,7 @@ public class WechatLoginServiceImpl implements WechatLoginService {
         String queryTokenUrl = this.getWebAccessUrl(appId, secret, authorizationCode);
         String tokenRes = this.httpRequest(queryTokenUrl, "GET", null);
         JSONObject jo = JSON.parseObject(tokenRes);
-        if(jo == null) {
+        if(jo == null) {	
         	return null;
         }
         String errcode = jo.getString("errcode");
