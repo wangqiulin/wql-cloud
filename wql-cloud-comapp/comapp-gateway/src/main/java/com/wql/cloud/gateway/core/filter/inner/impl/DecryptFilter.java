@@ -19,9 +19,10 @@ import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.model.FilterResponse;
 import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
-import com.wql.cloud.gateway.utils.Base64Utils;
 import com.wql.cloud.gateway.utils.DealJsonDataUtil;
 import com.wql.cloud.gateway.utils.RSAUtils;
+
+import cn.hutool.core.codec.Base64;
 
 /**
  * 解密过滤器
@@ -64,7 +65,7 @@ public class DecryptFilter implements InnerFilter {
 			// 获取商户信息
 			MerchantCacheInfo merchant = merchantFactory.getMerchant(merchantCode);
 			// 网站公钥数据解密
-			byte[] decodedData = RSAUtils.decryptByPrivateKey(Base64Utils.decode(data),
+			byte[] decodedData = RSAUtils.decryptByPrivateKey(Base64.decode(data),
 					merchant.getPlatformPrivateKey());
 
 			/**

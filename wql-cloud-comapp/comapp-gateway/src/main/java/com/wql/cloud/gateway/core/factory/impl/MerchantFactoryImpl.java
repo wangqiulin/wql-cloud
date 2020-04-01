@@ -13,9 +13,10 @@ import com.wql.cloud.basic.redis.util.RedisUtil;
 import com.wql.cloud.gateway.constants.GatewayConstants;
 import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
-import com.wql.cloud.gateway.utils.JsonUtils;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.annotation.XxlJob;
+
+import cn.hutool.json.JSONUtil;
 
 /**
  * 商户工厂实现类
@@ -54,7 +55,7 @@ public class MerchantFactoryImpl implements MerchantFactory {
 		MerchantCacheInfo merchant = new MerchantCacheInfo();
 		String merchantJson = redisUtil.getStr(GatewayConstants.SYSTEM_MERCHANT + merchantCode);
 		if (StringUtils.isNotEmpty(merchantJson)) {
-			merchant = JsonUtils.fromJsonString(merchantJson, MerchantCacheInfo.class);
+			merchant = JSONUtil.toBean(merchantJson, MerchantCacheInfo.class);
 			if (merchant != null) {
 				merchantLocalMap.put(merchantCode, merchant);
 			}

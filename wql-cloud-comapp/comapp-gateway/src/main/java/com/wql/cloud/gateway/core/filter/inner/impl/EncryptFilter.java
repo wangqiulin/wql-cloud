@@ -12,9 +12,10 @@ import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.model.FilterResponse;
 import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
-import com.wql.cloud.gateway.utils.Base64Utils;
 import com.wql.cloud.gateway.utils.DealJsonDataUtil;
 import com.wql.cloud.gateway.utils.RSAUtils;
+
+import cn.hutool.core.codec.Base64;
 
 /**
  * 加密过滤器
@@ -60,7 +61,7 @@ public class EncryptFilter implements InnerFilter {
 			byte[] encryptData = RSAUtils.encryptByPublicKey(data.getBytes(), merchant.getMerchantPublicKey());
 
 			// 加密成功修改响应报文中data属性值,替换成加密之后的数据
-			responseJson.put("data", Base64Utils.encode(encryptData));
+			responseJson.put("data", Base64.encode(encryptData));
 			String newResponseBody = responseJson.toString();
 			logger.info("newResponseBody:" + newResponseBody);
 			ctx.setResponseBody(newResponseBody);

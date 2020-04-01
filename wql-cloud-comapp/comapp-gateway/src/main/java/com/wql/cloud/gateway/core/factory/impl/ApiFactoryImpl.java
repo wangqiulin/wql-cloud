@@ -13,9 +13,10 @@ import com.wql.cloud.basic.redis.util.RedisUtil;
 import com.wql.cloud.gateway.constants.GatewayConstants;
 import com.wql.cloud.gateway.core.factory.ApiFactory;
 import com.wql.cloud.gateway.core.model.Api;
-import com.wql.cloud.gateway.utils.JsonUtils;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.annotation.XxlJob;
+
+import cn.hutool.json.JSONUtil;
 
 /**
  * 路由工厂实现类
@@ -57,7 +58,7 @@ public class ApiFactoryImpl implements ApiFactory {
 		Api api = new Api();
 		String apiKeyJson = redisUtil.getStr(GatewayConstants.SYSTEM_API + apiKey);
 		if (apiKeyJson != null) {
-			api = JsonUtils.fromJsonString(apiKeyJson, Api.class);
+			api = JSONUtil.toBean(apiKeyJson, Api.class);
 			if (api != null) {
 				apiLocalMap.put(apiKey, api);
 			}

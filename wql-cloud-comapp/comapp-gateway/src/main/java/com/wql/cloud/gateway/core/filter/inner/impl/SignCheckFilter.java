@@ -19,9 +19,10 @@ import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.model.FilterResponse;
 import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
-import com.wql.cloud.gateway.utils.Base64Utils;
 import com.wql.cloud.gateway.utils.DealJsonDataUtil;
 import com.wql.cloud.gateway.utils.RSAUtils;
+
+import cn.hutool.core.codec.Base64;
 
 /**
  * 签名验证过滤器
@@ -71,7 +72,7 @@ public class SignCheckFilter implements InnerFilter {
 				result = RSAUtils.verify(data.getBytes(), merchant.getMerchantPublicKey(), sign);
 			} else {
 				// 加密数据验证签名
-				result = RSAUtils.verify(Base64Utils.decode(data), merchant.getMerchantPublicKey(), sign);
+				result = RSAUtils.verify(Base64.decode(data), merchant.getMerchantPublicKey(), sign);
 			}
 
 			// 验证通过修改请求报文去掉sign属性

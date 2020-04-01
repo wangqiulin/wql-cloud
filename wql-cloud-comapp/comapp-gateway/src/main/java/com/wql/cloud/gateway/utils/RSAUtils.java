@@ -17,6 +17,8 @@ import java.util.Map;
 
 import javax.crypto.Cipher;
 
+import cn.hutool.core.codec.Base64;
+
 
 /**
  * RSA公钥/私钥/签名工具包
@@ -93,14 +95,14 @@ public class RSAUtils {
      * @throws Exception
      */
     public static String sign(byte[] data, String privateKey) throws Exception {
-        byte[] keyBytes = Base64Utils.decode(privateKey);
+        byte[] keyBytes = Base64.decode(privateKey);
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
         PrivateKey privateK = keyFactory.generatePrivate(pkcs8KeySpec);
         Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
         signature.initSign(privateK);
         signature.update(data);
-        return Base64Utils.encode(signature.sign());
+        return Base64.encode(signature.sign());
     }
 
     /**
@@ -120,14 +122,14 @@ public class RSAUtils {
      * 
      */
     public static boolean verify(byte[] data, String publicKey, String sign) throws Exception {
-        byte[] keyBytes = Base64Utils.decode(publicKey);
+        byte[] keyBytes = Base64.decode(publicKey);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
         PublicKey publicK = keyFactory.generatePublic(keySpec);
         Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
         signature.initVerify(publicK);
         signature.update(data);
-        return signature.verify(Base64Utils.decode(sign));
+        return signature.verify(Base64.decode(sign));
     }
 
     /**
@@ -143,7 +145,7 @@ public class RSAUtils {
      * @throws Exception
      */
     public static byte[] decryptByPrivateKey(byte[] encryptedData, String privateKey) throws Exception {
-        byte[] keyBytes = Base64Utils.decode(privateKey);
+        byte[] keyBytes = Base64.decode(privateKey);
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
         Key privateK = keyFactory.generatePrivate(pkcs8KeySpec);
@@ -183,7 +185,7 @@ public class RSAUtils {
      * @throws Exception
      */
     public static byte[] decryptByPublicKey(byte[] encryptedData, String publicKey) throws Exception {
-        byte[] keyBytes = Base64Utils.decode(publicKey);
+        byte[] keyBytes = Base64.decode(publicKey);
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
         Key publicK = keyFactory.generatePublic(x509KeySpec);
@@ -223,7 +225,7 @@ public class RSAUtils {
      * @throws Exception
      */
     public static byte[] encryptByPublicKey(byte[] data, String publicKey) throws Exception {
-        byte[] keyBytes = Base64Utils.decode(publicKey);
+        byte[] keyBytes = Base64.decode(publicKey);
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
         Key publicK = keyFactory.generatePublic(x509KeySpec);
@@ -264,7 +266,7 @@ public class RSAUtils {
      * @throws Exception
      */
     public static byte[] encryptByPrivateKey(byte[] data, String privateKey) throws Exception {
-        byte[] keyBytes = Base64Utils.decode(privateKey);
+        byte[] keyBytes = Base64.decode(privateKey);
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
         Key privateK = keyFactory.generatePrivate(pkcs8KeySpec);
@@ -303,7 +305,7 @@ public class RSAUtils {
      */
     public static String getPrivateKey(Map<String, Object> keyMap) throws Exception {
         Key key = (Key) keyMap.get(PRIVATE_KEY);
-        return Base64Utils.encode(key.getEncoded());
+        return Base64.encode(key.getEncoded());
     }
 
     /**
@@ -318,7 +320,7 @@ public class RSAUtils {
      */
     public static String getPublicKey(Map<String, Object> keyMap) throws Exception {
         Key key = (Key) keyMap.get(PUBLIC_KEY);
-        return Base64Utils.encode(key.getEncoded());
+        return Base64.encode(key.getEncoded());
     }
 
     /**
@@ -326,7 +328,7 @@ public class RSAUtils {
      */
     public static String encryptedDataOnJava(String data, String publicKey) {
         try {
-            data = Base64Utils.encode(encryptByPublicKey(data.getBytes(), publicKey));
+            data = Base64.encode(encryptByPublicKey(data.getBytes(), publicKey));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -339,7 +341,7 @@ public class RSAUtils {
     public static String decryptDataOnJava(String data, String privateKey) {
         String temp = "";
         try {
-            byte[] rs = Base64Utils.decode(data);
+            byte[] rs = Base64.decode(data);
             temp = new String(RSAUtils.decryptByPrivateKey(rs, privateKey),"UTF-8"); //以utf-8的方式生成字符串
 
         } catch (Exception e) {
