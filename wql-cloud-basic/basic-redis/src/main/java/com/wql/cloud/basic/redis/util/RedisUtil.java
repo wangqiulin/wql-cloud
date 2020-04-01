@@ -84,7 +84,15 @@ public class RedisUtil {
 	public void setWithExByS(String key, String value, long seconds) {
 		redisTemplate.opsForValue().set(key, value, seconds, TimeUnit.SECONDS);
 	}
+	
+	public void setWithExByS(String key, long value, long seconds) {
+		redisTemplate.opsForValue().set(key, value, seconds, TimeUnit.SECONDS);
+	}
 
+	public void setWithExByS(String key, int value, long seconds) {
+		redisTemplate.opsForValue().set(key, value, seconds, TimeUnit.SECONDS);
+	}
+	
 	/**
 	 * 带有效时间的设置, 时间单位为毫秒
 	 * 

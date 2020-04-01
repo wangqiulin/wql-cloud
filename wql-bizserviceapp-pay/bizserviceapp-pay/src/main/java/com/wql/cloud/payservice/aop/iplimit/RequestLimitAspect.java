@@ -51,9 +51,7 @@ public class RequestLimitAspect {
 			int time = requestLimit.time();
 			cacheOrRefuse(key, limit, time);
 		}
-		Object result = point.proceed();
-		return result;
-
+		return point.proceed();
 	}
 
 	/**
@@ -69,16 +67,26 @@ public class RequestLimitAspect {
 	 * 达到次数 停止服务 Or 访问次数+1
 	 */
 	private void cacheOrRefuse(String key, int limit, int time) {
-		if (redisService.hasKey(key)) {
-			String count = redisService.get(key).toString();
-			int countRequest = Integer.parseInt(count);
-			if (countRequest > limit) {
-				throw new ApiException("failure", "请求频繁，请稍后重试");
-			} else {
-				redisService.incr(key, 1);
+		try {
+			Object count = redisService.get(key);
+			if(count != null) {
+				int countRequest = Integer.parseInt(count.toString());
+				if (countRequest > limit) {
+					throw new ApiException("failure", "请求频繁，请稍后重试");
+				}
 			}
-		} else {
-			redisService.setWithExByS(key, "1", (long)time);
+			if (redisService.hasKey(key)) {
+				long expireByKey = redisService.getExpireByKey(key);
+				if(expireByKey == -1) { //防止死锁
+					redisService.remove(key);
+				} else {
+					redisService.incr(key, 1);
+				}
+			} else {
+				redisService.setWithExByS(key, 1, (long)time);
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
 		}
 	}
 

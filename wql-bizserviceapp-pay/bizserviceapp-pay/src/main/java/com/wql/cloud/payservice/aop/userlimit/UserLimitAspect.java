@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
 
 import com.google.common.collect.ImmutableList;
+import com.wql.cloud.basic.datasource.response.exception.myexp.ApiException;
 import com.wql.cloud.basic.redis.util.RedisUtil;
 import com.wql.cloud.tool.ip.IPUtil;
 
@@ -48,9 +49,7 @@ public class UserLimitAspect {
                 key = IPUtil.getIpAdrress(request);
                 break;
             case CUSTOMER:
-        		String lockNamePre = limitAnnotation.prefix();  //锁前缀
             	if (args.length > 0) {
-            		String lockName = "";
             		String param = limitAnnotation.param();
             		int argNum = limitAnnotation.argNum();
                     if (StringUtils.isNotBlank(param)) {
@@ -60,11 +59,10 @@ public class UserLimitAspect {
                         } else {
                             arg = args[0];
                         }
-                        lockName = String.valueOf(getParam(arg, param));
+                        key = String.valueOf(getParam(arg, param));
                     } else if (argNum > 0) {
-                        lockName = args[argNum - 1].toString();
+                    	key = args[argNum - 1].toString();
                     }
-                    key = lockNamePre + lockName;
                 } else {
                 	throw new RuntimeException("lock not set param");
                 }
@@ -85,7 +83,9 @@ public class UserLimitAspect {
             }
         } catch (Throwable e) {
             if (e instanceof RuntimeException) {
-                throw new RuntimeException(e.getLocalizedMessage());
+            	if("You have been dragged into the blacklist".equals(e.getLocalizedMessage())) {
+            		throw new ApiException("failure", "请求频繁，请稍后重试");
+            	} 
             }
             throw new RuntimeException("server exception");
         }

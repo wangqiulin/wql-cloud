@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.wql.cloud.basic.datasource.response.DataResponse;
 import com.wql.cloud.basic.wxpay.util.WXPayUtil;
+import com.wql.cloud.payservice.aop.iplimit.RequestLimit;
+import com.wql.cloud.payservice.aop.ratelimit.RateLimit;
+import com.wql.cloud.payservice.aop.userlimit.UserLimit;
 import com.wql.cloud.payservice.pojo.req.CreatePayOrderReq;
 import com.wql.cloud.payservice.pojo.req.QueryPayOrderReq;
 import com.wql.cloud.payservice.pojo.res.CreatePayOrderRes;
@@ -42,6 +45,29 @@ public class PayOrderController {
 	private HttpServletRequest request;
     @Autowired
 	private HttpServletResponse response;
+    
+    @ApiOperation(value = "创建支付订单")
+    @RequestLimit(limit = 5, time = 60)
+	@PostMapping("/pay/payOrder/test1")
+	public DataResponse<Void> test1(@RequestBody CreatePayOrderReq req) {
+		return DataResponse.success();
+	}
+    
+    @ApiOperation(value = "创建支付订单")
+    @RateLimit(limintNum = 1)
+	@PostMapping("/pay/payOrder/test2")
+	public DataResponse<Void> test2(@RequestBody CreatePayOrderReq req) {
+		return DataResponse.success();
+	}
+    
+    @ApiOperation(value = "创建支付订单")
+    @UserLimit(period = 60, count = 1, prefix = "test:", param = "appId", argNum = 1)
+	@PostMapping("/pay/payOrder/test3")
+	public DataResponse<Void> test3(@RequestBody CreatePayOrderReq req) {
+		return DataResponse.success();
+	}
+    
+    
     
 	@ApiOperation(value = "创建支付订单")
 	@PostMapping("/pay/payOrder/create")
