@@ -5,7 +5,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import com.wql.cloud.basic.wxpay.util.MD5Util;
+import cn.hutool.core.codec.Base64;
+import cn.hutool.crypto.SecureUtil;
 
 public class DecodeUtil {
 	
@@ -28,7 +29,7 @@ public class DecodeUtil {
     /**
      * 生成key
      */
-    private static SecretKeySpec key = new SecretKeySpec(MD5Util.MD5Encode(privateKey, "UTF-8").toLowerCase().getBytes(), ALGORITHM);
+    private static SecretKeySpec key = new SecretKeySpec(SecureUtil.md5(privateKey).toLowerCase().getBytes(), ALGORITHM);
  
     /**
      * AES加密
@@ -42,7 +43,7 @@ public class DecodeUtil {
         Cipher cipher = Cipher.getInstance(ALGORITHM_MODE_PADDING);
         // 初始化
         cipher.init(Cipher.ENCRYPT_MODE, key);
-        return Base64Util.encode(cipher.doFinal(data.getBytes()));
+        return Base64.encode(cipher.doFinal(data.getBytes()));
     }
  
     /**
@@ -55,7 +56,7 @@ public class DecodeUtil {
     public static String decryptData(String base64Data) throws Exception {
         Cipher cipher = Cipher.getInstance(ALGORITHM_MODE_PADDING);
         cipher.init(Cipher.DECRYPT_MODE, key);
-        return new String(cipher.doFinal(Base64Util.decode(base64Data)));
+        return new String(cipher.doFinal(Base64.decode(base64Data)));
     }
     
 }    

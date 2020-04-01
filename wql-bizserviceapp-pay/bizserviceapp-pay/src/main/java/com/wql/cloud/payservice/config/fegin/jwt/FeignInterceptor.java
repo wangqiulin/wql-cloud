@@ -1,4 +1,4 @@
-package com.wql.cloud.payservice.config.fegin;
+package com.wql.cloud.payservice.config.fegin.jwt;
 
 import java.util.Enumeration;
 import java.util.LinkedHashMap;

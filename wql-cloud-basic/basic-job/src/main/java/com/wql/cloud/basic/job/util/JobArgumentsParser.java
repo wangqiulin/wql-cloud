@@ -1,7 +1,6 @@
 package com.wql.cloud.basic.job.util;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +8,8 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.util.Assert;
+
+import cn.hutool.core.date.DateUtil;
 
 /**
  * 执行job
@@ -41,49 +42,6 @@ public interface JobArgumentsParser {
      * 今日标识符
      */
     String today = "today";
-
-    /**
-     * 解析时间类型参数
-     *
-     * @param dateArg
-     * @return
-     */
-    default String analysisDateArgs(String dateArg) {
-        dateArg = trim(dateArg);
-        if (StringUtils.isEmpty(dateArg)) {
-            //没有传递默认返回昨日时间
-            return date2String(DateUtils.addDays(new Date(), -1), pattern);
-        }
-        try {
-            int index = dateArg.toLowerCase().indexOf(today);
-            if (index == -1) {
-                //不存在today字符串,认为是yyyy-MM-dd字符串
-                DateUtils.parseDate(dateArg, pattern);
-                return dateArg;
-            } else if (index == 0) {
-                //以today开头认为是计算表达式
-                if (dateArg.equalsIgnoreCase(today)) {
-                    //仅是today返回今日时间
-                    return date2String(new Date(), pattern);
-                } else {
-                    //为表达式,需要计算
-                    String num = dateArg.substring(today.length());
-                    int n;
-                    try {
-                        n = Integer.parseInt(num.replace(" ", ""));
-                    } catch (NumberFormatException e) {
-                        throw new RuntimeException("解析含有today的算式(" + dateArg + ")失败");
-                    }
-                    return date2String(DateUtils.addDays(new Date(), n), pattern);
-                }
-            } else {
-                //中间含有today暂时无法识别,抛出异常
-                throw new RuntimeException("参数中间含有today无法解析");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("执行job传入参数格式有误args(" + dateArg + ")", e);
-        }
-    }
 
     /**
      * 解析时间(数组)类型参数
@@ -142,7 +100,8 @@ public interface JobArgumentsParser {
         Assert.isTrue(startDate.compareTo(endDate) <= 0, "结束时间不能大于开始时间");
         List<String> result = new ArrayList<>();
         while (true) {
-            result.add(date2String(startDate, pattern));
+        	String dateStr = DateUtil.offsetDay(startDate, 0).toDateStr();
+            result.add(dateStr);
             startDate = DateUtils.addDays(startDate, 1);
             if (startDate.compareTo(endDate) > 0) {
                 break;
@@ -150,6 +109,51 @@ public interface JobArgumentsParser {
         }
         return result;
     }
+    
+    
+    /**
+     * 解析时间类型参数
+     *
+     * @param dateArg
+     * @return
+     */
+    default String analysisDateArgs(String dateArg) {
+        dateArg = trim(dateArg);
+        if (StringUtils.isEmpty(dateArg)) {
+            //没有传递默认返回昨日时间
+            return DateUtil.offsetDay(new Date(), -1).toDateStr();
+        }
+        try {
+            int index = dateArg.toLowerCase().indexOf(today);
+            if (index == -1) {
+                //不存在today字符串,认为是yyyy-MM-dd字符串
+                DateUtils.parseDate(dateArg, pattern);
+                return dateArg;
+            } else if (index == 0) {
+                //以today开头认为是计算表达式
+                if (dateArg.equalsIgnoreCase(today)) {
+                    //仅是today返回今日时间
+                    return DateUtil.today();
+                } else {
+                    //为表达式,需要计算
+                    String num = dateArg.substring(today.length());
+                    int n;
+                    try {
+                        n = Integer.parseInt(num.replace(" ", ""));
+                    } catch (NumberFormatException e) {
+                        throw new RuntimeException("解析含有today的算式(" + dateArg + ")失败");
+                    }
+                    return DateUtil.offsetDay(new Date(), n).toDateStr();
+                }
+            } else {
+                //中间含有today暂时无法识别,抛出异常
+                throw new RuntimeException("参数中间含有today无法解析");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("执行job传入参数格式有误args(" + dateArg + ")", e);
+        }
+    }
+    
 
     /**
      * 参数trim
@@ -164,8 +168,5 @@ public interface JobArgumentsParser {
         return args;
     }
     
-    public static String date2String(Date date, String pattern){
-		return new SimpleDateFormat(pattern).format(date);
-	}
 	
 }

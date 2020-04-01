@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.datasource.log.fegin;
+package com.wql.cloud.payservice.config.fegin.log;
 
 import feign.Logger;
 import org.slf4j.LoggerFactory;

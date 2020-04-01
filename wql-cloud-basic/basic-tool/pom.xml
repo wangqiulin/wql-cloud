@@ -17,25 +17,13 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
-            <version>2.1.4</version>
-        </dependency>
-        <!-- kaptcha -->
-        <dependency>
-            <groupId>com.github.penggle</groupId>
-            <artifactId>kaptcha</artifactId>
-            <version>2.3.2</version>
+            <version>2.1.6</version>
         </dependency>
         <!-- 汉字转拼音 -->
         <dependency>
             <groupId>com.belerweb</groupId>
             <artifactId>pinyin4j</artifactId>
             <version>2.5.1</version>
-        </dependency>
-        <!-- 生成二维码 -->
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>core</artifactId>
-            <version>3.4.0</version>
         </dependency>
     </dependencies>
 </project>

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.wql.cloud.basic.datasource.response.constant.DataResponse;
+import com.wql.cloud.basic.datasource.response.DataResponse;
 import com.wql.cloud.userservice.pojo.domain.User;
 
 /**

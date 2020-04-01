@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import com.wql.cloud.basic.datasource.response.constant.DataResponse;
+import com.wql.cloud.basic.datasource.response.DataResponse;
 
 @Aspect
 @Component

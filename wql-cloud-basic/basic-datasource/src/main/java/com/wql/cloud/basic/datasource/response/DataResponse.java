@@ -1,6 +1,8 @@
-package com.wql.cloud.basic.datasource.response.constant;
+package com.wql.cloud.basic.datasource.response;
 
 import java.io.Serializable;
+
+import com.wql.cloud.basic.datasource.response.constant.ApiEnum;
 
 /**
  * 数据响应类

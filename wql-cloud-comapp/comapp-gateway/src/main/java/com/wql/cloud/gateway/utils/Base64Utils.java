@@ -8,7 +8,9 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import it.sauronsoftware.base64.Base64;
+import cn.hutool.core.codec.Base64;
+
+//import it.sauronsoftware.base64.Base64;
 
 /**
  * BASE64编码解码工具包

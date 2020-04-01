@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
+import cn.hutool.crypto.SecureUtil;
+
 public class SignUtil {
 
 	public static String sign(Map<String, String> params, String key) {
@@ -29,7 +31,7 @@ public class SignUtil {
 				sb.append(k).append("=").append(value.trim()).append("&");
 		}
 		sb.append("key=").append(key);
-		return MD5Util.MD5(sb.toString()).toUpperCase();
+		return SecureUtil.md5(sb.toString()).toUpperCase();
 	}
 	
 	
@@ -53,7 +55,7 @@ public class SignUtil {
                 sb.append(k).append("=").append(value.trim()).append("&");
 		}
         sb.append("key=").append(key);
-        return MD5Util.MD5(sb.toString()).toUpperCase();
+        return SecureUtil.md5(sb.toString()).toUpperCase();
 	}
 	
 	public static String getSignContent(Map<String, String> params) {
@@ -76,12 +78,13 @@ public class SignUtil {
 		return content.toString();
 	}
 
-	public static boolean checkSign(Map<String, String> params, String key) {
-		if (params == null || StringUtils.isBlank(params.get(WXPayConstant.SIGN))) {
+	public static boolean checkSign(Map<String, Object> params, String key) {
+		Object sign = params.get(WXPayConstant.SIGN);
+		if (params == null || sign == null) {
 			return false;
 		}
-		String wxSign = params.remove(WXPayConstant.SIGN);
-		String respSign = sign(params, key);
+		Object wxSign = params.remove(WXPayConstant.SIGN);
+		String respSign = sign2(params, key);
 		return wxSign.equals(respSign);
 	}
 

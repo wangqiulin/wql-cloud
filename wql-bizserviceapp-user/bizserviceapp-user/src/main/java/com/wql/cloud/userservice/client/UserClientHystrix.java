@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.wql.cloud.basic.datasource.response.DataResponse;
 import com.wql.cloud.basic.datasource.response.constant.ApiEnum;
-import com.wql.cloud.basic.datasource.response.constant.DataResponse;
 import com.wql.cloud.userservice.pojo.domain.User;
 
 @Component

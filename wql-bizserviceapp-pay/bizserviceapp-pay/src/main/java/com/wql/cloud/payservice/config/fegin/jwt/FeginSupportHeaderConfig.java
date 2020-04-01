@@ -1,4 +1,4 @@
-package com.wql.cloud.payservice.config.fegin;
+package com.wql.cloud.payservice.config.fegin.jwt;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 
 import com.wql.cloud.basic.wxpay.config.WechatPayConfig;
 import com.wql.cloud.basic.wxpay.enums.TradeTypeEnum;
@@ -44,12 +45,11 @@ import com.wql.cloud.basic.wxpay.result.QueryOrderResult;
 import com.wql.cloud.basic.wxpay.result.RefundNotifyResult;
 import com.wql.cloud.basic.wxpay.service.WxPayService;
 import com.wql.cloud.basic.wxpay.util.HttpUtil;
-import com.wql.cloud.basic.wxpay.util.MapUtil;
 import com.wql.cloud.basic.wxpay.util.SignUtil;
-import com.wql.cloud.basic.wxpay.util.StreamUtils;
 import com.wql.cloud.basic.wxpay.util.WXPayConstant;
 import com.wql.cloud.basic.wxpay.util.WXPayUtil;
-import com.wql.cloud.basic.wxpay.util.XmlUtil;
+
+import cn.hutool.core.util.XmlUtil;
 
 @SuppressWarnings("deprecation")
 @Service
@@ -88,11 +88,11 @@ public class WxPayServiceImpl implements WxPayService {
 			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wxPayConfig.getPrivateKey()));  
 			
 			/**2.发起请求*/
-			String reqXml = XmlUtil.mapToXml(bizParams, WXPayConstant.XML_ROOT);
+			String reqXml = XmlUtil.mapToXmlStr(bizParams, WXPayConstant.XML_ROOT);
 			String respXml = HttpUtil.doPost(wxPayConfig.PLACE_ORDER_URL, reqXml, true);
-			Map<String, String> respMap = MapUtil.objMap2StrMap(XmlUtil.xml2map(respXml));
+			Map<String, Object> respMap = XmlUtil.xmlToMap(respXml);
 			if(!WXPayConstant.SUCCESS_CODE.equals(respMap.get(WXPayConstant.RETURN_CODE))){
-				return new PlaceOrderResult(false, respMap.get(WXPayConstant.RETURN_MSG));
+				return new PlaceOrderResult(false, String.valueOf(respMap.get(WXPayConstant.RETURN_MSG)));
 			}
 			if (!SignUtil.checkSign(respMap, wxPayConfig.getPrivateKey())) {
 				return new PlaceOrderResult(false, "签名校验不通过");
@@ -102,7 +102,7 @@ public class WxPayServiceImpl implements WxPayService {
 			Map<String, String> returnMap = new HashMap<String, String>();
 			returnMap.put(WXPayConstant.APPID, wxPayConfig.getAppId());
 			returnMap.put(WXPayConstant.PARTNERID, wxPayConfig.getMchId());
-			returnMap.put(WXPayConstant.PREPAYID, respMap.get("prepay_id"));
+			returnMap.put(WXPayConstant.PREPAYID, String.valueOf(respMap.get("prepay_id")));
 			returnMap.put(WXPayConstant.PACKAGE_KEY, "Sign=WXPay");
 			returnMap.put(WXPayConstant.noncestr, UUID.randomUUID().toString().replaceAll("-", ""));
 			returnMap.put(WXPayConstant.timestamp, String.valueOf(System.currentTimeMillis()).substring(0, 10));
@@ -137,18 +137,18 @@ public class WxPayServiceImpl implements WxPayService {
 			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wxPayConfig.getPrivateKey()));  
 			
 			/**2.发起请求*/
-			String reqXml = XmlUtil.mapToXml(bizParams, WXPayConstant.XML_ROOT);
+			String reqXml = XmlUtil.mapToXmlStr(bizParams, WXPayConstant.XML_ROOT);
 			String respXml = HttpUtil.doPost(wxPayConfig.PLACE_ORDER_URL, reqXml, true);
-			Map<String, String> respMap = MapUtil.objMap2StrMap(XmlUtil.xml2map(respXml));
+			Map<String, Object> respMap = XmlUtil.xmlToMap(respXml);
 			if(!WXPayConstant.SUCCESS_CODE.equals(respMap.get(WXPayConstant.RETURN_CODE))){
-				return new PlaceOrderResult(false, respMap.get(WXPayConstant.RETURN_MSG));
+				return new PlaceOrderResult(false, String.valueOf(respMap.get(WXPayConstant.RETURN_MSG)));
 			}
 			if (!SignUtil.checkSign(respMap, wxPayConfig.getPrivateKey())) {
 				return new PlaceOrderResult(false, "签名校验不通过");
 			}
 			
 			/**3.下单成功*/
-			return new PlaceOrderResult(true, "微信H5支付-下单成功", respMap.get("mweb_url"));
+			return new PlaceOrderResult(true, "微信H5支付-下单成功", String.valueOf(respMap.get("mweb_url")));
 		} catch (Exception e) {
 			logger.error("微信H5支付-下单，出现异常", e);
 		}
@@ -168,19 +168,19 @@ public class WxPayServiceImpl implements WxPayService {
   			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wxPayConfig.getPrivateKey()));
   			
   			/**2.发起请求，微信支付查询*/
-  			String reqXml = XmlUtil.mapToXml(bizParams, WXPayConstant.XML_ROOT);
+  			String reqXml = XmlUtil.mapToXmlStr(bizParams, WXPayConstant.XML_ROOT);
   			String respXml = HttpUtil.doPost(WechatPayConfig.QUERY_ORDER_URL, reqXml, true);
-  			Map<String, String> respMap = MapUtil.objMap2StrMap(XmlUtil.xml2map(respXml));
+  			Map<String, Object> respMap = XmlUtil.xmlToMap(respXml);
   			if(!WXPayConstant.SUCCESS_CODE.equals(respMap.get(WXPayConstant.RETURN_CODE))){
   	  			return new QueryOrderResult("查询微信支付订单结果失败", "fail");
   			}
   			
   			/**3.查询需要返回的字段*/
 			if (SUCCESS.equals(respMap.get("return_code"))) {
-				String tradeState = respMap.get("trade_state");
+				String tradeState = String.valueOf(respMap.get("trade_state"));
 			    switch (tradeState) {
 			        case SUCCESS:
-			        	Date payDate = DateUtils.parseDate(respMap.get("time_end"), "yyyyMMddHHmmss");
+			        	Date payDate = DateUtils.parseDate(String.valueOf(respMap.get("time_end")), "yyyyMMddHHmmss");
 			        	return new QueryOrderResult("支付成功", tradeState, payDate);
 			        case NOTPAY:
 			        	return new QueryOrderResult("未支付", tradeState);
@@ -220,7 +220,7 @@ public class WxPayServiceImpl implements WxPayService {
 		    bizParams.put(WXPayConstant.NOTIFY_URL, wxPayConfig.getRefundNotifyUrl());
 		    bizParams.put(WXPayConstant.OP_USER_ID, wxPayConfig.getMchId());
 		    bizParams.put(WXPayConstant.SIGN, SignUtil.sign2(bizParams, wxPayConfig.getPrivateKey())); 
-			String reqXml = XmlUtil.mapToXml2(bizParams, WXPayConstant.XML_ROOT);
+			String reqXml = XmlUtil.mapToXmlStr(bizParams, WXPayConstant.XML_ROOT);
 			
 			/**2.发起请求*/
 			//加载证书，进行https加密传输
@@ -260,8 +260,8 @@ public class WxPayServiceImpl implements WxPayService {
 						while ((text = bufferedReader.readLine()) != null) {
 							sbf.append(text);
 						}
-						Map<String, String> xmlResultMap = MapUtil.objMap2StrMap(XmlUtil.xml2map(sbf.toString()));
-                	  	if("FAIL".equals(xmlResultMap.get("return_code"))) {
+						Map<String, Object> xmlResultMap = XmlUtil.xmlToMap(sbf.toString());
+                	  	if("FAIL".equals(String.valueOf(xmlResultMap.get("return_code")))) {
                 	  		return result;
                 	  	}
 						if(xmlResultMap.get("result_code") != null) {
@@ -294,24 +294,18 @@ public class WxPayServiceImpl implements WxPayService {
   			bizParams.put(WXPayConstant.SIGN, SignUtil.sign(bizParams, wxPayConfig.getPrivateKey()));
   			
   			/**2.发起请求，微信支付查询*/
-  			String reqXml = XmlUtil.mapToXml(bizParams, WXPayConstant.XML_ROOT);
+  			String reqXml = XmlUtil.mapToXmlStr(bizParams, WXPayConstant.XML_ROOT);
   			String respXml = HttpUtil.doPost(WechatPayConfig.QUERY_REFUND_ORDER_URL, reqXml, true);
-  			Map<String, String> respMap = MapUtil.objMap2StrMap(XmlUtil.xml2map(respXml));
+  			Map<String, Object> respMap = XmlUtil.xmlToMap(respXml);
   			if(!WXPayConstant.SUCCESS_CODE.equals(respMap.get(WXPayConstant.RETURN_CODE))){
   	  			return new QueryOrderResult("查询微信支付订单结果失败", "fail");
   			}
 			if (SUCCESS.equals(respMap.get("return_code"))) {
-				int n = 0;
-				for(int i = 0; i <= 50; i++) {
-					if(null != respMap.get("refund_status_"+i)) {
-						n = i;
-						break;
-					}
-				}
-				String refundStatus = respMap.get("refund_status_"+n);
+				int n = 0; //第一笔退款
+				String refundStatus = String.valueOf(respMap.get("refund_status_"+n));
 			    switch (refundStatus) {
 			        case SUCCESS:
-			        	Date payDate = DateUtils.parseDate(respMap.get("refund_success_time_"+n), "yyyyMMddHHmmss");
+			        	Date payDate = DateUtils.parseDate(String.valueOf(respMap.get("refund_success_time_"+n)), "yyyyMMddHHmmss");
 			        	return new QueryOrderResult("退款成功", refundStatus, payDate);
 			        case "REFUNDCLOSE":
 			        	return new QueryOrderResult("退款关闭", refundStatus);
@@ -342,7 +336,7 @@ public class WxPayServiceImpl implements WxPayService {
 			}
 			
 			//解析返回内容
-			Map<String, Object> xml2map = XmlUtil.xml2map(xmlStr);
+			Map<String, Object> xml2map = XmlUtil.xmlToMap(xmlStr);
         	String returnCode = String.valueOf(xml2map.get("return_code"));
         	String resultCode = String.valueOf(xml2map.get("result_code"));
         	if(!SUCCESS.equals(returnCode) || !SUCCESS.equals(resultCode)) {
@@ -365,12 +359,12 @@ public class WxPayServiceImpl implements WxPayService {
 	@Override
 	public RefundNotifyResult refundNotify(String xmlStr) {
 		try {
-			Map<String, Object> xml2map = XmlUtil.xml2map(xmlStr);
+			Map<String, Object> xml2map = XmlUtil.xmlToMap(xmlStr);
 			if(SUCCESS.equals(xml2map.get("return_code"))){
 				//获得加密信息 （req_info）
                 String passMap = DecodeUtil.decryptData(String.valueOf(xml2map.get("req_info")));
                 //拿到解密信息
-                Map<String, Object> decodeMap = XmlUtil.xml2map(passMap);
+                Map<String, Object> decodeMap = XmlUtil.xmlToMap(passMap);
                 if(logger.isDebugEnabled()) {
                 	logger.debug("退款-微信回调，解密后内容：" + decodeMap);
                 }

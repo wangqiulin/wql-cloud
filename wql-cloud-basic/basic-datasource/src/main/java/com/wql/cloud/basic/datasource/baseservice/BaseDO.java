@@ -29,7 +29,7 @@ public abstract class BaseDO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final String YYYYMMDDHHMMSS = "yyyy-MM-dd HH:mm:ss";
+	private static final String YMDHMS = "yyyy-MM-dd HH:mm:ss";
 	
 	@ApiModelProperty("主键自增")
 	@Id
@@ -37,13 +37,13 @@ public abstract class BaseDO implements Serializable {
 	private Long id;
 
 	@ApiModelProperty("数据创建时间")
-	@DateTimeFormat(pattern = YYYYMMDDHHMMSS)
-	@JsonFormat(pattern = YYYYMMDDHHMMSS, timezone = "GMT+8")
+	@DateTimeFormat(pattern = YMDHMS)
+	@JsonFormat(pattern = YMDHMS, timezone = "GMT+8")
 	private Date createDate;
 
 	@ApiModelProperty("数据更新时间")
-	@DateTimeFormat(pattern = YYYYMMDDHHMMSS)
-	@JsonFormat(pattern = YYYYMMDDHHMMSS, timezone = "GMT+8")
+	@DateTimeFormat(pattern = YMDHMS)
+	@JsonFormat(pattern = YMDHMS, timezone = "GMT+8")
 	private Date updateDate;
 
 	@ApiModelProperty("版本号，用于乐观锁")
