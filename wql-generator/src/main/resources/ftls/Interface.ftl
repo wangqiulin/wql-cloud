@@ -17,7 +17,7 @@ public interface ${ClassName}Service {
 	 * @param ${EntityName}
 	 * @return
 	 */
-	Integer save(${ClassName} ${EntityName});
+	int save(${ClassName} ${EntityName});
 
 	/**
 	 * 修改
@@ -25,7 +25,7 @@ public interface ${ClassName}Service {
 	 * @param ${EntityName}
 	 * @return
 	 */
-	Integer update(${ClassName} ${EntityName});
+	int update(${ClassName} ${EntityName});
 
 	/**
 	 * 删除
@@ -33,7 +33,7 @@ public interface ${ClassName}Service {
 	 * @param ${EntityName}
 	 * @return
 	 */
-	Integer delete(${ClassName} ${EntityName});
+	int delete(${ClassName} ${EntityName});
 
 	/**
 	 * 查询

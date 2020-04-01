@@ -23,19 +23,19 @@ public class ${ClassName}ServiceImpl extends BaseService<${ClassName}> ${Impl} {
 
 	@Override
 	@Transactional
-	public Integer save(${ClassName} ${EntityName}) {
+	public int save(${ClassName} ${EntityName}) {
 		return this.save(${EntityName});
 	}
 
 	@Override
 	@Transactional
-	public Integer update(${ClassName} ${EntityName}) {
+	public int update(${ClassName} ${EntityName}) {
 		return this.updateById(${EntityName});
 	}
 
 	@Override
 	@Transactional
-	public Integer delete(${ClassName} ${EntityName}) {
+	public int delete(${ClassName} ${EntityName}) {
 		Assert.notNull(${EntityName}.getId(), "id为空");
 		return this.removeById(${EntityName}.getId());
 	}
