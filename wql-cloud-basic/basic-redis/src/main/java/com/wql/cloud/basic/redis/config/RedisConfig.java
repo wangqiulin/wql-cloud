@@ -11,14 +11,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson.parser.ParserConfig;
+import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
+import com.wql.cloud.basic.redis.util.RedisUtil;
 
 /**
  *
@@ -66,26 +63,32 @@ public class RedisConfig extends CachingConfigurerSupport {
 	}
 
 	@Bean
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
-		Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
-		ObjectMapper om = new ObjectMapper();
-		om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-		om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-		jackson2JsonRedisSerializer.setObjectMapper(om);
-
-		GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
-		StringRedisTemplate template = new StringRedisTemplate(factory);
+	public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
+		RedisTemplate<String, Object> template = new RedisTemplate<>();
+		//设置连接
+		template.setConnectionFactory(factory);
 		// redis 开启事务 如果开启事务，则redis不会主动释放连接，需要手动释放
 		template.setEnableTransactionSupport(false);
-		// hash 使用jdk 的序列化
-		template.setHashKeySerializer(new StringRedisSerializer());
-		template.setHashValueSerializer(genericJackson2JsonRedisSerializer);
-		// keySerializer 对key的默认序列化器。默认值是StringSerializer
+		//序列化value的值
+		GenericFastJsonRedisSerializer serializer = new GenericFastJsonRedisSerializer();
+		//指定白名单。只在此包下的类可转化, 其他路径禁止
+		ParserConfig.getGlobalInstance().addAccept("com.wql.cloud");
+		//设置键（key）的序列化采用StringRedisSerializer。
 		template.setKeySerializer(new StringRedisSerializer());
-		template.setValueSerializer(genericJackson2JsonRedisSerializer);
+		template.setHashKeySerializer(new StringRedisSerializer());
+		// 设置值（value）的序列化采用FastJsonRedisSerializer。
+		template.setValueSerializer(serializer);
+		template.setHashValueSerializer(serializer);
 		template.afterPropertiesSet();
 		return template;
 	}
+	
+	
+	@Bean(name = "redisUtil")
+    public RedisUtil getRedisUtil() {
+    	RedisUtil redisUtil = new RedisUtil();
+    	return redisUtil;
+    }
+	
 
 }
