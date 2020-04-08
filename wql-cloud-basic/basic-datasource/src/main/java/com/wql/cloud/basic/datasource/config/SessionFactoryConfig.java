@@ -18,11 +18,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
-/**
- * mybatis的配置
- * 
- * @author wangqiulin
- */
 @Configuration
 @EnableTransactionManagement
 public class SessionFactoryConfig implements TransactionManagementConfigurer {

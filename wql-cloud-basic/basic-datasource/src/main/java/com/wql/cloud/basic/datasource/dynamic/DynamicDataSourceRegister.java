@@ -22,7 +22,7 @@ import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
 
-import com.alibaba.druid.filter.config.ConfigTools;
+//import com.alibaba.druid.filter.config.ConfigTools;
 
 public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar, EnvironmentAware {
 
@@ -134,14 +134,10 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 			String url = dsMap.get("url").toString();
 			String username = dsMap.get("username").toString();
 			String password = dsMap.get("password").toString();
-			String publicKey = dsMap.get("publicKey").toString();
-			if(StringUtils.isNotBlank(publicKey)) {
-				//使用公钥解密
-				password = ConfigTools.decrypt(publicKey, password);
-				if(logger.isDebugEnabled()) {
-					logger.debug("数据库密码：" + password);
-				}
-			}
+			//String publicKey = dsMap.get("publicKey").toString();
+			//if(StringUtils.isNotBlank(publicKey)) {
+			//	password = ConfigTools.decrypt(publicKey, password); //使用公钥解密
+			//}
 			DataSourceBuilder factory = DataSourceBuilder.create()
 					.driverClassName(driverClassName)
 					.url(url)
@@ -191,13 +187,13 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
      * @param args
      * @throws Exception
      */
-    public static void main(String[] args) throws Exception {
-        String password = "root";
-        String[] arr = ConfigTools.genKeyPair(512);
-        System.out.println("password:" + password);
-        System.out.println("privateKey:" + arr[0]);
-        System.out.println("publicKey:" + arr[1]);
-        System.out.println("password:" + ConfigTools.encrypt(arr[0], password));
-    }
+//    public static void main(String[] args) throws Exception {
+//        String password = "root";
+//        String[] arr = ConfigTools.genKeyPair(512);
+//        System.out.println("password:" + password);
+//        System.out.println("privateKey:" + arr[0]);
+//        System.out.println("publicKey:" + arr[1]);
+//        System.out.println("password:" + ConfigTools.encrypt(arr[0], password));
+//    }
 	
 }
