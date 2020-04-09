@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.wql.cloud.basic.redis.util.RedisUtil;
-import com.wql.cloud.gateway.constants.GatewayConstants;
+import com.wql.cloud.gateway.core.constant.GatewayConst;
 import com.wql.cloud.gateway.core.factory.BlackListFactory;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.annotation.XxlJob;
@@ -39,12 +39,12 @@ public class BlackListFactoryImpl implements BlackListFactory {
 		return blackList;
 	}
 
-    @XxlJob("blackListRefreshJobHandler")
+    @XxlJob("refreshBlacklistJob")
     public ReturnT<String> initBlackList(String param) throws Exception {
     	// 清空 blacklist
 		blackList.clear();
 		// 加载blacklist
-		List<Object> list = redisUtil.boundListAll(GatewayConstants.SYSTEM_BLACK_LIST);
+		List<Object> list = redisUtil.boundListAll(GatewayConst.SYSTEM_BLACK_LIST);
 		if (!CollectionUtils.isEmpty(list)) {
 			for (Object obj : list) {
 				blackList.add(String.valueOf(obj));

@@ -2,6 +2,7 @@ package com.wql.cloud.gateway.core.manage.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import com.wql.cloud.gateway.core.factory.FilterFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.manage.FilterManager;
 import com.wql.cloud.gateway.core.model.FilterResponse;
-import com.wql.cloud.gateway.utils.DealJsonDataUtil;
+import com.wql.cloud.gateway.utils.JsonDataUtil;
 
 /**
  * 过滤规则管理类
@@ -38,12 +39,17 @@ public class FilterManagerImpl implements FilterManager {
 
 	@Override
 	public FilterResponse doFilter(RequestContext ctx) {
-		// 获取apiKey
-		JSONObject json = DealJsonDataUtil.getRequestJSONObject(ctx);
-		String apiKey = json.getString("apiKey");
 		// 返回结果
 		FilterResponse fr = new FilterResponse();
+		// 获取apiKey
+		JSONObject json = JsonDataUtil.getRequestJSONObject(ctx);
+		if(json == null || StringUtils.isBlank(json.getString("apiKey"))) {
+			fr.setCode(FilterResponseEnum.FAIL.getCode());
+			fr.setMessage("apiKey is null");
+			return fr;
+		}
 		// 过滤器列表
+		String apiKey = json.getString("apiKey");
 		List<InnerFilter> innerFilterList = filterFactory.getFilterList(apiKey);
 		// 执行过滤规则
 		for (InnerFilter innerFilter : innerFilterList) {

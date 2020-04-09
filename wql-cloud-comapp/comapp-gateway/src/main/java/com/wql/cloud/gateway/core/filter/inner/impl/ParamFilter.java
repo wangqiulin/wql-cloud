@@ -14,7 +14,7 @@ import com.wql.cloud.gateway.core.factory.ApiFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.model.Api;
 import com.wql.cloud.gateway.core.model.FilterResponse;
-import com.wql.cloud.gateway.utils.DealJsonDataUtil;
+import com.wql.cloud.gateway.utils.JsonDataUtil;
 
 /**
  * 参数验证过滤器
@@ -38,7 +38,7 @@ public class ParamFilter implements InnerFilter {
 		FilterResponse fr = new FilterResponse();
 		try {
 			// 获取请求数据
-			JSONObject json = DealJsonDataUtil.getRequestJSONObject(ctx);
+			JSONObject json = JsonDataUtil.getRequestJSONObject(ctx);
 			// 获取apiKey
 			String apiKey = json.getString("apiKey");
 			logger.info("apiKey------>" + apiKey);
@@ -77,7 +77,6 @@ public class ParamFilter implements InnerFilter {
 				return fr;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("请求参数校验异常:" + e);
 			fr.setCode(FilterResponseEnum.FAIL.getCode());
 			fr.setMessage("请求参数校验异常:" + e);

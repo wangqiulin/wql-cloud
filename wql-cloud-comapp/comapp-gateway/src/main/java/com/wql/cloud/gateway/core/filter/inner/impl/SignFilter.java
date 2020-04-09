@@ -13,7 +13,7 @@ import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.model.FilterResponse;
 import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
-import com.wql.cloud.gateway.utils.DealJsonDataUtil;
+import com.wql.cloud.gateway.utils.JsonDataUtil;
 import com.wql.cloud.gateway.utils.RSAUtils;
 
 import cn.hutool.core.codec.Base64;
@@ -39,13 +39,13 @@ public class SignFilter implements InnerFilter {
 	public FilterResponse run(RequestContext ctx) {
 		FilterResponse fr = new FilterResponse();
 		try {
-			JSONObject json = DealJsonDataUtil.getRequestJSONObject(ctx);
+			JSONObject json = JsonDataUtil.getRequestJSONObject(ctx);
 
 			// 获取商户号
 			String merchantCode = json.getString("merchantCode");
 
 			// 创建响应json数据
-			JSONObject responseJson = DealJsonDataUtil.getResponseJSONObject(ctx);
+			JSONObject responseJson = JsonDataUtil.getResponseJSONObject(ctx);
 
 			// 获取响应报文数据
 			String data = responseJson.getString("data");
@@ -81,7 +81,6 @@ public class SignFilter implements InnerFilter {
 			fr.setCode(FilterResponseEnum.FAIL.getCode());
 			fr.setMessage("数据签名过滤异常:" + e);
 		}
-
 		return fr;
 	}
 }

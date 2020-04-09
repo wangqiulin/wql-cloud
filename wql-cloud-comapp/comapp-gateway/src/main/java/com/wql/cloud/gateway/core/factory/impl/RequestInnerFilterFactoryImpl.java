@@ -18,12 +18,11 @@ import com.wql.cloud.gateway.core.factory.FilterFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.BlackListFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.DecryptFilter;
-import com.wql.cloud.gateway.core.filter.inner.impl.MerchantPermissionFilter;
+import com.wql.cloud.gateway.core.filter.inner.impl.MertPermissionFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.ParamFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.SignCheckFilter;
 import com.wql.cloud.gateway.core.filter.inner.impl.WhiteListFilter;
 import com.wql.cloud.gateway.core.model.Api;
-import com.wql.cloud.gateway.property.GatewayProperty;
 
 /**
  * 内部过滤器工厂实现类
@@ -53,8 +52,8 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 	private ParamFilter paramFilter;
 
 	/**商户api权限过滤器 */
-	@Resource(name = "merchantPermissionFilter")
-	private MerchantPermissionFilter merchantPermissionFilter;
+	@Resource(name = "mertPermissionFilter")
+	private MertPermissionFilter mertPermissionFilter;
 
 	/**数据解密过滤器 */
 	@Resource(name = "decryptFilter")
@@ -64,9 +63,6 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 	@Resource(name = "signCheckFilter")
 	private SignCheckFilter signCheckFilter;
 
-	@Autowired
-	private GatewayProperty gatewayProperty;
-	
 	/**
 	 * 读取过滤器列表
 	 */
@@ -75,13 +71,9 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 		// 定义过滤器列表
 		List<InnerFilter> innerList = new ArrayList<InnerFilter>();
 		// 判断是否加载黑名单过滤器
-		if (gatewayProperty.getBlacklistSwitch()) {
-			innerList.add(blackListFilter);
-		}
+		innerList.add(blackListFilter);
 		// 判断是否加载白名单过滤器
-		if (gatewayProperty.getWhitelistSwitch()) {
-			innerList.add(whiteListFilter);
-		}
+		innerList.add(whiteListFilter);
 		// 加载请求参数过滤器
 		innerList.add(paramFilter);
 		// 获取api相关过滤器列表
@@ -110,7 +102,7 @@ public class RequestInnerFilterFactoryImpl implements FilterFactory {
 		// api权限 0 公共 1 登陆 2 角色 3商户
 		Integer apiPermission = api.getApiPermission();
 		if (null != apiPermission && 3 == apiPermission) {// 3商户
-			innerList.add(merchantPermissionFilter);
+			innerList.add(mertPermissionFilter);
 		}
 		// 判断是否做数据签名过滤
 		if (api.isApiReqChecksign()) {

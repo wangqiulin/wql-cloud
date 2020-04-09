@@ -12,7 +12,7 @@ import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.model.FilterResponse;
 import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
-import com.wql.cloud.gateway.utils.DealJsonDataUtil;
+import com.wql.cloud.gateway.utils.JsonDataUtil;
 import com.wql.cloud.gateway.utils.RSAUtils;
 
 import cn.hutool.core.codec.Base64;
@@ -38,13 +38,13 @@ public class EncryptFilter implements InnerFilter {
 	public FilterResponse run(RequestContext ctx) {
 		FilterResponse fr = new FilterResponse();
 		try {
-			JSONObject json = DealJsonDataUtil.getRequestJSONObject(ctx);
+			JSONObject json = JsonDataUtil.getRequestJSONObject(ctx);
 
 			// 获取商户号
 			String merchantCode = json.getString("merchantCode");
 
 			// 创建响应json数据
-			JSONObject responseJson = DealJsonDataUtil.getResponseJSONObject(ctx);
+			JSONObject responseJson = JsonDataUtil.getResponseJSONObject(ctx);
 
 			// 获取响应报文数据
 			String data = responseJson.getString("data");
@@ -58,20 +58,18 @@ public class EncryptFilter implements InnerFilter {
 			// 获取商户信息
 			MerchantCacheInfo merchant = merchantFactory.getMerchant(merchantCode);
 			// 商户公钥数据加密
-			byte[] encryptData = RSAUtils.encryptByPublicKey(data.getBytes(), merchant.getMerchantPublicKey());
+			byte[] encryptData = RSAUtils.encryptByPublicKey(data.getBytes(), merchant.getMertPublicKey());
 
 			// 加密成功修改响应报文中data属性值,替换成加密之后的数据
 			responseJson.put("data", Base64.encode(encryptData));
 			String newResponseBody = responseJson.toString();
 			logger.info("newResponseBody:" + newResponseBody);
 			ctx.setResponseBody(newResponseBody);
-
 		} catch (Exception e) {
 			logger.error("数据加密过滤异常:" + e);
 			fr.setCode(FilterResponseEnum.FAIL.getCode());
 			fr.setMessage("数据加密过滤异常:" + e);
 		}
-
 		return fr;
 	}
 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.wql.cloud.basic.redis.util.RedisUtil;
-import com.wql.cloud.gateway.constants.GatewayConstants;
+import com.wql.cloud.gateway.core.constant.GatewayConst;
 import com.wql.cloud.gateway.core.factory.ApiFactory;
 import com.wql.cloud.gateway.core.model.Api;
 import com.xxl.job.core.biz.model.ReturnT;
@@ -56,7 +56,7 @@ public class ApiFactoryImpl implements ApiFactory {
 	 */
 	private Api getCache(String apiKey) {
 		Api api = new Api();
-		String apiKeyJson = redisUtil.getStr(GatewayConstants.SYSTEM_API + apiKey);
+		String apiKeyJson = redisUtil.getStr(GatewayConst.SYSTEM_API + apiKey);
 		if (apiKeyJson != null) {
 			api = JSONUtil.toBean(apiKeyJson, Api.class);
 			if (api != null) {
@@ -68,7 +68,7 @@ public class ApiFactoryImpl implements ApiFactory {
 	}
 
 	
-	@XxlJob("apiRefreshJobHandler")
+	@XxlJob("refreshApiJob")
     public ReturnT<String> loadApiCache(String param) throws Exception {
 		apiLocalMap.clear();
 		return ReturnT.SUCCESS;

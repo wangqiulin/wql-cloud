@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.wql.cloud.basic.redis.util.RedisUtil;
-import com.wql.cloud.gateway.constants.GatewayConstants;
+import com.wql.cloud.gateway.core.constant.GatewayConst;
 import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
 import com.xxl.job.core.biz.model.ReturnT;
@@ -53,7 +53,7 @@ public class MerchantFactoryImpl implements MerchantFactory {
 	 */
 	private MerchantCacheInfo getCache(String merchantCode) {
 		MerchantCacheInfo merchant = new MerchantCacheInfo();
-		String merchantJson = redisUtil.getStr(GatewayConstants.SYSTEM_MERCHANT + merchantCode);
+		String merchantJson = redisUtil.getStr(GatewayConst.SYSTEM_MERCHANT + merchantCode);
 		if (StringUtils.isNotEmpty(merchantJson)) {
 			merchant = JSONUtil.toBean(merchantJson, MerchantCacheInfo.class);
 			if (merchant != null) {
@@ -64,7 +64,7 @@ public class MerchantFactoryImpl implements MerchantFactory {
 	}
 
 	
-	@XxlJob("merchantRefreshJobHandler")
+	@XxlJob("refreshMerchantJob")
     public ReturnT<String> initMerchantLocalMap(String param) throws Exception {
 		merchantLocalMap.clear();
 		return ReturnT.SUCCESS;

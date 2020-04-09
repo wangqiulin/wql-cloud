@@ -16,17 +16,16 @@ import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.model.FilterResponse;
 import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
-import com.wql.cloud.gateway.utils.DealJsonDataUtil;
+import com.wql.cloud.gateway.utils.JsonDataUtil;
 
 /**
  * 商户api权限过滤器
  */
-@Component(value = "merchantPermissionFilter")
-public class MerchantPermissionFilter implements InnerFilter {
+@Component(value = "mertPermissionFilter")
+public class MertPermissionFilter implements InnerFilter {
 
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	/**商户信息工厂*/
 	@Autowired
 	private MerchantFactory merchantFactory;
 
@@ -37,15 +36,15 @@ public class MerchantPermissionFilter implements InnerFilter {
 	public FilterResponse run(RequestContext ctx) {
 		FilterResponse fr = new FilterResponse();
 		try {
-			JSONObject json = DealJsonDataUtil.getJSONObject(ctx.getRequest());
+			JSONObject json = JsonDataUtil.getJSONObject(ctx.getRequest());
 			// 获取商户号
-			String merchantCode = json.getString("merchantCode");
+			String mertId = json.getString("mertId");
 			String apiKey = json.getString("apiKey");
 			// 获取商户信息
-			MerchantCacheInfo merchant = merchantFactory.getMerchant(merchantCode);
+			MerchantCacheInfo merchant = merchantFactory.getMerchant(mertId);
 			if (null == merchant) {
 				fr.setCode(FilterResponseEnum.FAIL.getCode());
-				fr.setMessage("商户信息不存在");
+				fr.setMessage("商户不存在");
 				return fr;
 			}
 			List<String> apiList = merchant.getApiList();

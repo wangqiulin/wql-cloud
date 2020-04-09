@@ -19,7 +19,7 @@ import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.model.FilterResponse;
 import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
-import com.wql.cloud.gateway.utils.DealJsonDataUtil;
+import com.wql.cloud.gateway.utils.JsonDataUtil;
 import com.wql.cloud.gateway.utils.RSAUtils;
 
 import cn.hutool.core.codec.Base64;
@@ -45,7 +45,7 @@ public class SignCheckFilter implements InnerFilter {
 	public FilterResponse run(RequestContext ctx) {
 		FilterResponse fr = new FilterResponse();
 		try {
-			JSONObject json = DealJsonDataUtil.getRequestJSONObject(ctx);
+			JSONObject json = JsonDataUtil.getRequestJSONObject(ctx);
 			// 获取商户号
 			String merchantCode = json.getString("merchantCode");
 			// 获取请求报文数据
@@ -69,10 +69,10 @@ public class SignCheckFilter implements InnerFilter {
 			// 判断数据是否经过加密
 			if (data.indexOf("\"") >= 0) {
 				// 未加密数据验证签名
-				result = RSAUtils.verify(data.getBytes(), merchant.getMerchantPublicKey(), sign);
+				result = RSAUtils.verify(data.getBytes(), merchant.getMertPublicKey(), sign);
 			} else {
 				// 加密数据验证签名
-				result = RSAUtils.verify(Base64.decode(data), merchant.getMerchantPublicKey(), sign);
+				result = RSAUtils.verify(Base64.decode(data), merchant.getMertPublicKey(), sign);
 			}
 
 			// 验证通过修改请求报文去掉sign属性
@@ -111,7 +111,6 @@ public class SignCheckFilter implements InnerFilter {
 			fr.setCode(FilterResponseEnum.FAIL.getCode());
 			fr.setMessage("数据验签过滤异常:" + e);
 		}
-
 		return fr;
 	}
 

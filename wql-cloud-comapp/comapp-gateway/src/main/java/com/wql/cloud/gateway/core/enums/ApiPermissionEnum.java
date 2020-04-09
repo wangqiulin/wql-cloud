@@ -7,22 +7,10 @@ public enum ApiPermissionEnum {
 
 	PUBLIC(0, "公共"), LOGIN(1, "登陆"), ROLE(2, "角色"), MERCHANT(3, "商户");
 
-	/**
-	 * 枚举编号
-	 */
 	private Integer code;
 
-	/**
-	 * 枚举值
-	 */
 	private String value;
 
-	/**
-	 * 构造方法
-	 * 
-	 * @param code
-	 * @param value
-	 */
 	private ApiPermissionEnum(Integer code, String value) {
 		this.code = code;
 		this.value = value;

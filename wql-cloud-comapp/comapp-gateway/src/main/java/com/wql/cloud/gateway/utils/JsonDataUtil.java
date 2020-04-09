@@ -18,12 +18,12 @@ import com.wql.cloud.gateway.core.model.FilterResponse;
 /**
  * JSON工具类
  */
-public class DealJsonDataUtil {
+public class JsonDataUtil {
 
 	/**
 	 * 日志
 	 */
-	public static final Logger logger = LoggerFactory.getLogger(DealJsonDataUtil.class);
+	public static final Logger logger = LoggerFactory.getLogger(JsonDataUtil.class);
 
 	/**
 	 * 从request请求中获取json数据

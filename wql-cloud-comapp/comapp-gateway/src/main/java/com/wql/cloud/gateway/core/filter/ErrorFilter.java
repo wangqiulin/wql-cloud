@@ -11,31 +11,14 @@ import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import com.wql.cloud.gateway.core.enums.FilterResponseEnum;
 import com.wql.cloud.gateway.core.model.FilterResponse;
-import com.wql.cloud.gateway.utils.DealJsonDataUtil;
+import com.wql.cloud.gateway.utils.JsonDataUtil;
 
 /**
  * 全局错误处理
  */
 public class ErrorFilter extends ZuulFilter {
 
-	/**
-	 * 日志
-	 */
-	private final Logger log = LoggerFactory.getLogger(ErrorFilter.class);
-
-	/**
-	 * 过滤类型错误级别
-	 */
-	@Override
-	public String filterType() {
-		return FilterConstants.ERROR_TYPE;
-	}
-
-	@Override
-	public int filterOrder() {
-		// 需要在默认的 SendErrorFilter 之前
-		return -1;
-	}
+	public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Override
 	public boolean shouldFilter() {
@@ -59,13 +42,27 @@ public class ErrorFilter extends ZuulFilter {
 				FilterResponse fr = new FilterResponse();
 				fr.setCode(FilterResponseEnum.ERROR.getCode());
 				fr.setMessage("服务开小差！");
-				ctx.setResponseBody(DealJsonDataUtil.filterResponseToJSON(fr).toJSONString());
+				ctx.setResponseBody(JsonDataUtil.filterResponseToJSON(fr).toJSONString());
 			}
 		} catch (Exception ex) {
-			log.error("Exception filtering in custom error filter", ex);
+			logger.error("Exception filtering in custom error filter", ex);
 			ReflectionUtils.rethrowRuntimeException(ex);
 		}
 		return null;
 	}
 
+	/**
+	 * 过滤类型错误级别
+	 */
+	@Override
+	public String filterType() {
+		return FilterConstants.ERROR_TYPE;
+	}
+
+	@Override
+	public int filterOrder() {
+		// 需要在默认的 SendErrorFilter 之前
+		return -1;
+	}
+	
 }

@@ -23,15 +23,9 @@ public class BlackListFilter implements InnerFilter {
 
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	/**
-	 * 黑名单工厂
-	 */
 	@Autowired
 	private BlackListFactory blackListFactory;
 
-	/**
-	 * 黑名单校验
-	 */
 	@Override
 	public FilterResponse run(RequestContext ctx) {
 		FilterResponse fr = new FilterResponse();
@@ -48,7 +42,6 @@ public class BlackListFilter implements InnerFilter {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("黑名单校验异常:" + e);
 			fr.setCode(FilterResponseEnum.FAIL.getCode());
 			fr.setMessage("黑名单校验异常:" + e);

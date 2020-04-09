@@ -16,7 +16,7 @@ import com.wql.cloud.gateway.core.factory.MerchantFactory;
 import com.wql.cloud.gateway.core.filter.inner.InnerFilter;
 import com.wql.cloud.gateway.core.model.FilterResponse;
 import com.wql.cloud.gateway.core.model.MerchantCacheInfo;
-import com.wql.cloud.gateway.utils.DealJsonDataUtil;
+import com.wql.cloud.gateway.utils.JsonDataUtil;
 import com.wql.cloud.gateway.utils.IPAddressUtil;
 
 /**
@@ -27,31 +27,25 @@ public class WhiteListFilter implements InnerFilter {
 
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	/**
-	 * 商户信息工厂
-	 */
 	@Autowired
 	private MerchantFactory merchantFactory;
 
-	/**
-	 * 白名单校验
-	 */
 	@Override
 	public FilterResponse run(RequestContext ctx) {
 		FilterResponse fr = new FilterResponse();
 		try {
 			// 获取请求的ip地址
 			String ipAddress = IPAddressUtil.getIPAddress(ctx.getRequest());
-
-			JSONObject json = DealJsonDataUtil.getRequestJSONObject(ctx);
+			JSONObject json = JsonDataUtil.getRequestJSONObject(ctx);
 			// 获取商户号
-			String merchantCode = json.getString("merchantCode");
-			if (StringUtils.isEmpty(merchantCode)) {
-				logger.error("merchantCode不能为空！");
+			String mertId = json.getString("mertId");
+			if (StringUtils.isEmpty(mertId)) {
+				logger.error("mertId不能为空！");
 				fr.setCode(FilterResponseEnum.FAIL.getCode());
-				fr.setMessage("merchantCode不能为空！");
-			} else {// 验证ip是否在白名单中
-				MerchantCacheInfo merchant = merchantFactory.getMerchant(merchantCode);
+				fr.setMessage("mertId不能为空！");
+			} else {
+				// 验证ip是否在白名单中
+				MerchantCacheInfo merchant = merchantFactory.getMerchant(mertId);
 				// 商户是否存在校验
 				if (null == merchant) {
 					logger.error("商户不存在！");
@@ -69,13 +63,12 @@ public class WhiteListFilter implements InnerFilter {
 				}
 				// 白名单校验
 				if (!whiteList.contains(ipAddress)) {
-					logger.error("ip:" + ipAddress + " 不在白名单中，校验不通过");
+					logger.error("ip:" + ipAddress + ",不在白名单中,校验不通过");
 					fr.setCode(FilterResponseEnum.FAIL.getCode());
 					fr.setMessage("非法请求");
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("白名单校验异常:" + e);
 			fr.setCode(FilterResponseEnum.FAIL.getCode());
 			fr.setMessage("白名单校验异常:" + e);

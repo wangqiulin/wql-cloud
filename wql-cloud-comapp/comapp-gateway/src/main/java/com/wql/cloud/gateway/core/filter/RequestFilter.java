@@ -14,10 +14,10 @@ import com.wql.cloud.gateway.core.enums.FilterResponseEnum;
 import com.wql.cloud.gateway.core.factory.FilterFactory;
 import com.wql.cloud.gateway.core.manage.FilterManager;
 import com.wql.cloud.gateway.core.model.FilterResponse;
-import com.wql.cloud.gateway.utils.DealJsonDataUtil;
+import com.wql.cloud.gateway.utils.JsonDataUtil;
 
 /**
- * 请求过滤器
+ * 1.请求过滤器
  */
 @Component
 public class RequestFilter extends ZuulFilter {
@@ -55,7 +55,7 @@ public class RequestFilter extends ZuulFilter {
 				logger.error("请求过滤器验证未通过,错误信息:" + fr.getMessage());
 				ctx.setSendZuulResponse(false);
 				ctx.setResponseStatusCode(401);
-				ctx.setResponseBody(DealJsonDataUtil.filterResponseToJSON(fr).toJSONString());
+				ctx.setResponseBody(JsonDataUtil.filterResponseToJSON(fr).toJSONString());
 				ctx.set("isSuccess", FilterResponseEnum.FAIL.getCode());
 				return null;
 			} else {
@@ -69,7 +69,7 @@ public class RequestFilter extends ZuulFilter {
 			ctx.setResponseStatusCode(401);
 			fr.setCode(FilterResponseEnum.FAIL.getCode());
 			fr.setMessage("请求过滤验证异常:" + e.getMessage());
-			ctx.setResponseBody(DealJsonDataUtil.filterResponseToJSON(fr).toJSONString());
+			ctx.setResponseBody(JsonDataUtil.filterResponseToJSON(fr).toJSONString());
 			ctx.set("isSuccess", FilterResponseEnum.FAIL.getCode());
 		}
 		return null;

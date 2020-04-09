@@ -1,6 +1,6 @@
-package com.wql.cloud.gateway.constants;
+package com.wql.cloud.gateway.core.constant;
 
-public class GatewayConstants {
+public class GatewayConst {
 
 	 /** api **/
     public static final String SYSTEM_API = "system:api:";

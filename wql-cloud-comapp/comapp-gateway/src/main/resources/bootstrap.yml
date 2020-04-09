@@ -48,27 +48,19 @@ zuul:
   sensitive-headers: 
   strip-prefix: true
   ratelimit:
-    # 开启限流
-    enabled: true
-    # 存储方式
-    repository: REDIS
-    # 默认限流
-    default-policy:
+    enabled: true  # 开启限流
+    repository: REDIS  # 存储方式
+    default-policy: # 默认限流
       limit: 1
       quota: 1
       refresh-interval: 3
-    # 限流策略
-    policies:
+    policies: # 限流策略
       # 指定限流服务
       api-user:
-        # 每个周期内请求次数
-        limit: 10
-        # 单位时间内允许访问的总时间，非必要参数
-        quota: 50
-        # 周期时间（秒）
-        refresh-interval: 60
-        # 限流方式 USER 根据用户；ORIGIN 原始请求；URL 请求地址；
-        type: URL
+        limit: 10 # 每个周期内请求次数
+        quota: 50  # 单位时间内允许访问的总时间，非必要参数
+        refresh-interval: 60 # 周期时间（秒）
+        type: URL # 限流方式 USER 根据用户；ORIGIN 原始请求；URL 请求地址；
   
 #超时时间配置
 hystrix:
