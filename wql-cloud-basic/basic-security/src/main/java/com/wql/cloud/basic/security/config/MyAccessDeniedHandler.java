@@ -26,7 +26,7 @@ public class MyAccessDeniedHandler implements AccessDeniedHandler {
 	public void handle(HttpServletRequest arg0, HttpServletResponse response, AccessDeniedException arg2)
 			throws IOException, ServletException {
 		Map<String, String> resMap = new HashMap<>();
-		resMap.put("code", "reject_fail");
+		resMap.put("code", "failure");
 		resMap.put("message", "拒绝访问");
 		String userJson = JSON.toJSONString(resMap, SerializerFeature.WriteNullBooleanAsFalse, SerializerFeature.WriteNullListAsEmpty, SerializerFeature.WriteNullStringAsEmpty);
         OutputStream out = response.getOutputStream();

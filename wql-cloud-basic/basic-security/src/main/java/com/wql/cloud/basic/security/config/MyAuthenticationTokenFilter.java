@@ -118,7 +118,7 @@ public class MyAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private void authenticationError(HttpServletResponse response) throws IOException, UnsupportedEncodingException {
     	Map<String, String> resMap = new HashMap<>();
-		resMap.put("code", "reject_fail");
+		resMap.put("code", "failure");
 		resMap.put("message", "无权操作");
         responseMessage(response, resMap, HttpStatus.FORBIDDEN.value());
     }

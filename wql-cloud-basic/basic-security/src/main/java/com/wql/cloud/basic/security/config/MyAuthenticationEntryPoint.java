@@ -38,7 +38,7 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint, Ser
         	resMap.put("code", "failure");
     		resMap.put("message", authException.getMessage());
         } else {
-        	resMap.put("code", "reject_fail");
+        	resMap.put("code", "failure");
     		resMap.put("message", authException.getMessage());
         }
         String userJson = JSON.toJSONString(resMap, SerializerFeature.WriteNullBooleanAsFalse, SerializerFeature.WriteNullListAsEmpty, SerializerFeature.WriteNullStringAsEmpty);
