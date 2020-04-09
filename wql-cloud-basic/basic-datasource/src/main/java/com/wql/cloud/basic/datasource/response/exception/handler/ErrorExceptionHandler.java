@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.support.spring.FastJsonJsonView;
 import com.wql.cloud.basic.datasource.response.constant.ApiEnum;
-import com.wql.cloud.basic.datasource.response.exception.myexp.ApiException;
+import com.wql.cloud.basic.datasource.response.exception.ApiException;
 
 /**
  * 异常处理机制

@@ -1,4 +1,4 @@
-package com.wql.cloud.payservice.aop.ratelimit;
+package com.wql.cloud.basic.limit.rate;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -50,7 +50,7 @@ public class RateLimitAspect {
     @Autowired
     private HttpServletResponse response;
 
-    @Pointcut("execution(public * *(..)) && @annotation(com.wql.cloud.payservice.aop.ratelimit.RateLimit)")
+    @Pointcut("execution(public * *(..)) && @annotation(com.wql.cloud.basic.limit.rate.RateLimit)")
     public void serviceLimit() {
     }
 
@@ -86,7 +86,7 @@ public class RateLimitAspect {
             } else {
             	Map<String, String> map = new HashMap<>();
             	map.put("code", "failure");
-            	map.put("message", "请求频繁，请稍后再试！");
+            	map.put("message", "请求繁忙，请稍后再试！");
                 //拒绝了请求（服务降级）
                 String result = objectMapper.writeValueAsString(map);
                 log.info("拒绝了请求：" + result);

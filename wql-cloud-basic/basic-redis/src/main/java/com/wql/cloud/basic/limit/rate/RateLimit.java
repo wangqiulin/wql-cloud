@@ -1,4 +1,4 @@
-package com.wql.cloud.payservice.aop.iplimit;
+package com.wql.cloud.basic.limit.rate;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,20 +9,14 @@ import java.lang.annotation.Target;
 
 @Inherited
 @Documented
-@Target({ ElementType.METHOD })
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RequestLimit {
+public @interface RateLimit {
 	
-	/**
-	 * 次数
-	 * @return
-	 */
-	int limit() default 10;
-
-	/**
-	 * 单位秒
-	 * @return
-	 */
-	int time() default 1;
-	
+    /**
+     * 默认每秒支持100个
+     * @return
+     */
+    int limintNum() default 100;
+    
 }

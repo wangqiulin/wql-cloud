@@ -1,4 +1,4 @@
-package com.wql.cloud.payservice.aop.userlimit;
+package com.wql.cloud.basic.limit.user;
 
 import java.lang.reflect.Method;
 
@@ -18,10 +18,17 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
 
 import com.google.common.collect.ImmutableList;
-import com.wql.cloud.basic.datasource.response.exception.myexp.ApiException;
+import com.wql.cloud.basic.limit.IPUtil;
 import com.wql.cloud.basic.redis.util.RedisUtil;
-import com.wql.cloud.tool.ip.IPUtil;
 
+/**
+ * @UserLimit(period = 60, count = 1, prefix = "test:", param = "appId", argNum = 1)
+ * public DataResponse<Void> test3(@RequestBody CreatePayOrderReq req) {
+ * 		
+ * }
+ * @author wangqiulin
+ *
+ */
 @Aspect
 @Configuration
 public class UserLimitAspect {
@@ -33,7 +40,7 @@ public class UserLimitAspect {
 	@Autowired
 	private RedisUtil redisService;
 	 
-    @Around("execution(public * *(..)) && @annotation(com.wql.cloud.payservice.aop.userlimit.UserLimit)")
+    @Around("execution(public * *(..)) && @annotation(com.wql.cloud.basic.limit.user.UserLimit)")
     public Object interceptor(ProceedingJoinPoint pjp) {
     	Object[] args = pjp.getArgs();
         MethodSignature signature = (MethodSignature) pjp.getSignature();
@@ -64,7 +71,7 @@ public class UserLimitAspect {
                     	key = args[argNum - 1].toString();
                     }
                 } else {
-                	throw new RuntimeException("lock not set param");
+                	throw new RuntimeException("limit-lock not param");
                 }
                 break;
             default:
@@ -84,7 +91,7 @@ public class UserLimitAspect {
         } catch (Throwable e) {
             if (e instanceof RuntimeException) {
             	if("You have been dragged into the blacklist".equals(e.getLocalizedMessage())) {
-            		throw new ApiException("failure", "请求频繁，请稍后重试");
+            		throw new RuntimeException("请求频繁，请稍后重试");
             	} 
             }
             throw new RuntimeException("server exception");

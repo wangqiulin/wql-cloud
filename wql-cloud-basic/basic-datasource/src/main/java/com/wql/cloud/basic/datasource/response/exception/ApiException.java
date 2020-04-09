@@ -1,4 +1,4 @@
-package com.wql.cloud.basic.datasource.response.exception.myexp;
+package com.wql.cloud.basic.datasource.response.exception;
 
 import com.wql.cloud.basic.datasource.response.constant.ApiEnum;
 

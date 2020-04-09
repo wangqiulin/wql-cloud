@@ -3,7 +3,6 @@ package com.wql.cloud.basic.datasource.response.exception;
 import org.springframework.util.Assert;
 
 import com.wql.cloud.basic.datasource.response.constant.ApiEnum;
-import com.wql.cloud.basic.datasource.response.exception.myexp.ApiException;
 
 public class Asserts extends Assert {
 

@@ -1,4 +1,4 @@
-package com.wql.cloud.payservice.aop.userlimit;
+package com.wql.cloud.basic.limit.user;
 
 public enum LimitType {
 

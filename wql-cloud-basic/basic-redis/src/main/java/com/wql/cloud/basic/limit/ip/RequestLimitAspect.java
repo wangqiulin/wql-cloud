@@ -1,4 +1,4 @@
-package com.wql.cloud.payservice.aop.iplimit;
+package com.wql.cloud.basic.limit.ip;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,9 +10,8 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.wql.cloud.basic.datasource.response.exception.myexp.ApiException;
+import com.wql.cloud.basic.limit.IPUtil;
 import com.wql.cloud.basic.redis.util.RedisUtil;
-import com.wql.cloud.tool.ip.IPUtil;
 
 /**
  * 使用方法：
@@ -34,7 +33,7 @@ public class RequestLimitAspect {
 	/**
 	 * 被此注解标明的方法会被代理
 	 */
-	@Pointcut("execution(public * *(..)) && @annotation(com.wql.cloud.payservice.aop.iplimit.RequestLimit)")
+	@Pointcut("execution(public * *(..)) && @annotation(com.wql.cloud.basic.limit.ip.RequestLimit)")
 	public void limitPointCut() {
 	}
 
@@ -72,7 +71,7 @@ public class RequestLimitAspect {
 			if(count != null) {
 				int countRequest = Integer.parseInt(count.toString());
 				if (countRequest > limit) {
-					throw new ApiException("failure", "请求频繁，请稍后重试");
+					throw new RuntimeException("请求繁忙，请稍后重试");
 				}
 			}
 			if (redisService.hasKey(key)) {
