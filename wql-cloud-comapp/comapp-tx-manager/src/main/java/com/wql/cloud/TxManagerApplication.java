@@ -7,8 +7,7 @@ import com.codingapi.txlcn.tm.config.EnableTransactionManagerServer;
 
 @SpringBootApplication
 @EnableEurekaClient
-//分布式事务管理server
-@EnableTransactionManagerServer
+@EnableTransactionManagerServer //分布式事务管理server
 public class TxManagerApplication {
 
 	public static void main(String[] args) {

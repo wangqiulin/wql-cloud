@@ -18,12 +18,12 @@
         <module>basic-redis</module>
         <module>basic-redisson</module>
         <module>basic-config</module>
+        <module>basic-lcn</module>
         <module>basic-pay</module>
         <module>basic-mq</module>
         <module>basic-oss</module>
         <module>basic-login</module>
         <module>basic-security</module>
-        <module>basic-seata</module>
         <module>basic-tinyid</module>
         <module>basic-memcached</module>
         <module>basic-websocket</module>

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: comapp-tx-manager
+    name: tx-manager
   profiles:
     active: dev
   cloud:
@@ -16,7 +16,7 @@ spring:
     time-zone: GMT+8  
         
 server: 
-  port: 5003
+  port: 7970
 
 management:
   security:

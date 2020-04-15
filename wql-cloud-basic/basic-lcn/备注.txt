@@ -1,0 +1,6 @@
+在不同的微服务中启动类上加：
+@EnableDistributedTransaction //开启分布式事务管理
+
+//调用方与被调用方的业务方法上加注解即可
+@LcnTransaction
+@Transactional
