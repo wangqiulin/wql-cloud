@@ -4,16 +4,8 @@ spring:
   profiles:
     active: dev
   cloud:
-    # 设置偏好网段
     inetutils:
       preferred-networks: 127.0.0.
-    loadbalancer:
-      retry:
-        enabled: true
-  jackson:
-    date-format: yyyy-MM-dd
-    joda-date-time-format: yyyy-MM-dd HH:mm:ss
-    time-zone: GMT+8  
         
 server: 
   port: 7970
@@ -23,9 +15,6 @@ management:
     enabled: false
 
 security: 
-#  basic:
-#    enabled: true
-#  enable-csrf: false
   user:
     name: admin
     password: admin
