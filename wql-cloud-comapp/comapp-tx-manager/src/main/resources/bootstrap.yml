@@ -1,0 +1,81 @@
+spring:
+  application:
+    name: comapp-tx-manager
+  profiles:
+    active: dev
+  cloud:
+    # 设置偏好网段
+    inetutils:
+      preferred-networks: 127.0.0.
+    loadbalancer:
+      retry:
+        enabled: true
+  jackson:
+    date-format: yyyy-MM-dd
+    joda-date-time-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8  
+        
+server: 
+  port: 5003
+
+management:
+  security:
+    enabled: false
+
+security: 
+#  basic:
+#    enabled: true
+#  enable-csrf: false
+  user:
+    name: admin
+    password: admin
+
+wql: 
+  eureka: 
+    username: admin
+    password: admin      
+  
+#超时时间配置
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+ribbon:
+  ConnectTimeout: 1000
+  ReadTimeout: 10000
+  #ribbon连接池配置
+  MaxTotalConnections: 200
+  MaxConnectionsPerHost: 50
+  OkToRetryOnAllOperations: true
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 1
+  
+eureka: 
+  instance:
+    preferIpAddress: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    lease-renewal-interval-in-seconds: 10  #续约更新时间间隔（默认30秒）
+    lease-expiration-duration-in-seconds: 90  #续约到期时间（默认90秒）
+  client: 
+    registerWithEureka: true
+    fetchRegistry: true
+    registryFetchIntervalSeconds: 10   # 服务列表缓存更新时间
+      
+---
+spring: 
+  profiles: dev
+eureka: 
+  client: 
+    serviceUrl: 
+      defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@127.0.0.1:5000/eureka/
+      
+---
+spring: 
+  profiles: prod
+eureka: 
+  client: 
+    serviceUrl: 
+      defaultZone: http://${wql.eureka.username}:${wql.eureka.password}@47.103.208.243:5000/eureka/  

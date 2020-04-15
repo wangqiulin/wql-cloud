@@ -38,6 +38,7 @@
         <module>comapp-eureka</module>
         <module>comapp-gateway</module>
         <module>comapp-config</module>
+        <module>comapp-tx-manager</module>
     </modules>
 	<build>
 		<plugins>
