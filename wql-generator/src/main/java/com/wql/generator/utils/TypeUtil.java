@@ -15,13 +15,16 @@ public class TypeUtil {
         switch (sqlType) {
             case Types.BIT:
             case Types.BOOLEAN:
-                sb.append("Boolean");
+                //sb.append("Boolean");
+                sb.append("Integer");
                 break;
             case Types.TINYINT:
-                sb.append("byte");
+                //sb.append("byte");
+            	sb.append("Integer");
                 break;
             case Types.SMALLINT:
-                sb.append("short");
+                //sb.append("short");
+            	sb.append("Integer");
                 break;
             case Types.INTEGER:
                 sb.append("Integer");
@@ -55,7 +58,8 @@ public class TypeUtil {
                 sb.append("Time");
                 break;
             case Types.TIMESTAMP:
-                sb.append("Timestamp");
+                //sb.append("Timestamp");
+                sb.append("Date");
                 break;
             case Types.NCLOB:
             case Types.CLOB:

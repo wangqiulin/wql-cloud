@@ -11,9 +11,9 @@ public class Main {
     
     public static void single() {
         Invoker invoker = new SingleInvoker.Builder()
-        		.setDbName("wql_cloud")
-                .setTableName("t_order")
-                .setClassName("Order")
+        		.setDbName("fang")
+                .setTableName("xq_consultant_customer_family")
+                .setClassName("CustomerFamily")
                 .build();
         invoker.execute();
     }

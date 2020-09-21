@@ -6,13 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.wql.generator.entity.ColumnInfo;
-
 public class GeneratorUtil {
 
 	/**
 	 * 实体类忽略生成字段
 	 */
-	private static final String[] IGNORE_COLUMN = {"id", "createDate", "updateDate", "dataFlag"};
+	private static final String[] IGNORE_COLUMN = {"id"}; //{"id", "createDate", "updateDate", "dataFlag"};
 	
     /**
      * 生成实体类属性字段（基本数据类型，用于单表关系）
@@ -37,7 +36,11 @@ public class GeneratorUtil {
             }
         	int type = infos.get(i).getType();
         	String propertyName = infos.get(i).getPropertyName();
-            sb.append("private ").append(TypeUtil.parseTypeFormSqlType(type)).append(" ").append(propertyName).append(";\n");
+        	//字段备注
+        	String comment = infos.get(i).getComment(); 
+        	sb.append("/** ").append(comment).append(" */").append("\n");
+            sb.append("    ").append("private ").append(TypeUtil.parseTypeFormSqlType(type)).append(" ").append(propertyName).append(";\n");
+            sb.append("\n");
         }
         return sb.toString();
     }

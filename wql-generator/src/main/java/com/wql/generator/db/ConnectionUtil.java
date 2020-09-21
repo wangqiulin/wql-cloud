@@ -2,6 +2,7 @@ package com.wql.generator.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -58,16 +59,27 @@ public class ConnectionUtil {
         statement = connection.createStatement();
         String sql = "SELECT * FROM " + tableName + " WHERE 1 != 1";
         resultSet = statement.executeQuery(sql);
+        //获取所有字段注释
+        PreparedStatement pstemt = connection.prepareStatement(sql);
+        ResultSet resultSet2 = pstemt.executeQuery("show full columns from " + tableName);
+        List<String> commentList = new ArrayList<>();
+        while(resultSet2.next()) {
+        	commentList.add(resultSet2.getString("Comment"));
+        }
+        //处理其他字段
         ResultSetMetaData metaData = resultSet.getMetaData();
         for (int i = 1; i <= metaData.getColumnCount(); i++) {
+        	//字段备注
+        	String comment = commentList.get(i-1); 
             ColumnInfo info;
             if (metaData.getColumnName(i).equals(primaryKey)) {
-                info = new ColumnInfo(metaData.getColumnName(i), metaData.getColumnType(i), true);
+                info = new ColumnInfo(metaData.getColumnName(i), metaData.getColumnType(i), true, comment);
             } else {
-                info = new ColumnInfo(metaData.getColumnName(i), metaData.getColumnType(i), false);
+                info = new ColumnInfo(metaData.getColumnName(i), metaData.getColumnType(i), false, comment);
             }
             columnInfos.add(info);
         }
+        pstemt.close();
         statement.close();
         resultSet.close();
         return columnInfos;

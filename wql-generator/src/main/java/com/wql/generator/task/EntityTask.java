@@ -64,7 +64,7 @@ public class EntityTask extends AbstractTask {
             entityData.put("Methods", GeneratorUtil.generateEntityMethods(parentClassName, tableInfos, foreignKey));
         } else { // 单表关系
             entityData.put("Properties", GeneratorUtil.generateEntityProperties(tableInfos));
-            entityData.put("Methods", GeneratorUtil.generateEntityMethods(tableInfos));
+            //entityData.put("Methods", GeneratorUtil.generateEntityMethods(tableInfos));
         }
         //String sourcePath = FileUtil.getSourcePath();
         String sourcePath = ConfigUtil.getConfiguration().getFilePathPrefix();
