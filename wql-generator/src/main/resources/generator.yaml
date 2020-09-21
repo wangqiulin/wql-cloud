@@ -1,19 +1,31 @@
 #数据库配置
 db: 
-  url: jdbc:mysql://47.103.208.243/wql_cloud?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=UTC
+  url: jdbc:mysql://121.40.202.98/fang?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=UTC
   username: root
-  password: root
+  password: 123abc**!!
+  
 #作者  
 author: wangqiulin
+
 #存放目录
-filePathPrefix: C:\coding\wql\wql-cloud\wql-bizserviceapp-system\bizserviceapp-system\src\main\java\
+filePathPrefix: D:\TongCe\generateCode\
+
 #类路径前缀
-packageName: com.wql.cloud.systemservice
+packageName: xq #com.xq.maintain
+
 #各层类路径后缀
+#path:
+#  entity: pojo.domain
+#  controller: controller
+#  interf: service
+#  service: service.impl
+#  dao: mapper
+#  mapper: mappers
+  
 path:
-  entity: pojo.domain
-  controller: controller
-  interf: service
-  service: service.impl
-  dao: mapper
-  mapper: mappers
+  entity: xq
+  controller: xq
+  interf: xq
+  service: xq
+  dao: xq
+  mapper: xq
